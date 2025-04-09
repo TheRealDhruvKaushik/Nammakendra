@@ -18,16 +18,7 @@ import Breadcrumb from "@/components/layout/breadcrumb";
 import { useAccessibility } from "@/context/accessibility-context";
 
 function Router() {
-  const { fontSize, language } = useAccessibility();
-  
-  // Using useEffect to log and apply fontSize changes
-  useEffect(() => {
-    console.log("App: Font size changed to:", fontSize);
-    // Apply font size to body element for more consistent results
-    document.body.style.fontSize = `${fontSize}px`;
-    // Set data attribute for potential CSS targeting
-    document.documentElement.setAttribute('data-font-size', fontSize.toString());
-  }, [fontSize]);
+  const { language } = useAccessibility();
   
   // Using useEffect to log and apply language changes
   useEffect(() => {
@@ -39,7 +30,7 @@ function Router() {
   }, [language]);
   
   return (
-    <div className="app-container" style={{ fontSize: `${fontSize}px` }}>
+    <div className="app-container">
       <Header />
       <Breadcrumb />
       <Switch>

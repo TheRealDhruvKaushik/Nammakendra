@@ -1,5 +1,4 @@
 import { Link, useLocation } from "wouter";
-import FontSizeControl from "@/components/ui/font-size-control";
 import LanguageSelector from "@/components/ui/language-selector";
 import { useAccessibility } from "@/context/accessibility-context";
 import { useTranslation } from "@/hooks/use-translation";
@@ -39,7 +38,6 @@ const Header = () => {
           </div>
           
           <div className="flex items-center mb-4 md:mb-0 md:order-3">
-            <FontSizeControl />
             <LanguageSelector />
           </div>
           
@@ -66,7 +64,12 @@ const Header = () => {
                   className={`block px-3 py-2 text-lg relative group ${location === "/namma-sahayak" ? "text-primary font-semibold" : "text-gray-600"}`}
                   aria-current={location === "/namma-sahayak" ? "page" : undefined}
                 >
-                  <span className={`${location === "/namma-sahayak" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>{t('namma_sahayak')}</span>
+                  <span 
+                    className={`${location === "/namma-sahayak" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
+                    data-i18n-key="namma_sahayak"
+                  >
+                    {t('namma_sahayak')}
+                  </span>
                   <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/namma-sahayak" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
@@ -76,7 +79,12 @@ const Header = () => {
                   className={`block px-3 py-2 text-lg relative group ${location === "/namma-vidhana" ? "text-primary font-semibold" : "text-gray-600"}`}
                   aria-current={location === "/namma-vidhana" ? "page" : undefined}
                 >
-                  <span className={`${location === "/namma-vidhana" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>{t('namma_vidhana')}</span>
+                  <span 
+                    className={`${location === "/namma-vidhana" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
+                    data-i18n-key="namma_vidhana"
+                  >
+                    {t('namma_vidhana')}
+                  </span>
                   <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/namma-vidhana" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
@@ -86,7 +94,12 @@ const Header = () => {
                   className={`block px-3 py-2 text-lg relative group ${location === "/contact" ? "text-primary font-semibold" : "text-gray-600"}`}
                   aria-current={location === "/contact" ? "page" : undefined}
                 >
-                  <span className={`${location === "/contact" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>{t('contact')}</span>
+                  <span 
+                    className={`${location === "/contact" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
+                    data-i18n-key="contact"
+                  >
+                    {t('contact')}
+                  </span>
                   <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/contact" ? "w-full" : ""}`}></span>
                 </Link>
               </li>

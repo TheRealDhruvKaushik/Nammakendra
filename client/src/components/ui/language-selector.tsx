@@ -32,24 +32,62 @@ const LanguageSelector = () => {
     // First set the language in context
     setLanguage(code);
     
-    // Direct approach: Use the translations right away
-    // Update key UI elements with translations for immediate feedback
+    // Apply language-specific font size adjustments
+    const fontSizeAdjustments = {
+      english: 16, // baseline
+      kannada: 16,
+      hindi: 17,   // slightly larger for Hindi
+      tamil: 16
+    };
+    
+    // Apply the appropriate font size based on language
+    document.documentElement.style.setProperty('--base-font-size', `${fontSizeAdjustments[code]}px`);
+    
+    // Apply language-specific CSS classes
+    document.body.classList.remove('lang-english', 'lang-kannada', 'lang-hindi', 'lang-tamil');
+    document.body.classList.add(`lang-${code}`);
+    
+    // Set the language attribute for proper language handling
+    document.documentElement.setAttribute('lang', code);
+    
+    // Direct approach: Translate all elements with translation keys
     try {
-      const keys = ["home", "about", "namma_sahayak", "namma_vidhana", "contact", "nammakendra", "motto"];
+      // Get all translation keys for this language
+      const translationKeys = Object.keys(translations[code]);
       
-      // Manually find and update elements with data-i18n-key attributes
-      keys.forEach(key => {
-        const elements = document.querySelectorAll(`[data-i18n-key="${key}"]`);
-        if (elements.length > 0) {
-          const translation = translations[code][key] || key;
-          elements.forEach(el => {
-            el.textContent = translation;
-          });
+      // First, handle specific elements with data-i18n-key attributes
+      const taggedElements = document.querySelectorAll('[data-i18n-key]');
+      taggedElements.forEach(el => {
+        const key = el.getAttribute('data-i18n-key');
+        if (key && translations[code][key]) {
+          el.textContent = translations[code][key];
         }
       });
       
-      // Force refresh by triggering a custom event
+      // Then, try to find all text elements that might need translation
+      const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, li, label');
+      allTextElements.forEach(el => {
+        const text = el.textContent?.trim();
+        if (text) {
+          // Check if this text exactly matches an English key
+          const englishKeys = Object.keys(translations.english);
+          for (const key of englishKeys) {
+            if (translations.english[key] === text && translations[code][key]) {
+              el.textContent = translations[code][key];
+              break;
+            }
+          }
+        }
+      });
+      
+      // Force a layout reflow to apply changes
+      document.body.style.display = 'none';
+      document.body.offsetHeight; // force reflow
+      document.body.style.display = '';
+      
+      // Additional trick to force update of React components
       window.dispatchEvent(new Event('resize'));
+      document.dispatchEvent(new CustomEvent('languageChanged', { detail: code }));
     } catch (err) {
       console.error("Error in direct translation update:", err);
     }
