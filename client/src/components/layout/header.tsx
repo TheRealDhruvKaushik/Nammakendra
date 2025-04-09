@@ -46,7 +46,7 @@ const Header = () => {
               <li>
                 <Link 
                   href="/" 
-                  className={`block px-3 py-2 text-lg relative group ${location === "/" ? "text-primary font-semibold" : "text-gray-600"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/" ? "text-primary font-semibold" : "text-gray-800"}`}
                   aria-current={location === "/" ? "page" : undefined}
                 >
                   <span 
@@ -61,7 +61,7 @@ const Header = () => {
               <li>
                 <Link 
                   href="/namma-sahayak" 
-                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-sahayak" ? "text-primary font-semibold" : "text-gray-600"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-sahayak" ? "text-primary font-semibold" : "text-gray-800"}`}
                   aria-current={location === "/namma-sahayak" ? "page" : undefined}
                 >
                   <span 
@@ -76,7 +76,7 @@ const Header = () => {
               <li>
                 <Link 
                   href="/namma-vidhana" 
-                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-vidhana" ? "text-primary font-semibold" : "text-gray-600"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-vidhana" ? "text-primary font-semibold" : "text-gray-800"}`}
                   aria-current={location === "/namma-vidhana" ? "page" : undefined}
                 >
                   <span 
@@ -91,7 +91,7 @@ const Header = () => {
               <li>
                 <Link 
                   href="/contact" 
-                  className={`block px-3 py-2 text-lg relative group ${location === "/contact" ? "text-primary font-semibold" : "text-gray-600"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/contact" ? "text-primary font-semibold" : "text-gray-800"}`}
                   aria-current={location === "/contact" ? "page" : undefined}
                 >
                   <span 
