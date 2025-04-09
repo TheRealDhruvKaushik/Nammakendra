@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAccessibility } from "@/context/accessibility-context";
-import { Languages } from "@/lib/translations";
+import { Languages, translations } from "@/lib/translations";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +28,32 @@ const LanguageSelector = () => {
   
   const handleLanguageChange = (code: Languages) => {
     console.log("Changing language to:", code);
+    
+    // First set the language in context
     setLanguage(code);
+    
+    // Direct approach: Use the translations right away
+    // Update key UI elements with translations for immediate feedback
+    try {
+      const keys = ["home", "about", "namma_sahayak", "namma_vidhana", "contact", "nammakendra", "motto"];
+      
+      // Manually find and update elements with data-i18n-key attributes
+      keys.forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n-key="${key}"]`);
+        if (elements.length > 0) {
+          const translation = translations[code][key] || key;
+          elements.forEach(el => {
+            el.textContent = translation;
+          });
+        }
+      });
+      
+      // Force refresh by triggering a custom event
+      window.dispatchEvent(new Event('resize'));
+    } catch (err) {
+      console.error("Error in direct translation update:", err);
+    }
+    
     setIsOpen(false);
   };
 

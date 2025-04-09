@@ -1,27 +1,72 @@
 import { useAccessibility } from "@/context/accessibility-context";
 import { useEffect } from "react";
 
+// Direct DOM manipulation for immediate font size change feedback
+const applyFontSizeDirectly = (size: number) => {
+  console.log("Directly applying font size:", size);
+  
+  // Set size on body
+  document.body.style.fontSize = `${size}px`;
+  
+  // Set CSS custom property for use in stylesheets
+  document.documentElement.style.setProperty('--font-size', `${size}px`);
+  
+  // Direct method to apply to all common text elements
+  const commonElements = document.querySelectorAll('p, span, a, li, div');
+  commonElements.forEach(el => {
+    if (el instanceof HTMLElement) {
+      el.style.fontSize = `${size}px`;
+    }
+  });
+  
+  // Scale headings appropriately
+  const headingElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  headingElements.forEach(el => {
+    if (el instanceof HTMLElement) {
+      let multiplier = 1;
+      switch (el.tagName) {
+        case 'H1': multiplier = 2.5; break;
+        case 'H2': multiplier = 2.0; break;
+        case 'H3': multiplier = 1.75; break;
+        case 'H4': multiplier = 1.5; break;
+        case 'H5': multiplier = 1.25; break;
+        case 'H6': multiplier = 1.1; break;
+      }
+      el.style.fontSize = `${size * multiplier}px`;
+    }
+  });
+};
+
 const FontSizeControl = () => {
   const { fontSize, decreaseFontSize, resetFontSize, increaseFontSize } = useAccessibility();
   
   // Log current font size when it changes
   useEffect(() => {
     console.log("Current font size:", fontSize);
+    applyFontSizeDirectly(fontSize);
   }, [fontSize]);
   
   const handleDecrease = () => {
     console.log("Decrease font size clicked");
+    const newSize = Math.max(fontSize - 2, 12);
     decreaseFontSize();
+    // Apply immediately for instant feedback
+    applyFontSizeDirectly(newSize);
   };
   
   const handleReset = () => {
     console.log("Reset font size clicked");
     resetFontSize();
+    // Apply immediately for instant feedback
+    applyFontSizeDirectly(16);
   };
   
   const handleIncrease = () => {
     console.log("Increase font size clicked");
+    const newSize = Math.min(fontSize + 2, 24);
     increaseFontSize();
+    // Apply immediately for instant feedback
+    applyFontSizeDirectly(newSize);
   };
 
   return (

@@ -23,8 +23,18 @@ const Header = () => {
               />
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300">{t('nammakendra')}</h1>
-              <span className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">{t('motto')}</span>
+              <h1 
+                className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300"
+                data-i18n-key="nammakendra"
+              >
+                {t('nammakendra')}
+              </h1>
+              <span 
+                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent"
+                data-i18n-key="motto"
+              >
+                {t('motto')}
+              </span>
             </div>
           </div>
           
@@ -41,7 +51,12 @@ const Header = () => {
                   className={`block px-3 py-2 text-lg relative group ${location === "/" ? "text-primary font-semibold" : "text-gray-600"}`}
                   aria-current={location === "/" ? "page" : undefined}
                 >
-                  <span className={`${location === "/" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>{t('home')}</span>
+                  <span 
+                    className={`${location === "/" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`} 
+                    data-i18n-key="home"
+                  >
+                    {t('home')}
+                  </span>
                   <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
