@@ -79,7 +79,7 @@ const TestimonialsSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">What Our Users Say</h2>
-          <p className="text-lg text-neutral max-w-3xl mx-auto">Real experiences from people we've helped</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Real experiences from people we've helped</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
@@ -93,10 +93,10 @@ const TestimonialsSection = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
-                  <p className="text-sm text-neutral">{testimonial.title}</p>
+                  <p className="text-sm text-gray-600">{testimonial.title}</p>
                 </div>
               </div>
-              <p className="text-neutral mb-4">{testimonial.content}</p>
+              <p className="text-gray-600 mb-4">{testimonial.content}</p>
               <div className="flex">
                 {renderStars(testimonial.rating)}
               </div>

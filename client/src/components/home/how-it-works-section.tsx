@@ -22,7 +22,7 @@ const HowItWorksSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">How It Works</h2>
-          <p className="text-lg text-neutral max-w-3xl mx-auto">Simple steps to get the legal help you need</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Simple steps to get the legal help you need</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
@@ -34,7 +34,7 @@ const HowItWorksSection = () => {
                 </div>
               </div>
               <h3 className="text-xl font-bold text-center mb-4">{step.title}</h3>
-              <p className="text-neutral text-center">{step.description}</p>
+              <p className="text-gray-600 text-center">{step.description}</p>
             </div>
           ))}
         </div>

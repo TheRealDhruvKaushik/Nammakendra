@@ -9,7 +9,7 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">{t('our_services')}</h2>
-          <p className="text-lg text-neutral max-w-3xl mx-auto">{t('services_desc')}</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">{t('services_desc')}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
@@ -24,7 +24,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-800">{t('namma_sahayak')}</h3>
               </div>
-              <p className="text-neutral mb-4">{t('sahayak_desc')}</p>
+              <p className="text-gray-600 mb-4">{t('sahayak_desc')}</p>
               <ul className="mb-6 space-y-2">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +68,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-800">{t('namma_vidhana')}</h3>
               </div>
-              <p className="text-neutral mb-4">{t('vidhana_desc')}</p>
+              <p className="text-gray-600 mb-4">{t('vidhana_desc')}</p>
               <ul className="mb-6 space-y-2">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
