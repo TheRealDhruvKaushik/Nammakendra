@@ -17,12 +17,12 @@ const Header = () => {
                 src={logoImage} 
                 alt="Nammakendra Logo" 
                 className="h-32 absolute -top-3 md:-top-4 md:h-36 -left-2 md:-left-3 transform hover:rotate-3 transition-transform duration-300"
-                style={{ filter: "drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))" }}
+                style={{ filter: "drop-shadow(0 0 15px rgba(255, 215, 0, 0.6))" }}
               />
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
-              <h1 className="text-2xl md:text-3xl font-bold text-primary header-title">NammaKendra</h1>
-              <span className="text-sm text-emerald-600">Namma Mandyalli Sarkara</span>
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300">NammaKendra</h1>
+              <span className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Nimma Maneyalli Sarkara</span>
             </div>
           </div>
           
@@ -36,37 +36,41 @@ const Header = () => {
               <li>
                 <Link 
                   href="/" 
-                  className={`block px-3 py-2 text-lg ${location === "/" ? "text-primary border-b-2 border-primary font-semibold" : "text-neutral hover:text-primary"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/" ? "text-primary font-semibold" : "text-neutral"}`}
                   aria-current={location === "/" ? "page" : undefined}
                 >
-                  Home
+                  <span className={`${location === "/" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>Home</span>
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/namma-sahayak" 
-                  className={`block px-3 py-2 text-lg ${location === "/namma-sahayak" ? "text-primary border-b-2 border-primary font-semibold" : "text-neutral hover:text-primary"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-sahayak" ? "text-primary font-semibold" : "text-neutral"}`}
                   aria-current={location === "/namma-sahayak" ? "page" : undefined}
                 >
-                  NammaSahayak
+                  <span className={`${location === "/namma-sahayak" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>NammaSahayak</span>
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/namma-sahayak" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/namma-vidhana" 
-                  className={`block px-3 py-2 text-lg ${location === "/namma-vidhana" ? "text-primary border-b-2 border-primary font-semibold" : "text-neutral hover:text-primary"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/namma-vidhana" ? "text-primary font-semibold" : "text-neutral"}`}
                   aria-current={location === "/namma-vidhana" ? "page" : undefined}
                 >
-                  NammaVidhana
+                  <span className={`${location === "/namma-vidhana" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>NammaVidhana</span>
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/namma-vidhana" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/contact" 
-                  className={`block px-3 py-2 text-lg ${location === "/contact" ? "text-primary border-b-2 border-primary font-semibold" : "text-neutral hover:text-primary"}`}
+                  className={`block px-3 py-2 text-lg relative group ${location === "/contact" ? "text-primary font-semibold" : "text-neutral"}`}
                   aria-current={location === "/contact" ? "page" : undefined}
                 >
-                  Contact
+                  <span className={`${location === "/contact" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}>Contact</span>
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${location === "/contact" ? "w-full" : ""}`}></span>
                 </Link>
               </li>
             </ul>

@@ -3,21 +3,22 @@ import logoImage from "@/assets/logo.png";
 
 const HeroSection = () => {
   return (
-    <section className="py-8 md:py-16 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800">
+    <section className="py-8 md:py-16 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100 via-gray-100 to-blue-50 text-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex justify-center mb-10">
-          <div className="bg-white p-6 rounded-full shadow-xl transform hover:scale-105 transition-transform duration-300" style={{ boxShadow: "0 0 35px rgba(255, 255, 255, 0.5)" }}>
+          <div className="bg-white p-6 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 relative animate-pulse-glow">
             <img 
               src={logoImage} 
               alt="Nammakendra Logo" 
-              className="h-48 md:h-64 w-auto"
+              className="h-48 md:h-64 w-auto relative z-10"
             />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300/30 to-amber-500/30 animate-spin-slow"></div>
           </div>
         </div>
         
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0 text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 header-title">Legal Help Made Simple</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 header-title bg-gradient-to-r from-primary via-purple-600 to-amber-500 bg-clip-text text-transparent">Legal Help Made Simple</h1>
             <p className="text-xl md:text-2xl mb-6 text-gray-700">Access, understand, and navigate legal information with ease.</p>
             <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
               <Link href="/namma-sahayak">
@@ -34,8 +35,8 @@ const HeroSection = () => {
           </div>
           <div className="md:w-1/2">
             <div className="text-center md:text-left">
-              <h2 className="text-3xl font-bold mb-4 header-title">NammaKendra</h2>
-              <p className="text-xl mb-6 text-gray-700">Namma Mandyalli Sarkara - Your trusted partner for legal guidance and support.</p>
+              <h2 className="text-3xl font-bold mb-4 header-title bg-gradient-to-r from-amber-500 via-orange-500 to-primary bg-clip-text text-transparent">NammaKendra</h2>
+              <p className="text-xl mb-6 text-gray-700"><span className="text-amber-600 font-semibold">Nimma Maneyalli Sarkara</span> - Your trusted partner for legal guidance and support.</p>
               <p className="text-lg mb-4 text-gray-600">We make legal information accessible to everyone, especially elderly and underprivileged citizens.</p>
             </div>
           </div>
