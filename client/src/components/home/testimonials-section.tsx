@@ -82,7 +82,7 @@ const TestimonialsSection = () => {
           <p className="text-lg text-neutral max-w-3xl mx-auto">Real experiences from people we've helped</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
               <div className="flex items-center mb-4">

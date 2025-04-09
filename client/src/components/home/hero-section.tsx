@@ -16,8 +16,8 @@ const HeroSection = () => {
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-8 md:mb-0 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center md:space-x-12">
+          <div className="md:w-1/2 mb-8 md:mb-0 text-center md:text-left md:pr-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 header-title bg-gradient-to-r from-primary via-purple-600 to-amber-500 bg-clip-text text-transparent">Legal Help Made Simple</h1>
             <p className="text-xl md:text-2xl mb-6 text-gray-300 font-medium">Access, understand, and navigate legal information with ease.</p>
             <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
@@ -33,7 +33,7 @@ const HeroSection = () => {
               </Link>
             </div>
           </div>
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 md:pl-6">
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-bold mb-4 header-title bg-gradient-to-r from-amber-500 via-orange-500 to-primary bg-clip-text text-transparent">NammaKendra</h2>
               <p className="text-xl mb-6 text-gray-300"><span className="text-amber-400 font-semibold">Nimma Maneyalli Sarkara</span> - Your trusted partner for legal guidance and support.</p>

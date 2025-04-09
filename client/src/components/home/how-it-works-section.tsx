@@ -25,7 +25,7 @@ const HowItWorksSection = () => {
           <p className="text-lg text-neutral max-w-3xl mx-auto">Simple steps to get the legal help you need</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
           {steps.map((step) => (
             <div key={step.number} className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
               <div className="flex justify-center mb-4">

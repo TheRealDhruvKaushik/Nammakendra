@@ -9,7 +9,7 @@ const ServicesSection = () => {
           <p className="text-lg text-neutral max-w-3xl mx-auto">We provide accessible legal tools that help you understand your rights and navigate complex legal procedures.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
           {/* NammaSahayak Card */}
           <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
             <div className="p-6">
