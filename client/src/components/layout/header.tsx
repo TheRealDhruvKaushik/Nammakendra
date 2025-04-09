@@ -9,17 +9,17 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b border-gray-200">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <img 
               src={logoImage} 
               alt="Nammakendra Logo" 
-              className="h-16 mr-3"
+              className="h-24 mr-4"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <h1 className="text-2xl md:text-3xl font-bold text-primary">NammaKendra</h1>
-              <span className="text-sm text-blue-500">Namma Mandyalli Sarkara</span>
+              <span className="text-sm md:text-base text-blue-500">Namma Mandyalli Sarkara</span>
             </div>
           </div>
           
