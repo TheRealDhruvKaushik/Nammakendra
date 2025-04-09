@@ -21,8 +21,8 @@ const Header = () => {
               />
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
-              <h1 className="text-2xl md:text-3xl font-bold text-primary">NammaKendra</h1>
-              <span className="text-sm text-blue-500">Namma Mandyalli Sarkara</span>
+              <h1 className="text-2xl md:text-3xl font-bold text-primary header-title">NammaKendra</h1>
+              <span className="text-sm text-emerald-600">Namma Mandyalli Sarkara</span>
             </div>
           </div>
           
