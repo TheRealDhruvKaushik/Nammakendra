@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAccessibility } from "@/context/accessibility-context";
+import { Languages } from "@/lib/translations";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const languages = [
-  { code: "english", label: "English" },
-  { code: "kannada", label: "ಕನ್ನಡ" },
-  { code: "hindi", label: "हिंदी" },
-  { code: "tamil", label: "தமிழ்" }
+  { code: "english" as Languages, label: "English" },
+  { code: "kannada" as Languages, label: "ಕನ್ನಡ" },
+  { code: "hindi" as Languages, label: "हिंदी" },
+  { code: "tamil" as Languages, label: "தமிழ்" }
 ];
 
 const LanguageSelector = () => {
@@ -20,7 +21,7 @@ const LanguageSelector = () => {
   
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
   
-  const handleLanguageChange = (code: string) => {
+  const handleLanguageChange = (code: Languages) => {
     setLanguage(code);
     setIsOpen(false);
   };
@@ -86,7 +87,7 @@ const LanguageSelector = () => {
           {languages.map((lang) => (
             <DropdownMenuItem 
               key={lang.code}
-              onClick={() => handleLanguageChange(lang.code)}
+              onClick={() => handleLanguageChange(lang.code as Languages)}
               className={lang.code === language ? "bg-primary/10 font-semibold" : ""}
             >
               {lang.label}
