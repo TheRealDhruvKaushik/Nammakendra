@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import FontSizeControl from "@/components/ui/font-size-control";
 import LanguageSelector from "@/components/ui/language-selector";
 import { useAccessibility } from "@/context/accessibility-context";
-import logoImage from "@/assets/logo.png";
+import logoImage from "@/assets/logo-header.png";
 
 const Header = () => {
   const [location] = useLocation();

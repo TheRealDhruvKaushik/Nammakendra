@@ -5,12 +5,12 @@ const HeroSection = () => {
   return (
     <section className="py-8 md:py-16 bg-primary text-white">
       <div className="container mx-auto px-4">
-        <div className="flex justify-center mb-8">
-          <div className="bg-white p-4 rounded-full shadow-lg">
+        <div className="flex justify-center mb-10">
+          <div className="bg-white p-5 rounded-full shadow-lg">
             <img 
               src={logoImage} 
               alt="Nammakendra Logo" 
-              className="h-32 md:h-40 w-auto"
+              className="h-48 md:h-64 w-auto"
             />
           </div>
         </div>
