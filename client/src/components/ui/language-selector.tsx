@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAccessibility } from "@/context/accessibility-context";
 import { Languages } from "@/lib/translations";
 import { 
@@ -19,9 +19,15 @@ const LanguageSelector = () => {
   const { language, setLanguage } = useAccessibility();
   const [isOpen, setIsOpen] = useState(false);
   
+  // Log when language changes
+  useEffect(() => {
+    console.log("Current language:", language);
+  }, [language]);
+  
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
   
   const handleLanguageChange = (code: Languages) => {
+    console.log("Changing language to:", code);
     setLanguage(code);
     setIsOpen(false);
   };
