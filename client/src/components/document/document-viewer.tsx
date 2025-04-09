@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Printer, Copy, Check, ArrowUp } from "lucide-react";
+import { Printer, Copy, Check, ArrowUp, Download } from "lucide-react"; // Added Download import
 import { useToast } from "@/hooks/use-toast";
 
 interface DocumentViewerProps {
@@ -17,7 +17,7 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
 
   // Parse out sections from the simplified text
   const sections = simplifiedText.split('\n\n').filter(Boolean);
-  
+
   // Get summary and key points
   const summary = sections[0] || "No summary available";
   const keyPoints = sections.slice(1);
@@ -86,6 +86,17 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Placeholder for zip download functionality
+  const handleDownloadZip = () => {
+    // Implement zip download logic here.  This is a placeholder.
+    console.log("Download ZIP functionality not yet implemented.");
+    toast({
+      title: "Download ZIP",
+      description: "This feature is not yet implemented",
+      variant: "warning"
+    });
+  };
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="p-6">
@@ -100,6 +111,10 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
               <Printer className="h-4 w-4 mr-1" />
               Print
             </Button>
+            <Button variant="outline" size="sm" onClick={handleDownloadZip}>
+              <Download className="h-4 w-4 mr-1" />
+              Download ZIP
+            </Button>
           </div>
         </div>
 
@@ -108,19 +123,19 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
             <TabsTrigger value="simplified">Simplified Version</TabsTrigger>
             <TabsTrigger value="keyPoints">Key Points</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="simplified" className="text-lg leading-relaxed space-y-4">
             {sections.map((section, index) => (
               <p key={index}>{section}</p>
             ))}
           </TabsContent>
-          
+
           <TabsContent value="keyPoints">
             <div className="bg-gray-50 p-4 mb-6 rounded-lg border border-gray-200">
               <h3 className="text-xl font-bold mb-2">Summary</h3>
               <p>{summary}</p>
             </div>
-            
+
             <h3 className="text-xl font-bold mb-4">Important Points</h3>
             <div className="space-y-4">
               {keyPoints.map((point, index) => (
@@ -142,7 +157,7 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
           >
             Upload Another Document
           </Button>
-          
+
           <Button 
             variant="secondary" 
             size="icon"
