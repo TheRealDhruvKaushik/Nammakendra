@@ -9,6 +9,10 @@ import Home from "@/pages/home";
 import NammaSahayak from "@/pages/namma-sahayak";
 import NammaVidhana from "@/pages/namma-vidhana";
 import Contact from "@/pages/contact";
+import About from "@/pages/about";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
+import Accessibility from "@/pages/accessibility";
 import Breadcrumb from "@/components/layout/breadcrumb";
 import { useAccessibility } from "@/context/accessibility-context";
 
@@ -24,6 +28,10 @@ function Router() {
         <Route path="/namma-sahayak" component={NammaSahayak} />
         <Route path="/namma-vidhana" component={NammaVidhana} />
         <Route path="/contact" component={Contact} />
+        <Route path="/about" component={About} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/terms-of-service" component={TermsOfService} />
+        <Route path="/accessibility" component={Accessibility} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

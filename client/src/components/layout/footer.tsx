@@ -43,18 +43,16 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link href="/" className="text-gray-300 hover:text-white">Home</Link></li>
               <li><Link href="/about" className="text-gray-300 hover:text-white">About Us</Link></li>
-              <li><Link href="/services" className="text-gray-300 hover:text-white">Services</Link></li>
               <li><Link href="/contact" className="text-gray-300 hover:text-white">Contact</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4">Services</h3>
+            <h3 className="text-lg font-bold mb-4">Our Services</h3>
             <ul className="space-y-2">
               <li><Link href="/namma-sahayak" className="text-gray-300 hover:text-white">NammaSahayak</Link></li>
               <li><Link href="/namma-vidhana" className="text-gray-300 hover:text-white">NammaVidhana</Link></li>
-              <li><Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link></li>
-              <li><Link href="/faq" className="text-gray-300 hover:text-white">FAQ</Link></li>
+              <li><Link href="/accessibility" className="text-gray-300 hover:text-white">Accessibility</Link></li>
             </ul>
           </div>
           
@@ -87,8 +85,8 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
           <p>&copy; {new Date().getFullYear()} NammaKendra. All rights reserved.</p>
           <div className="mt-4">
-            <Link href="/privacy" className="text-gray-300 hover:text-white mx-2">Privacy Policy</Link>
-            <Link href="/terms" className="text-gray-300 hover:text-white mx-2">Terms of Service</Link>
+            <Link href="/privacy-policy" className="text-gray-300 hover:text-white mx-2">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-gray-300 hover:text-white mx-2">Terms of Service</Link>
             <Link href="/accessibility" className="text-gray-300 hover:text-white mx-2">Accessibility</Link>
           </div>
         </div>
