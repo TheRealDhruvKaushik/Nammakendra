@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>NammaSahayak - Legal Assistance for Everyone</title>
-        <meta name="description" content="Access, understand, and navigate legal information with ease. NammaSahayak makes legal help simple." />
+        <title>NammaKendra - Legal Assistance for Everyone</title>
+        <meta name="description" content="Access, understand, and navigate legal information with ease. NammaKendra makes legal help simple and accessible for all citizens." />
       </Helmet>
       <main>
         <HeroSection />

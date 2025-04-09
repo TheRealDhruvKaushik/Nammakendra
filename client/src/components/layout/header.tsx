@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import FontSizeControl from "@/components/ui/font-size-control";
 import LanguageSelector from "@/components/ui/language-selector";
 import { useAccessibility } from "@/context/accessibility-context";
+import logoImage from "@/assets/logo.png";
 
 const Header = () => {
   const [location] = useLocation();
@@ -11,19 +12,15 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <svg 
-              width="48" 
-              height="48" 
-              viewBox="0 0 24 24" 
-              className="mr-3 text-primary"
-              aria-hidden="true"
-            >
-              <path
-                fill="currentColor"
-                d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.1L19.2 11H18v9h-4v-6H9v6H5v-9H3.8L12 4.1z"
-              />
-            </svg>
-            <h1 className="text-2xl md:text-3xl font-bold text-primary">NammaSahayak</h1>
+            <img 
+              src={logoImage} 
+              alt="Nammakendra Logo" 
+              className="h-16 mr-3"
+            />
+            <div className="flex flex-col">
+              <h1 className="text-2xl md:text-3xl font-bold text-primary">NammaKendra</h1>
+              <span className="text-sm text-blue-500">Namma Mandyalli Sarkara</span>
+            </div>
           </div>
           
           <div className="flex items-center mb-4 md:mb-0 md:order-3">

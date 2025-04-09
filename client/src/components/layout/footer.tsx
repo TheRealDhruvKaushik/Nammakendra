@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import logoImage from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -6,7 +7,17 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">NammaSahayak</h3>
+            <div className="flex items-center mb-4">
+              <img 
+                src={logoImage} 
+                alt="Nammakendra Logo" 
+                className="h-12 mr-2 bg-white rounded p-1"
+              />
+              <div className="flex flex-col">
+                <h3 className="text-xl font-bold">NammaKendra</h3>
+                <span className="text-xs text-blue-300">Namma Mandyalli Sarkara</span>
+              </div>
+            </div>
             <p className="text-gray-300 mb-4">Making legal information accessible to everyone.</p>
             <div className="flex space-x-4">
               <a href="#" aria-label="Facebook" className="text-gray-300 hover:text-white">
@@ -74,7 +85,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; {new Date().getFullYear()} NammaSahayak. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} NammaKendra. All rights reserved.</p>
           <div className="mt-4">
             <Link href="/privacy" className="text-gray-300 hover:text-white mx-2">Privacy Policy</Link>
             <Link href="/terms" className="text-gray-300 hover:text-white mx-2">Terms of Service</Link>
