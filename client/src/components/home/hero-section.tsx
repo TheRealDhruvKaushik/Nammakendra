@@ -6,7 +6,7 @@ const HeroSection = () => {
     <section className="py-8 md:py-16 bg-primary text-white">
       <div className="container mx-auto px-4">
         <div className="flex justify-center mb-10">
-          <div className="bg-white p-5 rounded-full shadow-lg">
+          <div className="bg-white p-6 rounded-full shadow-xl transform hover:scale-105 transition-transform duration-300" style={{ boxShadow: "0 0 35px rgba(255, 255, 255, 0.5)" }}>
             <img 
               src={logoImage} 
               alt="Nammakendra Logo" 
