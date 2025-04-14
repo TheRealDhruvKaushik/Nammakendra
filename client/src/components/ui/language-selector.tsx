@@ -82,10 +82,19 @@ const LanguageSelector = () => {
         }
       });
       
+      // Make sure gradient text elements remain with transparent color
+      const gradientTextElements = document.querySelectorAll('.bg-clip-text.text-transparent');
+      gradientTextElements.forEach((element) => {
+        if (element instanceof HTMLElement) {
+          element.style.color = 'transparent';
+        }
+      });
+      
       // Force a layout reflow to apply changes
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // force reflow
-      document.body.style.display = '';
+      // Removed to avoid visual flicker
+      // document.body.style.display = 'none';
+      // document.body.offsetHeight; // force reflow
+      // document.body.style.display = '';
       
       // Additional trick to force update of React components
       window.dispatchEvent(new Event('resize'));

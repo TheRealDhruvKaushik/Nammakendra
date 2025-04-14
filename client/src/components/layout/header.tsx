@@ -23,14 +23,16 @@ const Header = () => {
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
               <h1 
-                className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300"
+                className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300 !important"
                 data-i18n-key="nammakendra"
+                style={{ color: 'transparent' }}
               >
                 {t('nammakendra')}
               </h1>
               <span 
-                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent"
+                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent !important"
                 data-i18n-key="motto"
+                style={{ color: 'transparent' }}
               >
                 {t('motto')}
               </span>
@@ -52,6 +54,7 @@ const Header = () => {
                   <span 
                     className={`${location === "/" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`} 
                     data-i18n-key="home"
+                    style={location === "/" ? { color: '' } : {}}
                   >
                     {t('home')}
                   </span>
@@ -67,6 +70,7 @@ const Header = () => {
                   <span 
                     className={`${location === "/namma-sahayak" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
                     data-i18n-key="namma_sahayak"
+                    style={location === "/namma-sahayak" ? { color: '' } : {}}
                   >
                     {t('namma_sahayak')}
                   </span>
@@ -82,6 +86,7 @@ const Header = () => {
                   <span 
                     className={`${location === "/namma-vidhana" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
                     data-i18n-key="namma_vidhana"
+                    style={location === "/namma-vidhana" ? { color: '' } : {}}
                   >
                     {t('namma_vidhana')}
                   </span>
@@ -97,6 +102,7 @@ const Header = () => {
                   <span 
                     className={`${location === "/contact" ? "" : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"} transition-all duration-300`}
                     data-i18n-key="contact"
+                    style={location === "/contact" ? { color: '' } : {}}
                   >
                     {t('contact')}
                   </span>
