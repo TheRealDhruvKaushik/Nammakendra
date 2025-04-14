@@ -52,19 +52,8 @@ const LanguageSelector = () => {
     // Set the language attribute for proper language handling
     document.documentElement.setAttribute('lang', code);
     
-    // IMPORTANT: Preserve transparency for gradient text elements BEFORE making any translations
-    const headerElements = document.querySelectorAll('.header-title, h1, [data-i18n-key="nammakendra"], [data-i18n-key="motto"]');
-    headerElements.forEach((element) => {
-      if (element instanceof HTMLElement) {
-        element.style.color = 'transparent';
-      }
-    });
-    
     // Direct approach: Translate all elements with translation keys
     try {
-      // Get all translation keys for this language
-      const translationKeys = Object.keys(translations[code]);
-      
       // First, handle specific elements with data-i18n-key attributes
       const taggedElements = document.querySelectorAll('[data-i18n-key]');
       taggedElements.forEach(el => {
@@ -77,6 +66,11 @@ const LanguageSelector = () => {
       // Then, try to find all text elements that might need translation
       const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, li, label');
       allTextElements.forEach(el => {
+        // Skip elements with data-lang-label attribute (used for language selector itself)
+        if (el.hasAttribute('data-lang-label')) {
+          return;
+        }
+        
         const text = el.textContent?.trim();
         if (text) {
           // Check if this text exactly matches an English key
@@ -89,30 +83,6 @@ const LanguageSelector = () => {
           }
         }
       });
-      
-      // Make sure gradient text elements remain with transparent color AGAIN after translations
-      const gradientTextElements = document.querySelectorAll('.bg-clip-text.text-transparent');
-      gradientTextElements.forEach((element) => {
-        if (element instanceof HTMLElement) {
-          element.style.color = 'transparent';
-        }
-      });
-      
-      // Special handling for the English language specifically
-      if (code === 'english') {
-        // Extra check for the header title
-        const headerTitle = document.querySelector('.header-title');
-        if (headerTitle instanceof HTMLElement) {
-          headerTitle.style.color = 'transparent';
-        }
-        
-        // Check for all elements with gradient backgrounds
-        document.querySelectorAll('[class*="bg-gradient"]').forEach(el => {
-          if (el instanceof HTMLElement && el.classList.contains('text-transparent')) {
-            el.style.color = 'transparent';
-          }
-        });
-      }
       
       // Additional trick to force update of React components
       window.dispatchEvent(new Event('resize'));
@@ -132,37 +102,39 @@ const LanguageSelector = () => {
             aria-label="Change language" 
             className="flex items-center px-3 py-2 min-w-[44px] min-h-[44px] border rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary text-black"
           >
-            <svg 
-              className="mr-2" 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path 
-                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M2 12H22" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>{t('language') || currentLanguage.label}</span>
+            <span className="globe-icon mr-2 inline-flex">
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ display: 'inline-block' }} 
+              >
+                <path 
+                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M2 12H22" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <span data-lang-label="true">{t('language') || currentLanguage.label}</span>
             <svg 
               className="ml-2" 
               width="12" 

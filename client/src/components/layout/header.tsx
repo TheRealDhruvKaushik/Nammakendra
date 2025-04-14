@@ -23,16 +23,22 @@ const Header = () => {
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
               <h1 
-                className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent header-title hover:scale-105 transition-transform duration-300 !important"
+                className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text header-title hover:scale-105 transition-transform duration-300"
                 data-i18n-key="nammakendra"
-                style={{ color: 'transparent' }}
+                style={{ 
+                  color: 'transparent', 
+                  WebkitTextFillColor: 'transparent'
+                }}
               >
                 {t('nammakendra')}
               </h1>
               <span 
-                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent !important"
+                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text"
                 data-i18n-key="motto"
-                style={{ color: 'transparent' }}
+                style={{ 
+                  color: 'transparent',
+                  WebkitTextFillColor: 'transparent'
+                }}
               >
                 {t('motto')}
               </span>

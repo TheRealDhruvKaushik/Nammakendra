@@ -67,6 +67,25 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     letter-spacing: 0.5px;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+  
+  /* Fix for gradient text in header */
+  [data-i18n-key="nammakendra"], 
+  [data-i18n-key="motto"] {
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+  
+  .bg-gradient-to-r.bg-clip-text {
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+  
+  /* Ensure globe icon always shows */
+  .globe-icon {
+    display: inline-flex !important;
   }
   
   /* Language-specific adjustments for navigation */
