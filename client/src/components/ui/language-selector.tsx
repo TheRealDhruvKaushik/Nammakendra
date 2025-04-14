@@ -52,6 +52,14 @@ const LanguageSelector = () => {
     // Set the language attribute for proper language handling
     document.documentElement.setAttribute('lang', code);
     
+    // IMPORTANT: Preserve transparency for gradient text elements BEFORE making any translations
+    const headerElements = document.querySelectorAll('.header-title, h1, [data-i18n-key="nammakendra"], [data-i18n-key="motto"]');
+    headerElements.forEach((element) => {
+      if (element instanceof HTMLElement) {
+        element.style.color = 'transparent';
+      }
+    });
+    
     // Direct approach: Translate all elements with translation keys
     try {
       // Get all translation keys for this language
@@ -82,7 +90,7 @@ const LanguageSelector = () => {
         }
       });
       
-      // Make sure gradient text elements remain with transparent color
+      // Make sure gradient text elements remain with transparent color AGAIN after translations
       const gradientTextElements = document.querySelectorAll('.bg-clip-text.text-transparent');
       gradientTextElements.forEach((element) => {
         if (element instanceof HTMLElement) {
@@ -90,11 +98,21 @@ const LanguageSelector = () => {
         }
       });
       
-      // Force a layout reflow to apply changes
-      // Removed to avoid visual flicker
-      // document.body.style.display = 'none';
-      // document.body.offsetHeight; // force reflow
-      // document.body.style.display = '';
+      // Special handling for the English language specifically
+      if (code === 'english') {
+        // Extra check for the header title
+        const headerTitle = document.querySelector('.header-title');
+        if (headerTitle instanceof HTMLElement) {
+          headerTitle.style.color = 'transparent';
+        }
+        
+        // Check for all elements with gradient backgrounds
+        document.querySelectorAll('[class*="bg-gradient"]').forEach(el => {
+          if (el instanceof HTMLElement && el.classList.contains('text-transparent')) {
+            el.style.color = 'transparent';
+          }
+        });
+      }
       
       // Additional trick to force update of React components
       window.dispatchEvent(new Event('resize'));
