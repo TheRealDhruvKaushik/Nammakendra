@@ -7,6 +7,7 @@ export type Languages = "english" | "kannada" | "hindi" | "tamil";
 export const translations: Record<Languages, Record<string, string>> = {
   english: {
     // General
+    "language": "English",
     "home": "Home",
     "about": "About Us",
     "services": "Services",
@@ -66,6 +67,7 @@ export const translations: Record<Languages, Record<string, string>> = {
   
   kannada: {
     // General
+    "language": "ಕನ್ನಡ",
     "home": "ಮುಖಪುಟ",
     "about": "ನಮ್ಮ ಬಗ್ಗೆ",
     "services": "ಸೇವೆಗಳು",
@@ -125,6 +127,7 @@ export const translations: Record<Languages, Record<string, string>> = {
   
   hindi: {
     // General
+    "language": "हिंदी",
     "home": "होम",
     "about": "हमारे बारे में",
     "services": "सेवाएं",
@@ -184,6 +187,7 @@ export const translations: Record<Languages, Record<string, string>> = {
   
   tamil: {
     // General
+    "language": "தமிழ்",
     "home": "முகப்பு",
     "about": "எங்களைப் பற்றி",
     "services": "சேவைகள்",

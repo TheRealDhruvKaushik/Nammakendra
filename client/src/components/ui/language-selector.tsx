@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "@/hooks/use-translation";
 
 const languages = [
   { code: "english" as Languages, label: "English" },
@@ -18,6 +19,7 @@ const languages = [
 const LanguageSelector = () => {
   const { language, setLanguage } = useAccessibility();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   
   // Log when language changes
   useEffect(() => {
@@ -133,7 +135,7 @@ const LanguageSelector = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>{currentLanguage.label}</span>
+            <span>{t('language') || currentLanguage.label}</span>
             <svg 
               className="ml-2" 
               width="12" 
