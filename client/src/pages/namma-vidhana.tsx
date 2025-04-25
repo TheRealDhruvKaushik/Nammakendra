@@ -37,19 +37,19 @@ const NammaVidhana = () => {
               />
             ) : (
               <>
-                <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                  <h2 className="text-xl font-bold mb-4">Document Simplification Service</h2>
-                  <p className="mb-4">
+                <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+                  <h2 className="text-xl font-bold mb-4 text-gray-600">Document Simplification Service</h2>
+                  <p className="text-gray-600 mb-4">
                     Our tool analyzes legal documents and translates them into plain language that's easy to understand. 
                     You'll get:
                   </p>
-                  <ul className="list-disc pl-6 space-y-2 mb-4">
+                  <ul className="list-disc pl-6 space-y-2 mb-4 text-gray-500">
                     <li>A simplified summary of the entire document</li>
                     <li>Highlighted key points and important information</li>
                     <li>Clear explanation of legal terms used</li>
                     <li>Important dates, deadlines, and required actions</li>
                   </ul>
-                  <p>
+                  <p class="text-gray-500">
                     This service helps you understand legal documents without needing to hire an expensive lawyer for basic explanations.
                   </p>
                 </div>

@@ -16,14 +16,14 @@ const NammaSahayak = () => {
               Ask any legal questions you have and get simple, easy-to-understand answers. Our AI assistant helps you navigate complex legal topics without the confusing jargon.
             </p>
             
-            <div className="bg-gray-200 p-6 rounded-lg shadow-md mb-8">
+            <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
               <h2 className="text-xl font-bold mb-4 text-gray-700">How to Use NammaSahayak</h2>
-              <ol className="list-decimal pl-6 space-y-2 bg-gray-200 text-primary">
+              <ul className="list-disc pl-6 space-y-2 mb-4 text-gray-500">
                 <li>Type your legal question in the chat box below</li>
                 <li>Wait for NammaSahayak to provide a simple explanation</li>
                 <li>Ask follow-up questions if you need clarification</li>
                 <li>Get guidance on next steps or procedures</li>
-              </ol>
+              </ul>
             </div>
             
             <ChatInterface />

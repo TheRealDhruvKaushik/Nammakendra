@@ -109,7 +109,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="p-6">
         <h2 className="text-2xl font-bold mb-4 text-primary">Upload Legal Document</h2>
         <p className="text-neutral mb-6">
