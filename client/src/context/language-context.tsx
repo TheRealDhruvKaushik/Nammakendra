@@ -51,6 +51,35 @@ const translations: Record<Language, Record<string, string>> = {
     'services.vidhana.feature3': '✔️Highlight important sections and deadlines',
     'services.vidhana.button': 'Upload Document',
     
+    // How It Works Section
+    'how.title': 'How It Works',
+    'how.subtitle': 'Simple steps to get the legal help you need',
+    'how.step1.title': 'Choose a Service',
+    'how.step1.description': 'Select either NammaSahayak for questions or NammaVidhana for document assistance.',
+    'how.step2.title': 'Provide Information',
+    'how.step2.description': 'Ask your question or upload your document that needs explanation.',
+    'how.step3.title': 'Get Simple Answers',
+    'how.step3.description': 'Receive easy-to-understand explanations and guidance for your legal needs.',
+    
+    // Testimonials Section
+    'testimonials.title': 'What Our Users Say',
+    'testimonials.subtitle': 'Real experiences from people we\'ve helped',
+    'testimonials.1.name': 'Ramesh K.',
+    'testimonials.1.title': 'Retired Teacher',
+    'testimonials.1.content': 'NammaSahayak helped me understand my pension rights in simple language. The chatbot explained everything step by step, and I didn\'t feel overwhelmed by legal jargon.',
+    'testimonials.2.name': 'Lakshmi M.',
+    'testimonials.2.title': 'Homemaker',
+    'testimonials.2.content': 'The document scanner was so helpful when I received a complex property notice. It highlighted important dates and explained what actions I needed to take in simple language.',
+    'testimonials.3.name': 'Venkat R.',
+    'testimonials.3.title': 'Senior Citizen',
+    'testimonials.3.content': 'My grandson suggested I try this service when I was confused about healthcare benefits. The large text option and simple explanations made it easy for me to navigate and get answers.',
+    
+    // CTA Section
+    'cta.title': 'Ready to Get Started?',
+    'cta.subtitle': 'Access the legal help you need in language you can understand.',
+    'cta.chatButton': 'Chat with NammaSahayak',
+    'cta.uploadButton': 'Upload a Document',
+    
     // Chat interface
     'chat.title': 'NammaSahayak Chat',
     'chat.subtitle': 'Ask me any legal questions you have',
@@ -144,6 +173,35 @@ const translations: Record<Language, Record<string, string>> = {
     'services.vidhana.feature2': '✔️ಸರಳೀಕೃತ ಸಾರಾಂಶಗಳನ್ನು ಪಡೆಯಿರಿ',
     'services.vidhana.feature3': '✔️ಮುಖ್ಯ ವಿಭಾಗಗಳು ಮತ್ತು ಗಡುವುಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ',
     'services.vidhana.button': 'ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
+    
+    // How It Works Section
+    'how.title': 'ಇದು ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ',
+    'how.subtitle': 'ನಿಮಗೆ ಅಗತ್ಯವಾದ ಕಾನೂನು ಸಹಾಯವನ್ನು ಪಡೆಯಲು ಸರಳ ಹಂತಗಳು',
+    'how.step1.title': 'ಸೇವೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ',
+    'how.step1.description': 'ಪ್ರಶ್ನೆಗಳಿಗೆ ನಮ್ಮ ಸಹಾಯಕ ಅಥವಾ ದಾಖಲೆ ಸಹಾಯಕ್ಕೆ ನಮ್ಮ ವಿಧಾನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.',
+    'how.step2.title': 'ಮಾಹಿತಿ ಒದಗಿಸಿ',
+    'how.step2.description': 'ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ ಅಥವಾ ವಿವರಣೆಯ ಅಗತ್ಯವಿರುವ ನಿಮ್ಮ ದಾಖಲೆಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ.',
+    'how.step3.title': 'ಸರಳ ಉತ್ತರಗಳನ್ನು ಪಡೆಯಿರಿ',
+    'how.step3.description': 'ನಿಮ್ಮ ಕಾನೂನು ಅಗತ್ಯತೆಗಳಿಗೆ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸುಲಭವಾದ ವಿವರಣೆಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶನವನ್ನು ಪಡೆಯಿರಿ.',
+    
+    // Testimonials Section
+    'testimonials.title': 'ನಮ್ಮ ಬಳಕೆದಾರರು ಏನು ಹೇಳುತ್ತಾರೆ',
+    'testimonials.subtitle': 'ನಾವು ಸಹಾಯ ಮಾಡಿದ ಜನರ ನಿಜವಾದ ಅನುಭವಗಳು',
+    'testimonials.1.name': 'ರಮೇಶ್ ಕೆ.',
+    'testimonials.1.title': 'ನಿವೃತ್ತ ಶಿಕ್ಷಕ',
+    'testimonials.1.content': 'ನಮ್ಮಸಹಾಯಕ ನನಗೆ ನನ್ನ ಪಿಂಚಣಿ ಹಕ್ಕುಗಳನ್ನು ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸಹಾಯ ಮಾಡಿತು. ಚಾಟ್‌ಬಾಟ್ ಪ್ರತಿಯೊಂದನ್ನೂ ಹಂತ ಹಂತವಾಗಿ ವಿವರಿಸಿತು ಮತ್ತು ನಾನು ಕಾನೂನು ಪರಿಭಾಷೆಯಿಂದ ಅಭಿಭೂತನಾಗಿರಲಿಲ್ಲ.',
+    'testimonials.2.name': 'ಲಕ್ಷ್ಮಿ ಎಂ.',
+    'testimonials.2.title': 'ಗೃಹಿಣಿ',
+    'testimonials.2.content': 'ನಾನು ಸಂಕೀರ್ಣ ಆಸ್ತಿ ಸೂಚನೆಯನ್ನು ಸ್ವೀಕರಿಸಿದಾಗ ಡಾಕ್ಯುಮೆಂಟ್ ಸ್ಕ್ಯಾನರ್ ತುಂಬಾ ಸಹಾಯಕವಾಗಿತ್ತು. ಇದು ಮುಖ್ಯ ದಿನಾಂಕಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿತು ಮತ್ತು ನಾನು ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಯಾವ ಕ್ರಮಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಬೇಕೆಂದು ವಿವರಿಸಿತು.',
+    'testimonials.3.name': 'ವೆಂಕಟ್ ಆರ್.',
+    'testimonials.3.title': 'ಹಿರಿಯ ನಾಗರಿಕ',
+    'testimonials.3.content': 'ನಾನು ಆರೋಗ್ಯ ರಕ್ಷಣೆ ಪ್ರಯೋಜನಗಳ ಬಗ್ಗೆ ಗೊಂದಲದಲ್ಲಿದ್ದಾಗ ನನ್ನ ಮೊಮ್ಮಗ ಈ ಸೇವೆಯನ್ನು ಪ್ರಯತ್ನಿಸಲು ಸೂಚಿಸಿದನು. ದೊಡ್ಡ ಪಠ್ಯ ಆಯ್ಕೆ ಮತ್ತು ಸರಳ ವಿವರಣೆಗಳು ನನಗೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ಮತ್ತು ಉತ್ತರಗಳನ್ನು ಪಡೆಯಲು ಸುಲಭವಾಯಿತು.',
+    
+    // CTA Section
+    'cta.title': 'ಪ್ರಾರಂಭಿಸಲು ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?',
+    'cta.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ಭಾಷೆಯಲ್ಲಿ ನಿಮಗೆ ಬೇಕಾದ ಕಾನೂನು ಸಹಾಯವನ್ನು ಪಡೆಯಿರಿ.',
+    'cta.chatButton': 'ನಮ್ಮ ಸಹಾಯಕನೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಿ',
+    'cta.uploadButton': 'ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
     
     // Chat interface
     'chat.title': 'ನಮ್ಮ ಸಹಾಯಕ ಚಾಟ್',

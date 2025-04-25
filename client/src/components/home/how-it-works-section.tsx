@@ -1,19 +1,24 @@
+import { useLanguage } from "@/context/language-context";
+
 const HowItWorksSection = () => {
+  const { t } = useLanguage();
+  
+  // We'll use the translated text from the language context
   const steps = [
     {
       number: 1,
-      title: "Choose a Service",
-      description: "Select either NammaSahayak for questions or NammaVidhana for document assistance."
+      title: t('how.step1.title'),
+      description: t('how.step1.description')
     },
     {
       number: 2,
-      title: "Provide Information",
-      description: "Ask your question or upload your document that needs explanation."
+      title: t('how.step2.title'),
+      description: t('how.step2.description')
     },
     {
       number: 3,
-      title: "Get Simple Answers",
-      description: "Receive easy-to-understand explanations and guidance for your legal needs."
+      title: t('how.step3.title'),
+      description: t('how.step3.description')
     }
   ];
 
@@ -21,8 +26,8 @@ const HowItWorksSection = () => {
     <section className="py-12 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">How It Works</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Simple steps to get the legal help you need</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">{t('how.title')}</h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">{t('how.subtitle')}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">

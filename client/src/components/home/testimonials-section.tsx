@@ -1,36 +1,40 @@
+import { useLanguage } from "@/context/language-context";
+
 interface Testimonial {
   id: number;
-  name: string;
-  title: string;
-  content: string;
+  nameKey: string;
+  titleKey: string;
+  contentKey: string;
   rating: number;
 }
 
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Ramesh K.",
-    title: "Retired Teacher",
-    content: "NammaSahayak helped me understand my pension rights in simple language. The chatbot explained everything step by step, and I didn't feel overwhelmed by legal jargon.",
-    rating: 5
-  },
-  {
-    id: 2,
-    name: "Lakshmi M.",
-    title: "Homemaker",
-    content: "The document scanner was so helpful when I received a complex property notice. It highlighted important dates and explained what actions I needed to take in simple language.",
-    rating: 4.5
-  },
-  {
-    id: 3,
-    name: "Venkat R.",
-    title: "Senior Citizen",
-    content: "My grandson suggested I try this service when I was confused about healthcare benefits. The large text option and simple explanations made it easy for me to navigate and get answers.",
-    rating: 5
-  }
-];
-
 const TestimonialsSection = () => {
+  const { t } = useLanguage();
+
+  const testimonials: Testimonial[] = [
+    {
+      id: 1,
+      nameKey: 'testimonials.1.name',
+      titleKey: 'testimonials.1.title',
+      contentKey: 'testimonials.1.content',
+      rating: 5
+    },
+    {
+      id: 2,
+      nameKey: 'testimonials.2.name',
+      titleKey: 'testimonials.2.title',
+      contentKey: 'testimonials.2.content',
+      rating: 4.5
+    },
+    {
+      id: 3,
+      nameKey: 'testimonials.3.name',
+      titleKey: 'testimonials.3.title',
+      contentKey: 'testimonials.3.content',
+      rating: 5
+    }
+  ];
+
   // Function to render rating stars
   const renderStars = (rating: number) => {
     const stars = [];
@@ -78,8 +82,8 @@ const TestimonialsSection = () => {
     <section className="py-12 md:py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-200 mb-4">What Our Users Say</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">Real experiences from people we've helped</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-200 mb-4">{t('testimonials.title')}</h2>
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">{t('testimonials.subtitle')}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
@@ -92,11 +96,11 @@ const TestimonialsSection = () => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
-                  <p className="text-sm text-gray-600">{testimonial.title}</p>
+                  <h4 className="font-bold text-gray-800">{t(testimonial.nameKey)}</h4>
+                  <p className="text-sm text-gray-600">{t(testimonial.titleKey)}</p>
                 </div>
               </div>
-              <p className="text-gray-600 mb-4">{testimonial.content}</p>
+              <p className="text-gray-600 mb-4">{t(testimonial.contentKey)}</p>
               <div className="flex">
                 {renderStars(testimonial.rating)}
               </div>
