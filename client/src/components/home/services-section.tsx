@@ -27,19 +27,19 @@ const ServicesSection = () => {
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>24/7 answers to legal questions</span>
+                  <span className="text-gray-700">24/7 answers to legal questions</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>Simple explanations of complex terms</span>
+                  <span className="text-gray-700">Simple explanations of complex terms</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>Step-by-step guidance for procedures</span>
+                  <span className="text-gray-700">Step-by-step guidance for procedures</span>
                 </li>
               </ul>
               <Link href="/namma-sahayak">
@@ -71,19 +71,19 @@ const ServicesSection = () => {
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>Scan and analyze legal documents</span>
+                  <span className="text-gray-700">Scan and analyze legal documents</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>Get simplified summaries</span>
+                  <span className="text-gray-700">Get simplified summaries</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span>Highlight important sections and deadlines</span>
+                  <span className="text-gray-700">Highlight important sections and deadlines</span>
                 </li>
               </ul>
               <Link href="/namma-vidhana">
