@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import logoImage from "@/assets/logo-header.png";
+import logoImage from "@/assets/logo.png";
 
 const HeroSection = () => {
   return (
