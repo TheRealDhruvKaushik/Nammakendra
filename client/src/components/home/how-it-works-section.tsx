@@ -33,8 +33,8 @@ const HowItWorksSection = () => {
                   {step.number}
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-center mb-4">{step.title}</h3>
-              <p className="text-gray-600 text-center">{step.description}</p>
+              <h3 className="text-xl font-bold text-center mb-4 text-primary">{step.title}</h3>
+              <p className="text-gray-800 text-center">{step.description}</p>
             </div>
           ))}
         </div>
