@@ -14,13 +14,12 @@ import About from "@/pages/about";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import Accessibility from "@/pages/accessibility";
-import Breadcrumb from "@/components/layout/breadcrumb";
+import { LanguageProvider } from "@/context/language-context";
 
 function Router() {
   return (
     <div className="app-container">
       <Header />
-      <Breadcrumb />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/namma-sahayak" component={NammaSahayak} />
@@ -40,8 +39,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
+      <LanguageProvider>
+        <Router />
+        <Toaster />
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

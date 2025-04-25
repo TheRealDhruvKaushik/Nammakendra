@@ -1,15 +1,18 @@
 import { Link, useLocation } from "wouter";
 import logoImage from "@/assets/Nammakendra_logo_crisp-removebg-preview.png";
+import { useLanguage } from "@/context/language-context";
+import LanguageSelector from "@/components/ui/language-selector";
 
 const Header = () => {
   const [location] = useLocation();
+  const { t } = useLanguage();
 
   // Navigation menu text constants
   const navItems = [
-    { href: "/", label: "Home", key: "home" },
-    { href: "/namma-sahayak", label: "Namma Sahayak", key: "namma_sahayak" },
-    { href: "/namma-vidhana", label: "Namma Vidhana", key: "namma_vidhana" },
-    { href: "/contact", label: "Contact", key: "contact" }
+    { href: "/", label: t('nav.home'), key: "home" },
+    { href: "/namma-sahayak", label: t('nav.sahayak'), key: "namma_sahayak" },
+    { href: "/namma-vidhana", label: t('nav.vidhana'), key: "namma_vidhana" },
+    { href: "/contact", label: t('nav.contact'), key: "contact" }
   ];
 
   return (
