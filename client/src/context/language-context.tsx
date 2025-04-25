@@ -69,6 +69,19 @@ const translations: Record<Language, Record<string, string>> = {
     'page.vidhana.docType3': 'Government Notices',
     'page.vidhana.docType4': 'Property Documents',
     
+    // Footer
+    'footer.quickLinks': 'Quick Links',
+    'footer.services': 'Our Services',
+    'footer.contact': 'Contact Us',
+    'footer.address': '123 Main Street, Bangalore, Karnataka',
+    'footer.phone': '+91 123 456 7890',
+    'footer.email': 'info@nammasahayak.org',
+    'footer.copyright': 'All rights reserved.',
+    'footer.privacyPolicy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service',
+    'footer.accessibility': 'Accessibility',
+    'footer.slogan': 'Making legal knowledge accessible to all',
+    
     // Language selector
     'language.english': 'English',
     'language.kannada': 'ಕನ್ನಡ',
@@ -124,6 +137,19 @@ const translations: Record<Language, Record<string, string>> = {
     'page.vidhana.docType2': 'ಕಾನೂನು ಒಪ್ಪಂದಗಳು ಮತ್ತು ಒಪ್ಪಂದಗಳು',
     'page.vidhana.docType3': 'ಸರ್ಕಾರದ ನೋಟೀಸುಗಳು',
     'page.vidhana.docType4': 'ಆಸ್ತಿ ದಾಖಲೆಗಳು',
+    
+    // Footer
+    'footer.quickLinks': 'ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು',
+    'footer.services': 'ನಮ್ಮ ಸೇವೆಗಳು',
+    'footer.contact': 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ',
+    'footer.address': '123 ಮುಖ್ಯ ರಸ್ತೆ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ',
+    'footer.phone': '+91 123 456 7890',
+    'footer.email': 'info@nammasahayak.org',
+    'footer.copyright': 'ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.',
+    'footer.privacyPolicy': 'ಗೌಪ್ಯತಾ ನೀತಿ',
+    'footer.terms': 'ಸೇವಾ ನಿಯಮಗಳು',
+    'footer.accessibility': 'ಪ್ರವೇಶಿಸುವಿಕೆ',
+    'footer.slogan': 'ಕಾನೂನು ಜ್ಞಾನವನ್ನು ಎಲ್ಲರಿಗೂ ಲಭ್ಯವಾಗುವಂತೆ ಮಾಡುವುದು',
     
     // Language selector
     'language.english': 'English',

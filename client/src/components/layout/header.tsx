@@ -36,41 +36,46 @@ const Header = () => {
               <span 
                 className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent"
               >
-                Legal Assistance Simplified
+                {t('nav.slogan')}
               </span>
             </div>
           </div>
 
-          <nav className="md:order-2 w-full md:w-auto" aria-label="Main Navigation">
-            <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-              {navItems.map(({ href, label, key }) => (
-                <li key={key}>
-                  <Link 
-                    href={href}
-                    className={`block px-3 py-2 text-lg relative group ${
-                      location === href ? "text-primary font-semibold" : "text-gray-800"
-                    }`}
-                    aria-current={location === href ? "page" : undefined}
-                  >
-                    <span 
-                      className={`transition-all duration-300 ${
-                        location === href
-                          ? ""
-                          : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"
+          <div className="flex flex-col md:flex-row items-center w-full md:w-auto">
+            <nav className="md:order-2 w-full md:w-auto mb-3 md:mb-0" aria-label="Main Navigation">
+              <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                {navItems.map(({ href, label, key }) => (
+                  <li key={key}>
+                    <Link 
+                      href={href}
+                      className={`block px-3 py-2 text-lg relative group ${
+                        location === href ? "text-primary font-semibold" : "text-gray-800"
                       }`}
+                      aria-current={location === href ? "page" : undefined}
                     >
-                      {label}
-                    </span>
-                    <span
-                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${
-                        location === href ? "w-full" : ""
-                      }`}
-                    ></span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+                      <span 
+                        className={`transition-all duration-300 ${
+                          location === href
+                            ? ""
+                            : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"
+                        }`}
+                      >
+                        {label}
+                      </span>
+                      <span
+                        className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${
+                          location === href ? "w-full" : ""
+                        }`}
+                      ></span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="md:ml-4">
+              <LanguageSelector />
+            </div>
+          </div>
         </div>
       </div>
     </header>
