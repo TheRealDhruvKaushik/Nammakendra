@@ -6,7 +6,7 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Our Services</h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">We provide tools to help you navigate complex legal matters with ease and confidence.</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">We provide tools to help you navigate complex legal matters with ease and confidence.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
@@ -21,7 +21,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-800">Namma Sahayak</h3>
               </div>
-              <p className="text-gray-700 mb-4">Our AI-powered chatbot that answers your legal questions in simple language and helps guide you through common legal procedures.</p>
+              <p className="text-gray-600 mb-4">Our AI-powered chatbot that answers your legal questions in simple language and helps guide you through common legal procedures.</p>
               <ul className="mb-6 space-y-2">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-800">Namma Vidhana</h3>
               </div>
-              <p className="text-gray-700 mb-4">Upload legal documents to scan, simplify, and explain them in everyday language.</p>
+              <p className="text-gray-600 mb-4">Upload legal documents to scan, simplify, and explain them in everyday language.</p>
               <ul className="mb-6 space-y-2">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
