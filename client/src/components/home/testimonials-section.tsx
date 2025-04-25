@@ -78,8 +78,8 @@ const TestimonialsSection = () => {
     <section className="py-12 md:py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">What Our Users Say</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Real experiences from people we've helped</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-200 mb-4">What Our Users Say</h2>
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">Real experiences from people we've helped</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
