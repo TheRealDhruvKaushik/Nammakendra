@@ -81,22 +81,25 @@ const ChatInterface = () => {
   
   // Initialize speech recognition
   useEffect(() => {
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
+    // Use window scope to check for browser support
+    if (typeof window !== 'undefined' && 
+        (window.SpeechRecognition !== undefined || window.webkitSpeechRecognition !== undefined)) {
+      // Use the appropriate implementation
+      const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognitionAPI();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
       
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = Array.from(event.results)
-          .map(result => result[0])
-          .map(result => result.transcript)
+          .map((result: SpeechRecognitionResult) => result[0])
+          .map((result: SpeechRecognitionAlternative) => result.transcript)
           .join('');
         
         setInput(transcript);
       };
       
-      recognitionRef.current.onerror = (event) => {
+      recognitionRef.current.onerror = (event: SpeechRecognitionEvent) => {
         console.error('Speech recognition error', event.error);
         setIsListening(false);
         toast({
