@@ -32,7 +32,7 @@ const AccessibilityPage = () => {
             </p>
             <ul className="list-disc pl-6 mb-4 text-gray-700 space-y-2">
               <li><strong>Font Size Controls</strong>: Easily increase or decrease text size for better readability.</li>
-              <li><strong>Language Selection</strong>: Switch between multiple languages including English, Kannada, Hindi, and Tamil.</li>
+              <li><strong>Clear Design</strong>: Our interface is designed with clarity and simplicity in mind.</li>
               <li><strong>High Contrast</strong>: Our design maintains appropriate color contrast ratios for readability.</li>
               <li><strong>Text to Speech</strong>: Text to speech capabilities for those who prefer auditory information.</li>
               <li><strong>Keyboard Navigation</strong>: Full keyboard accessibility for users who cannot use a mouse.</li>
@@ -62,9 +62,9 @@ const AccessibilityPage = () => {
             </div>
             
             <div className="mb-4">
-              <h3 className="text-xl font-medium text-primary mb-2">Language Selection</h3>
+              <h3 className="text-xl font-medium text-primary mb-2">Clear Design</h3>
               <p className="text-gray-700 leading-relaxed">
-                To change the language, click on the language selector in the header and choose your preferred language from the dropdown menu.
+                Our interface features consistent, intuitive navigation and clear visual hierarchy to enhance usability for all users, including those with cognitive disabilities.
               </p>
             </div>
             

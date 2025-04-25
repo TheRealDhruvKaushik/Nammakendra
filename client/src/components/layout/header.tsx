@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import logoImage from "@/assets/logo-header.png";
+import newLogo from "@/assets/logo.png";
 
 const Header = () => {
   const [location] = useLocation();
@@ -19,13 +20,12 @@ const Header = () => {
           <div className="flex items-start mb-4 md:mb-0 -mt-2 relative">
             <div className="relative h-20 mr-3 z-10">
               <img 
-                src={logoImage} 
+                src={newLogo} 
                 alt="Nammakendra Logo" 
-                className="h-32 absolute -top-3 md:-top-4 md:h-36 -left-2 md:-left-3 transform hover:rotate-3 transition-transform duration-300"
-                style={{ filter: "drop-shadow(0 0 15px rgba(255, 215, 0, 0.6))" }}
+                className="h-24 absolute -top-3 md:-top-3 md:h-28 -left-2 md:-left-2 transition-transform duration-300"
               />
             </div>
-            <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
+            <div className="flex flex-col justify-center mt-3 ml-16 md:ml-20">
               <h1 
                 className="text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent"
               >

@@ -37,7 +37,7 @@ const HeroSection = () => {
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-bold mb-4 header-title bg-gradient-to-r from-amber-500 via-orange-500 to-primary bg-clip-text text-transparent">NammaKendra</h2>
               <p className="text-xl mb-6 text-gray-300"><span className="text-amber-400 font-semibold">Legal Assistance Simplified</span> - Your resource for legal knowledge</p>
-              <p className="text-lg mb-4 text-gray-400 leading-relaxed">Our mission is to make legal knowledge accessible to all through AI-powered tools and easy-to-understand content.</p>
+              <p className="text-lg mb-4 text-gray-300 leading-relaxed">Our mission is to make legal knowledge accessible to all through AI-powered tools and easy-to-understand content.</p>
             </div>
           </div>
         </div>
