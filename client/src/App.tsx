@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -15,20 +15,8 @@ import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import Accessibility from "@/pages/accessibility";
 import Breadcrumb from "@/components/layout/breadcrumb";
-import { useAccessibility } from "@/context/accessibility-context";
 
 function Router() {
-  const { language } = useAccessibility();
-  
-  // Using useEffect to log and apply language changes
-  useEffect(() => {
-    console.log("App: Language changed to:", language);
-    // Set lang attribute for accessibility and language-specific styling
-    document.documentElement.setAttribute('lang', language);
-    // Try to force re-render of translated components
-    document.dispatchEvent(new CustomEvent('languageChange', { detail: language }));
-  }, [language]);
-  
   return (
     <div className="app-container">
       <Header />

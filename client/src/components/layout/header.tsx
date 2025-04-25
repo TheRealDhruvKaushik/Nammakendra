@@ -1,13 +1,16 @@
 import { Link, useLocation } from "wouter";
-import LanguageSelector from "@/components/ui/language-selector";
-import { useAccessibility } from "@/context/accessibility-context";
-import { useTranslation } from "@/hooks/use-translation";
 import logoImage from "@/assets/logo-header.png";
 
 const Header = () => {
   const [location] = useLocation();
-  const { t } = useTranslation();
-  const { language } = useAccessibility();
+
+  // Navigation menu text constants
+  const navItems = [
+    { href: "/", label: "Home", key: "home" },
+    { href: "/namma-sahayak", label: "Namma Sahayak", key: "namma_sahayak" },
+    { href: "/namma-vidhana", label: "Namma Vidhana", key: "namma_vidhana" },
+    { href: "/contact", label: "Contact", key: "contact" }
+  ];
 
   return (
     <header className="bg-white border-b border-gray-200">
@@ -24,40 +27,21 @@ const Header = () => {
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
               <h1 
-                className={`text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 ${
-                  language === 'en' 
-                    ? 'text-gray-900' 
-                    : 'bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent'
-                }`}
-                data-i18n-key="nammakendra"
+                className="text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 text-gray-900"
               >
-                {t('nammakendra')}
+                NammaKendra
               </h1>
               <span 
-                className={`text-sm ${
-                  language === 'en'
-                    ? 'text-gray-700'
-                    : 'bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent'
-                }`}
-                data-i18n-key="motto"
+                className="text-sm text-gray-700"
               >
-                {t('motto')}
+                Legal Assistance Simplified
               </span>
             </div>
           </div>
 
-          <div className="flex items-center mb-4 md:mb-0 md:order-3">
-            <LanguageSelector />
-          </div>
-
           <nav className="md:order-2 w-full md:w-auto" aria-label="Main Navigation">
             <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-              {[
-                { href: "/", key: "home" },
-                { href: "/namma-sahayak", key: "namma_sahayak" },
-                { href: "/namma-vidhana", key: "namma_vidhana" },
-                { href: "/contact", key: "contact" }
-              ].map(({ href, key }) => (
+              {navItems.map(({ href, label, key }) => (
                 <li key={key}>
                   <Link 
                     href={href}
@@ -72,9 +56,8 @@ const Header = () => {
                           ? ""
                           : "group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent"
                       }`}
-                      data-i18n-key={key}
                     >
-                      {t(key)}
+                      {label}
                     </span>
                     <span
                       className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 group-hover:w-full transition-all duration-300 ${
