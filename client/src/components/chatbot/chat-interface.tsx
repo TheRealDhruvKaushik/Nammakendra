@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/language-context";
 
 // TypeScript definitions for Web Speech API
 interface SpeechRecognitionEvent extends Event {
@@ -57,11 +58,13 @@ interface Message {
 }
 
 const ChatInterface = () => {
+  const { t, language } = useLanguage();
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
       role: "assistant",
-      content: "Hello! I'm NammaSahayak, your legal assistant. How can I help you today?",
+      content: t('chat.welcome'),
       timestamp: new Date()
     }
   ]);
@@ -79,17 +82,35 @@ const ChatInterface = () => {
     scrollToBottom();
   }, [messages]);
   
-  // Initialize speech recognition
+  // Helper function to get the correct language code for speech recognition
+  const getSpeechRecognitionLanguage = (lang: string): string => {
+    switch (lang) {
+      case 'kannada':
+        return 'kn-IN'; // Kannada (India)
+      case 'english':
+      default:
+        return 'en-US'; // English (US)
+    }
+  };
+  
+  // Initialize and update speech recognition when language changes
   useEffect(() => {
     // Use window scope to check for browser support
     if (typeof window !== 'undefined' && 
         (window.SpeechRecognition !== undefined || window.webkitSpeechRecognition !== undefined)) {
       // Use the appropriate implementation
       const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognitionAPI();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'en-US'; // Set language to English
+      
+      // Create a new instance or reuse existing
+      if (!recognitionRef.current) {
+        recognitionRef.current = new SpeechRecognitionAPI();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+      }
+      
+      // Update language based on the current selection
+      recognitionRef.current.lang = getSpeechRecognitionLanguage(language);
+      console.log(`Speech recognition language set to: ${recognitionRef.current.lang}`);
       
       recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         console.log("Speech recognition result received", event);
@@ -110,8 +131,8 @@ const ChatInterface = () => {
         console.error('Speech recognition error', event.error);
         setIsListening(false);
         toast({
-          title: "Speech Recognition Error",
-          description: "Failed to recognize speech. Please try again.",
+          title: t('chat.speechError'),
+          description: t('chat.speechError'),
           variant: "destructive"
         });
       };
@@ -121,24 +142,25 @@ const ChatInterface = () => {
       };
     } else {
       toast({
-        title: "Speech Recognition Not Supported",
-        description: "Your browser doesn't support speech recognition.",
+        title: t('chat.speechNotSupported'),
+        description: t('chat.speechNotSupported'),
         variant: "destructive"
       });
     }
     
     return () => {
-      if (recognitionRef.current) {
+      if (recognitionRef.current && isListening) {
         recognitionRef.current.abort();
+        setIsListening(false);
       }
     };
-  }, [toast]);
+  }, [language, toast, t, isListening]);
   
   const toggleListening = () => {
     if (!recognitionRef.current) {
       toast({
-        title: "Speech Recognition Not Available",
-        description: "Your browser doesn't support speech recognition.",
+        title: t('chat.speechNotSupported'),
+        description: t('chat.speechNotSupported'),
         variant: "destructive"
       });
       return;
@@ -149,13 +171,15 @@ const ChatInterface = () => {
       setIsListening(false);
     } else {
       try {
+        // Make sure the language is set correctly before starting
+        recognitionRef.current.lang = getSpeechRecognitionLanguage(language);
         recognitionRef.current.start();
         setIsListening(true);
       } catch (error) {
         console.error('Speech recognition error:', error);
         toast({
-          title: "Speech Recognition Error",
-          description: "Failed to start speech recognition. Please try again.",
+          title: t('chat.speechError'),
+          description: t('chat.speechError'),
           variant: "destructive"
         });
       }
@@ -183,7 +207,8 @@ const ChatInterface = () => {
 
     try {
       const response = await apiRequest("POST", "/api/chat", { 
-        message: input
+        message: input,
+        language: language // Send the current language to the backend
       });
       
       const data = await response.json();
@@ -199,8 +224,8 @@ const ChatInterface = () => {
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
-        title: "Error",
-        description: "Failed to get a response. Please try again.",
+        title: t('chat.error'),
+        description: t('chat.error'),
         variant: "destructive"
       });
     } finally {
@@ -211,8 +236,8 @@ const ChatInterface = () => {
   return (
     <div className="flex flex-col h-[600px] max-h-[80vh] rounded-lg border">
       <div className="bg-primary text-white p-4 rounded-t-lg">
-        <h2 className="text-xl font-bold">NammaSahayak Chat</h2>
-        <p className="text-sm text-white/80">Ask me any legal questions you have</p>
+        <h2 className="text-xl font-bold">{t('chat.title')}</h2>
+        <p className="text-sm text-white/80">{t('chat.subtitle')}</p>
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
@@ -248,7 +273,7 @@ const ChatInterface = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your legal question..."
+            placeholder={t('chat.placeholder')}
             className="flex-1 min-h-10 rounded-md border border-input bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={isLoading}
           />
@@ -262,21 +287,26 @@ const ChatInterface = () => {
                 : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
             }`}
             disabled={isLoading}
+            title={!isListening ? t('chat.startRecording') : t('chat.stopRecording')}
           >
             {!isListening ? (
               <MicOff className="h-5 w-5" />
             ) : (
               <Mic className="h-5 w-5" />
             )}
-            <span className="sr-only">{!isListening ? 'Start recording' : 'Stop recording'}</span>
+            <span className="sr-only">{!isListening ? t('chat.startRecording') : t('chat.stopRecording')}</span>
           </Button>
-          <Button type="submit" disabled={isLoading || !input.trim()}>
+          <Button 
+            type="submit" 
+            disabled={isLoading || !input.trim()}
+            title={t('chat.send')}
+          >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <SendHorizontal className="h-4 w-4" />
             )}
-            <span className="sr-only">Send message</span>
+            <span className="sr-only">{t('chat.send')}</span>
           </Button>
         </div>
       </form>

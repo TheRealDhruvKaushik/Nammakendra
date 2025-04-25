@@ -5,12 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/language-context";
 
 const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: string) => void }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
+  const { t, language } = useLanguage();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -111,9 +113,9 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="p-6">
-        <h2 className="text-2xl font-bold mb-4 text-primary">Upload Legal Document</h2>
+        <h2 className="text-2xl font-bold mb-4 text-primary">{t('document.title')}</h2>
         <p className="text-neutral mb-6">
-          Upload your legal document to get a simplified explanation. We support PDF, DOCX, and TXT files up to 10MB.
+          {t('document.description')}
         </p>
         
         <div 
@@ -131,12 +133,12 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
             
             <div className="space-y-1">
               <p className="text-lg font-medium">
-                {file ? file.name : 'Drag and drop your document here'}
+                {file ? file.name : t('document.drag')}
               </p>
               <p className="text-sm text-neutral">
                 {file 
                   ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` 
-                  : 'or click to browse files (PDF, DOCX, TXT up to 10MB)'}
+                  : t('document.browse')}
               </p>
             </div>
             
@@ -144,7 +146,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
               <div className="pt-4">
                 <label className="cursor-pointer">
                   <Button variant="outline" type="button">
-                    Browse Files
+                    {t('document.browseButton')}
                   </Button>
                   <input 
                     type="file" 
@@ -166,7 +168,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
               className="mr-2"
               disabled={isUploading}
             >
-              Remove
+              {t('document.remove')}
             </Button>
             <Button 
               onClick={handleUpload} 
@@ -175,10 +177,10 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
               {isUploading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
+                  {t('document.processing')}
                 </>
               ) : (
-                'Analyze Document'
+                t('document.analyze')
               )}
             </Button>
           </div>
@@ -187,12 +189,12 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
         <Separator className="my-6" />
         
         <div className="space-y-4">
-          <h3 className="text-lg font-bold">How It Works</h3>
+          <h3 className="text-lg font-bold">{t('document.howItWorks')}</h3>
           <ol className="space-y-2 ml-6 list-decimal">
-            <li>Upload your legal document (court order, contract, etc.)</li>
-            <li>Our AI will analyze the document</li>
-            <li>Get a simplified explanation with highlighted key points</li>
-            <li>See deadlines, requirements, and actions needed</li>
+            <li>{t('document.step1')}</li>
+            <li>{t('document.step2')}</li>
+            <li>{t('document.step3')}</li>
+            <li>{t('document.step4')}</li>
           </ol>
         </div>
       </CardContent>
