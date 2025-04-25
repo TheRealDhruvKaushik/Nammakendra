@@ -1,10 +1,7 @@
 import { Link } from "wouter";
 import logoImage from "@/assets/logo.png";
-import { useTranslation } from "@/hooks/use-translation";
 
 const Footer = () => {
-  const { t } = useTranslation();
-  
   return (
     <footer className="bg-gray-800 text-white py-8">
       <div className="container mx-auto px-4">
@@ -17,11 +14,11 @@ const Footer = () => {
                 className="h-12 mr-2 bg-white rounded p-1"
               />
               <div className="flex flex-col">
-                <h3 className="text-xl font-bold">{t('nammakendra')}</h3>
-                <span className="text-xs text-blue-300">{t('motto')}</span>
+                <h3 className="text-xl font-bold">NammaKendra</h3>
+                <span className="text-xs text-blue-300">Legal Assistance Simplified</span>
               </div>
             </div>
-            <p className="text-gray-200 mb-4">{t('our_mission')}</p>
+            <p className="text-gray-200 mb-4">Making legal knowledge accessible to all</p>
             <div className="flex space-x-4">
               <a href="#" aria-label="Facebook" className="text-gray-200 hover:text-white">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -42,25 +39,25 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4">{t('quick_links')}</h3>
+            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-gray-200 hover:text-white">{t('home')}</Link></li>
-              <li><Link href="/about" className="text-gray-200 hover:text-white">{t('about')}</Link></li>
-              <li><Link href="/contact" className="text-gray-200 hover:text-white">{t('contact')}</Link></li>
+              <li><Link href="/" className="text-gray-200 hover:text-white">Home</Link></li>
+              <li><Link href="/about" className="text-gray-200 hover:text-white">About</Link></li>
+              <li><Link href="/contact" className="text-gray-200 hover:text-white">Contact</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4">{t('our_services_footer')}</h3>
+            <h3 className="text-lg font-bold mb-4">Our Services</h3>
             <ul className="space-y-2">
-              <li><Link href="/namma-sahayak" className="text-gray-200 hover:text-white">{t('namma_sahayak')}</Link></li>
-              <li><Link href="/namma-vidhana" className="text-gray-200 hover:text-white">{t('namma_vidhana')}</Link></li>
-              <li><Link href="/accessibility" className="text-gray-200 hover:text-white">{t('accessibility')}</Link></li>
+              <li><Link href="/namma-sahayak" className="text-gray-200 hover:text-white">Namma Sahayak</Link></li>
+              <li><Link href="/namma-vidhana" className="text-gray-200 hover:text-white">Namma Vidhana</Link></li>
+              <li><Link href="/accessibility" className="text-gray-200 hover:text-white">Accessibility</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4">{t('contact_us')}</h3>
+            <h3 className="text-lg font-bold mb-4">Contact Us</h3>
             <ul className="space-y-2">
               <li className="flex items-start">
                 <svg className="w-5 h-5 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -86,11 +83,11 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-200">
-          <p>&copy; {new Date().getFullYear()} {t('nammakendra')}. {t('all_rights')}</p>
+          <p>&copy; {new Date().getFullYear()} NammaKendra. All rights reserved.</p>
           <div className="mt-4">
-            <Link href="/privacy-policy" className="text-gray-200 hover:text-white mx-2">{t('privacy_policy')}</Link>
-            <Link href="/terms-of-service" className="text-gray-200 hover:text-white mx-2">{t('terms_of_service')}</Link>
-            <Link href="/accessibility" className="text-gray-200 hover:text-white mx-2">{t('accessibility')}</Link>
+            <Link href="/privacy-policy" className="text-gray-200 hover:text-white mx-2">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-gray-200 hover:text-white mx-2">Terms of Service</Link>
+            <Link href="/accessibility" className="text-gray-200 hover:text-white mx-2">Accessibility</Link>
           </div>
         </div>
       </div>

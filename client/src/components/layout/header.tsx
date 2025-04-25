@@ -27,12 +27,12 @@ const Header = () => {
             </div>
             <div className="flex flex-col justify-center mt-3 ml-3 md:ml-6">
               <h1 
-                className="text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 text-gray-900"
+                className="text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent"
               >
                 NammaKendra
               </h1>
               <span 
-                className="text-sm text-gray-700"
+                className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent"
               >
                 Legal Assistance Simplified
               </span>
