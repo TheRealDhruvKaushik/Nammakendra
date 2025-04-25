@@ -89,14 +89,21 @@ const ChatInterface = () => {
       recognitionRef.current = new SpeechRecognitionAPI();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US'; // Set language to English
       
       recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-        const transcript = Array.from(event.results)
-          .map((result: SpeechRecognitionResult) => result[0])
-          .map((result: SpeechRecognitionAlternative) => result.transcript)
-          .join('');
-        
-        setInput(transcript);
+        console.log("Speech recognition result received", event);
+        try {
+          const transcript = Array.from(event.results)
+            .map((result: SpeechRecognitionResult) => result[0])
+            .map((result: SpeechRecognitionAlternative) => result.transcript)
+            .join('');
+          
+          console.log("Transcript: ", transcript);  
+          setInput(transcript);
+        } catch (error) {
+          console.error("Error processing speech recognition result:", error);
+        }
       };
       
       recognitionRef.current.onerror = (event: SpeechRecognitionEvent) => {
@@ -247,15 +254,19 @@ const ChatInterface = () => {
           />
           <Button 
             type="button" 
-            variant={isListening ? "destructive" : "outline"}
+            variant={isListening ? "destructive" : "default"}
             onClick={toggleListening}
-            className="px-3"
+            className={`px-3 transition-colors duration-300 ${
+              isListening 
+                ? "bg-red-500 text-white" 
+                : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
+            }`}
             disabled={isLoading}
           >
             {isListening ? (
-              <MicOff className="h-4 w-4" />
+              <MicOff className="h-5 w-5" />
             ) : (
-              <Mic className="h-4 w-4" />
+              <Mic className="h-5 w-5" />
             )}
             <span className="sr-only">{isListening ? 'Stop recording' : 'Start recording'}</span>
           </Button>
