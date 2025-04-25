@@ -26,6 +26,31 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'Contact',
     'nav.slogan': 'Legal Assistance Simplified',
     
+    // Hero Section
+    'hero.title': 'Legal Help Made Simple',
+    'hero.subtitle': 'Access legal information in a way you can understand',
+    'hero.getStarted': 'Get Started',
+    'hero.learnMore': 'Learn More',
+    'hero.name': 'NammaKendra',
+    'hero.tagline': 'Legal Assistance Simplified - Your resource for legal knowledge',
+    'hero.mission': 'Our mission is to make legal knowledge accessible to all through AI-powered tools and easy-to-understand content.',
+    
+    // Services Section
+    'services.title': 'Our Services',
+    'services.subtitle': 'We provide tools to help you navigate complex legal matters with ease and confidence.',
+    'services.sahayak.title': 'Namma Sahayak',
+    'services.sahayak.description': 'Our AI-powered chatbot that answers your legal questions in simple language and helps guide you through common legal procedures.',
+    'services.sahayak.feature1': '✔️24/7 answers to legal questions',
+    'services.sahayak.feature2': '✔️Simple explanations of complex terms',
+    'services.sahayak.feature3': '✔️Step-by-step guidance for procedures',
+    'services.sahayak.button': 'Chat with Sahayak',
+    'services.vidhana.title': 'Namma Vidhana',
+    'services.vidhana.description': 'Upload legal documents to scan, simplify, and explain them in everyday language.',
+    'services.vidhana.feature1': '✔️Scan and analyze legal documents',
+    'services.vidhana.feature2': '✔️Get simplified summaries',
+    'services.vidhana.feature3': '✔️Highlight important sections and deadlines',
+    'services.vidhana.button': 'Upload Document',
+    
     // Chat interface
     'chat.title': 'NammaSahayak Chat',
     'chat.subtitle': 'Ask me any legal questions you have',
@@ -94,6 +119,31 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.vidhana': 'ನಮ್ಮ ವಿಧಾನ',
     'nav.contact': 'ಸಂಪರ್ಕ',
     'nav.slogan': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ',
+    
+    // Hero Section
+    'hero.title': 'ಕಾನೂನು ಸಹಾಯ ಸರಳವಾಗಿಸಲಾಗಿದೆ',
+    'hero.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ರೀತಿಯಲ್ಲಿ ಕಾನೂನು ಮಾಹಿತಿಯನ್ನು ಪಡೆಯಿರಿ',
+    'hero.getStarted': 'ಆರಂಭಿಸಿ',
+    'hero.learnMore': 'ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ',
+    'hero.name': 'ನಮ್ಮಕೇಂದ್ರ',
+    'hero.tagline': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ - ಕಾನೂನು ಜ್ಞಾನಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಂಪನ್ಮೂಲ',
+    'hero.mission': 'ನಮ್ಮ ಗುರಿ ಎಲ್ಲರಿಗೂ ಕಾನೂನು ಜ್ಞಾನವನ್ನು AI-ಆಧಾರಿತ ಉಪಕರಣಗಳು ಮತ್ತು ಸುಲಭವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಬಹುದಾದ ವಿಷಯಗಳ ಮೂಲಕ ಲಭ್ಯವಾಗುವಂತೆ ಮಾಡುವುದು.',
+    
+    // Services Section
+    'services.title': 'ನಮ್ಮ ಸೇವೆಗಳು',
+    'services.subtitle': 'ನಾವು ಜಟಿಲ ಕಾನೂನು ವಿಷಯಗಳನ್ನು ಸುಲಭ ಮತ್ತು ವಿಶ್ವಾಸದೊಂದಿಗೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ಸಹಾಯ ಮಾಡುವ ಉಪಕರಣಗಳನ್ನು ಒದಗಿಸುತ್ತೇವೆ.',
+    'services.sahayak.title': 'ನಮ್ಮ ಸಹಾಯಕ',
+    'services.sahayak.description': 'ನಮ್ಮ AI-ಆಧಾರಿತ ಚಾಟ್‌ಬಾಟ್ ನಿಮ್ಮ ಕಾನೂನು ಪ್ರಶ್ನೆಗಳಿಗೆ ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಉತ್ತರಿಸುತ್ತದೆ ಮತ್ತು ಸಾಮಾನ್ಯ ಕಾನೂನು ಕ್ರಮವಿಧಾನಗಳ ಮೂಲಕ ನಿಮಗೆ ಮಾರ್ಗದರ್ಶನ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
+    'services.sahayak.feature1': '✔️ಕಾನೂನು ಪ್ರಶ್ನೆಗಳಿಗೆ 24/7 ಉತ್ತರಗಳು',
+    'services.sahayak.feature2': '✔️ಜಟಿಲ ಪದಗಳ ಸರಳ ವಿವರಣೆಗಳು',
+    'services.sahayak.feature3': '✔️ಕಾರ್ಯವಿಧಾನಗಳಿಗೆ ಹಂತ-ಹಂತದ ಮಾರ್ಗದರ್ಶನ',
+    'services.sahayak.button': 'ಸಹಾಯಕನೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಿ',
+    'services.vidhana.title': 'ನಮ್ಮ ವಿಧಾನ',
+    'services.vidhana.description': 'ಕಾನೂನು ದಾಖಲೆಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲು, ಸರಳೀಕರಿಸಲು ಮತ್ತು ಅವುಗಳನ್ನು ದೈನಂದಿನ ಭಾಷೆಯಲ್ಲಿ ವಿವರಿಸಲು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.',
+    'services.vidhana.feature1': '✔️ಕಾನೂನು ದಾಖಲೆಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ಮತ್ತು ವಿಶ್ಲೇಷಿಸಿ',
+    'services.vidhana.feature2': '✔️ಸರಳೀಕೃತ ಸಾರಾಂಶಗಳನ್ನು ಪಡೆಯಿರಿ',
+    'services.vidhana.feature3': '✔️ಮುಖ್ಯ ವಿಭಾಗಗಳು ಮತ್ತು ಗಡುವುಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ',
+    'services.vidhana.button': 'ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
     
     // Chat interface
     'chat.title': 'ನಮ್ಮ ಸಹಾಯಕ ಚಾಟ್',
