@@ -49,7 +49,7 @@ const NammaVidhana = () => {
                     <li>Clear explanation of legal terms used</li>
                     <li>Important dates, deadlines, and required actions</li>
                   </ul>
-                  <p class="text-gray-500">
+                  <p className="text-gray-500">
                     This service helps you understand legal documents without needing to hire an expensive lawyer for basic explanations.
                   </p>
                 </div>
