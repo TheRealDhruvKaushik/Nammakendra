@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import logoImage from "@/assets/logo-header.png";
+import logoImage from "@/assets/Nammakendra_logo_crisp.png";
 
 const HeroSection = () => {
   return (
