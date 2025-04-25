@@ -47,12 +47,25 @@
     line-height: 1.7; /* More space for Tamil characters */
   }
 
+  body.lang-english {
+    font-family: 'Open Sans', sans-serif;
+    line-height: var(--base-line-height);
+    color: #ffffff; /* Reapply text color */
+    background-color: #111827; /* Tailwind gray-900, or whatever your default is */
+  }
+  body.lang-english .bg-gray-900 {
+    background-color: #111827; /* Tailwind gray-900 */
+  }
+  body.lang-english .text-gray-50 {
+    color: #ffffff; /* Tailwind gray-50 */
+  }       
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     line-height: 1.3; /* Tighter line height for headings */
   }
-  
+
   /* Language-specific heading adjustments */
   .lang-hindi h1, .lang-hindi h2, .lang-hindi h3,
   .lang-hindi h4, .lang-hindi h5, .lang-hindi h6 {
@@ -62,40 +75,22 @@
     padding-bottom: 0.1em;
     line-height: 1.5;
   }
-  
+
   .header-title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     letter-spacing: 0.5px;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
   }
-  
-  /* Fix for gradient text in header */
-  [data-i18n-key="nammakendra"], 
-  [data-i18n-key="motto"] {
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-  }
-  
-  .bg-gradient-to-r.bg-clip-text {
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-  }
-  
-  /* Ensure globe icon always shows */
-  .globe-icon {
-    display: inline-flex !important;
-  }
-  
+
   /* Language-specific adjustments for navigation */
   .lang-hindi .nav-link,
   .lang-kannada .nav-link,
-  .lang-tamil .nav-link {
+  .lang-tamil .nav-link,
+  .lang-english .nav-link{
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
   }
-  
+
   @keyframes pulse-glow {
     0% {
       box-shadow: 0 0 35px rgba(255, 255, 255, 0.8), 0 0 70px rgba(255, 255, 255, 0.4);
@@ -104,7 +99,7 @@
       box-shadow: 0 0 50px rgba(255, 255, 255, 0.9), 0 0 100px rgba(255, 255, 255, 0.6);
     }
   }
-  
+
   @keyframes spin-slow {
     from {
       transform: rotate(0deg);
@@ -113,11 +108,11 @@
       transform: rotate(360deg);
     }
   }
-  
+
   .animate-spin-slow {
     animation: spin-slow 20s linear infinite;
   }
-  
+
   .animate-pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite alternate;
   }
