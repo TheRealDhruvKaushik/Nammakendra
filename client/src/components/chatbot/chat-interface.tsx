@@ -254,21 +254,21 @@ const ChatInterface = () => {
           />
           <Button 
             type="button" 
-            variant={isListening ? "destructive" : "default"}
+            variant="ghost"
             onClick={toggleListening}
             className={`px-3 transition-colors duration-300 ${
-              isListening 
-                ? "bg-red-500 text-white" 
+              !isListening 
+                ? "bg-red-100 text-red-600 hover:bg-red-500 hover:text-white" 
                 : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
             }`}
             disabled={isLoading}
           >
-            {isListening ? (
+            {!isListening ? (
               <MicOff className="h-5 w-5" />
             ) : (
               <Mic className="h-5 w-5" />
             )}
-            <span className="sr-only">{isListening ? 'Stop recording' : 'Start recording'}</span>
+            <span className="sr-only">{!isListening ? 'Start recording' : 'Stop recording'}</span>
           </Button>
           <Button type="submit" disabled={isLoading || !input.trim()}>
             {isLoading ? (
