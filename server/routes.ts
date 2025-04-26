@@ -78,8 +78,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Chat with AI
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message } = z.object({
-        message: z.string().min(1, "Message cannot be empty")
+      const { message, language } = z.object({
+        message: z.string().min(1, "Message cannot be empty"),
+        language: z.string().optional().default('english')
       }).parse(req.body);
       
       // Generate a session ID if not provided
@@ -92,8 +93,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         content: message
       });
       
-      // Get response from OpenAI
-      const aiResponse = await chatGPT(message);
+      // Get response from OpenAI with language preference
+      const aiResponse = await chatGPT(message, language);
       
       // Store AI response
       await storage.createChatMessage({
@@ -118,12 +119,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "No file uploaded" });
       }
       
+      // Get language preference
+      const language = req.body.language || 'english';
+      
       // Read file content
       const filePath = req.file.path;
       const fileContent = fs.readFileSync(filePath, 'utf8');
       
-      // Analyze document using OpenAI
-      const { simplifiedText, keyPoints } = await analyzeDocument(fileContent);
+      // Analyze document using OpenAI with language preference
+      const { simplifiedText, keyPoints } = await analyzeDocument(fileContent, language);
       
       // Store document analysis
       const document = await storage.createDocument({
