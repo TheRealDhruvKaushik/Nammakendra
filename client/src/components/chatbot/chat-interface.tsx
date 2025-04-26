@@ -82,6 +82,22 @@ const ChatInterface = () => {
     scrollToBottom();
   }, [messages]);
   
+  // Update welcome message when language changes
+  useEffect(() => {
+    setMessages(messages => {
+      const updatedMessages = [...messages];
+      // Find and update the welcome message
+      const welcomeIndex = updatedMessages.findIndex(msg => msg.id === "welcome");
+      if (welcomeIndex !== -1) {
+        updatedMessages[welcomeIndex] = {
+          ...updatedMessages[welcomeIndex],
+          content: t('chat.welcome')
+        };
+      }
+      return updatedMessages;
+    });
+  }, [language, t]);
+  
   // Helper function to get the correct language code for speech recognition
   const getSpeechRecognitionLanguage = (lang: string): string => {
     switch (lang) {
