@@ -123,6 +123,24 @@ const translations: Record<Language, Record<string, string>> = {
     'page.vidhana.docType3': 'Government Notices',
     'page.vidhana.docType4': 'Property Documents',
     
+    // NammaSahayak Page
+    'sahayak.title': 'Namma Sahayak',
+    'sahayak.subtitle': 'Get answers to legal questions in simple language',
+    'sahayak.description': 'Namma Sahayak is an AI-powered chatbot that provides information related to legal rights, procedures, and answers to your legal questions. Type your question or use your microphone to speak.',
+    'sahayak.features.title': 'Features of this service',
+    'sahayak.feature1.title': 'Simple Explanations',
+    'sahayak.feature1.description': 'We translate legal terminology into language you can easily understand.',
+    'sahayak.feature2.title': 'Voice Input',
+    'sahayak.feature2.description': 'No need to type - just speak and ask your question.',
+    'sahayak.feature3.title': '24/7 Availability',
+    'sahayak.feature3.description': 'Get help with your legal questions any time.',
+    'sahayak.commonTopics': 'Common Topics',
+    'sahayak.topic1': 'Property rights and disputes',
+    'sahayak.topic2': 'Pension and social security benefits',
+    'sahayak.topic3': 'Family law and inheritance',
+    'sahayak.topic4': 'Consumer rights',
+    'sahayak.tip': 'Tip: Try to ask your question as specifically as possible so we can give you a more helpful answer.',
+    
     // Footer
     'footer.quickLinks': 'Quick Links',
     'footer.services': 'Our Services',
