@@ -231,6 +231,7 @@ const translations: Record<Language, Record<string, string>> = {
     'accessibility.feedback.text': 'We welcome your feedback on the accessibility of the NammaKendra website.',
     'accessibility.feedback.item1': 'If you encounter any barriers or have suggestions for improvement, please contact us through our Contact page or email us directly at accessibility@nammasahayak.org',
     'accessibility.feedback.item2': 'If you need assistance accessing any part of our website or services, our support team is ready to help. We can provide information in alternative formats upon request',
+    'accessibility.feedback.item3': 'Your feedback helps us continuously improve our accessibility features and ensure our services are usable by everyone',
     
     // Terms of Service Page
     'terms.title': 'Terms of Service',
