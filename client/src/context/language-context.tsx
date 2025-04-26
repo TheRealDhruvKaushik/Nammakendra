@@ -25,6 +25,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.vidhana': 'Namma Vidhana',
     'nav.contact': 'Contact',
     'nav.slogan': 'Legal Assistance Simplified',
+    'nav.logo': 'NammaKendra',
     
     // Hero Section
     'hero.title': 'Legal Help Made Simple',
@@ -342,6 +343,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.vidhana': 'ನಮ್ಮ ವಿಧಾನ',
     'nav.contact': 'ಸಂಪರ್ಕ',
     'nav.slogan': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ',
+    'nav.logo': 'ನಮ್ಮಕೇಂದ್ರ',
     
     // About Us Page
     'about.title': 'ನಮ್ಮ ಬಗ್ಗೆ',

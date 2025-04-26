@@ -31,7 +31,7 @@ const Header = () => {
               <h1 
                 className="text-2xl md:text-3xl font-bold header-title hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent"
               >
-                NammaKendra
+                {t('nav.logo')}
               </h1>
               <span 
                 className="text-sm bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent"
