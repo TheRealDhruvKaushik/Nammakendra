@@ -45,7 +45,7 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li><Link href="/" className="text-gray-200 hover:text-white">{t('nav.home')}</Link></li>
-              <li><Link href="/about" className="text-gray-200 hover:text-white">About</Link></li>
+              <li><Link href="/about" className="text-gray-200 hover:text-white">{t('nav.about')}</Link></li>
               <li><Link href="/contact" className="text-gray-200 hover:text-white">{t('nav.contact')}</Link></li>
             </ul>
           </div>
@@ -86,7 +86,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-200">
-          <p>&copy; {new Date().getFullYear()} NammaKendra. {t('footer.copyright')}</p>
+          <p>&copy; {new Date().getFullYear()} {t('nav.logo')}. {t('footer.copyright')}</p>
           <div className="mt-4">
             <Link href="/privacy-policy" className="text-gray-200 hover:text-white mx-2">{t('footer.privacyPolicy')}</Link>
             <Link href="/terms-of-service" className="text-gray-200 hover:text-white mx-2">{t('footer.terms')}</Link>
