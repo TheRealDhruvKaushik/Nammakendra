@@ -9,11 +9,12 @@ const huggingFaceClient = axios.create({
   }
 });
 
-// Use a suitable model for legal assistant features
-const LEGAL_ASSISTANT_MODEL = "google/gemma-1.1-7b-it";
+// Use models that should be accessible with most Hugging Face tokens
+// Standard Hugging Face-hosted models that are generally accessible
+const LEGAL_ASSISTANT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
 
 // Use a suitable model for document analysis
-const DOCUMENT_ANALYSIS_MODEL = "google/gemma-1.1-7b-it";
+const DOCUMENT_ANALYSIS_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
 
 // Check if API key is a dummy value
 const isDummyKey = !process.env.HUGGING_FACE_TOKEN || process.env.HUGGING_FACE_TOKEN === "dummy-key";
@@ -62,9 +63,18 @@ export async function chatWithHuggingFace(message: string, language: string = 'e
       Your goal is to make legal information accessible to everyone, especially elderly users or those with limited legal knowledge.`;
     }
     
-    // Call Hugging Face API
+    // Call Hugging Face API with proper format for Mistral models
     const response = await huggingFaceClient.post(`/${LEGAL_ASSISTANT_MODEL}`, {
-      inputs: `${systemContent}\n\nUser: ${message}`
+      inputs: `<s>[INST] ${systemContent} [/INST]
+
+[INST] ${message} [/INST]</s>`,
+      parameters: {
+        max_new_tokens: 800,
+        temperature: 0.7,
+        top_p: 0.95,
+        do_sample: true,
+        return_full_text: false
+      }
     });
 
     // Extract response text
@@ -135,9 +145,18 @@ export async function analyzeDocumentWithHuggingFace(documentText: string, langu
       Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     }
     
-    // Call Hugging Face API
+    // Call Hugging Face API with proper format for Mistral models
     const response = await huggingFaceClient.post(`/${DOCUMENT_ANALYSIS_MODEL}`, {
-      inputs: `${systemContent}\n\nUser: ${documentText}`
+      inputs: `<s>[INST] ${systemContent} [/INST]
+
+[INST] ${documentText} [/INST]</s>`,
+      parameters: {
+        max_new_tokens: 1500,
+        temperature: 0.3,
+        top_p: 0.95,
+        do_sample: true,
+        return_full_text: false
+      }
     });
 
     // Try to parse JSON from the response
