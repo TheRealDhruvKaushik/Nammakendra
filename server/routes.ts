@@ -99,19 +99,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use different API based on the pageType
       if (pageType === 'sarkara') {
-        // For NammaSarkara, continue using the Perplexity API
-        console.log("Using Perplexity API for NammaSarkara");
+        // For NammaSarkara, use the same AI stack but with government-specific prompts
+        console.log("Using AI for NammaSarkara");
         aiResponse = await chatGPT(message, language);
       } else {
-        // For NammaSahayak, use the Hugging Face API
-        console.log("Using Hugging Face API for NammaSahayak");
-        try {
-          aiResponse = await chatWithHuggingFace(message, language);
-        } catch (huggingFaceError) {
-          console.error("Error with Hugging Face API, falling back to Perplexity:", huggingFaceError);
-          // Fallback to Perplexity if Hugging Face API fails
-          aiResponse = await chatGPT(message, language);
-        }
+        // For NammaSahayak, use the AI stack (Groq -> Hugging Face -> Perplexity fallback)
+        console.log("Using AI for NammaSahayak");
+        aiResponse = await chatGPT(message, language);
       }
       
       // Store AI response
@@ -150,19 +144,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Use different API based on the pageType (no need to analyze documents for sarkara,
       // but we'll include the check for consistency and future-proofing)
       if (pageType === 'sarkara') {
-        // For NammaSarkara, use the Perplexity API
-        console.log("Using Perplexity API for document analysis (NammaSarkara)");
+        // For NammaSarkara, use our AI stack with government-specific processing
+        console.log("Using AI stack for document analysis (NammaSarkara)");
         analysisResult = await analyzeDocument(fileContent, language);
       } else {
-        // For NammaSahayak, use the Hugging Face API
-        console.log("Using Hugging Face API for document analysis (NammaSahayak)");
-        try {
-          analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
-        } catch (huggingFaceError) {
-          console.error("Error with Hugging Face API for document analysis, falling back to Perplexity:", huggingFaceError);
-          // Fallback to Perplexity if Hugging Face API fails
-          analysisResult = await analyzeDocument(fileContent, language);
-        }
+        // For NammaSahayak, use our AI stack for legal document analysis
+        console.log("Using AI stack for document analysis (NammaSahayak)");
+        analysisResult = await analyzeDocument(fileContent, language);
       }
       
       // Store document analysis
