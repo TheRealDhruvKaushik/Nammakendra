@@ -9,12 +9,12 @@ const huggingFaceClient = axios.create({
   }
 });
 
-// Use models that should be accessible with most Hugging Face tokens
-// Standard Hugging Face-hosted models that are generally accessible
-const LEGAL_ASSISTANT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
+// Use models that should be accessible with any Hugging Face token
+// These models are smaller and should be accessible to everyone without special permissions
+const LEGAL_ASSISTANT_MODEL = "gpt2";
 
-// Use a suitable model for document analysis
-const DOCUMENT_ANALYSIS_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
+// Use a suitable model for document analysis - use the same model for consistency
+const DOCUMENT_ANALYSIS_MODEL = "gpt2";
 
 // Check if API key is a dummy value
 const isDummyKey = !process.env.HUGGING_FACE_TOKEN || process.env.HUGGING_FACE_TOKEN === "dummy-key";
@@ -63,11 +63,12 @@ export async function chatWithHuggingFace(message: string, language: string = 'e
       Your goal is to make legal information accessible to everyone, especially elderly users or those with limited legal knowledge.`;
     }
     
-    // Call Hugging Face API with proper format for Mistral models
+    // Call Hugging Face API with format for GPT-2
     const response = await huggingFaceClient.post(`/${LEGAL_ASSISTANT_MODEL}`, {
-      inputs: `<s>[INST] ${systemContent} [/INST]
+      inputs: `${systemContent}
 
-[INST] ${message} [/INST]</s>`,
+Question: ${message}
+Answer: `,
       parameters: {
         max_new_tokens: 800,
         temperature: 0.7,
@@ -145,11 +146,12 @@ export async function analyzeDocumentWithHuggingFace(documentText: string, langu
       Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     }
     
-    // Call Hugging Face API with proper format for Mistral models
+    // Call Hugging Face API with format for GPT-2
     const response = await huggingFaceClient.post(`/${DOCUMENT_ANALYSIS_MODEL}`, {
-      inputs: `<s>[INST] ${systemContent} [/INST]
+      inputs: `${systemContent}
 
-[INST] ${documentText} [/INST]</s>`,
+Document: ${documentText}
+Analysis: `,
       parameters: {
         max_new_tokens: 1500,
         temperature: 0.3,
