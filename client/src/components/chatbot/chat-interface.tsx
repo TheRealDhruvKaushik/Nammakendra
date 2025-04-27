@@ -57,14 +57,18 @@ interface Message {
   timestamp: Date;
 }
 
-const ChatInterface = () => {
+interface ChatInterfaceProps {
+  pageType?: 'sahayak' | 'sarkara';
+}
+
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) => {
   const { t, language } = useLanguage();
   
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
       role: "assistant",
-      content: t('chat.welcome'),
+      content: pageType === 'sahayak' ? t('chat.welcome') : t('chat.sarkara.welcome'),
       timestamp: new Date()
     }
   ]);
@@ -91,12 +95,12 @@ const ChatInterface = () => {
       if (welcomeIndex !== -1) {
         updatedMessages[welcomeIndex] = {
           ...updatedMessages[welcomeIndex],
-          content: t('chat.welcome')
+          content: pageType === 'sahayak' ? t('chat.welcome') : t('chat.sarkara.welcome')
         };
       }
       return updatedMessages;
     });
-  }, [language, t]);
+  }, [language, t, pageType]);
   
   // Helper function to get the correct language code for speech recognition
   const getSpeechRecognitionLanguage = (lang: string): string => {
