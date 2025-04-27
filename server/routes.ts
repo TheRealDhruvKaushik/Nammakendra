@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatGPT, analyzeDocument } from "./deepseek";
+import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 import { 
   insertContactSchema, 
   insertChatMessageSchema 
@@ -78,9 +79,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Chat with AI
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message, language } = z.object({
+      const { message, language, pageType } = z.object({
         message: z.string().min(1, "Message cannot be empty"),
-        language: z.string().optional().default('english')
+        language: z.string().optional().default('english'),
+        pageType: z.enum(['sahayak', 'sarkara']).optional().default('sahayak')
       }).parse(req.body);
       
       // Generate a session ID if not provided
@@ -93,8 +95,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         content: message
       });
       
-      // Get response from DeepSeek with language preference
-      const aiResponse = await chatGPT(message, language);
+      let aiResponse: string;
+      
+      // Use different API based on the pageType
+      if (pageType === 'sarkara') {
+        // For NammaSarkara, continue using the Perplexity API
+        console.log("Using Perplexity API for NammaSarkara");
+        aiResponse = await chatGPT(message, language);
+      } else {
+        // For NammaSahayak, use the Hugging Face API
+        console.log("Using Hugging Face API for NammaSahayak");
+        try {
+          aiResponse = await chatWithHuggingFace(message, language);
+        } catch (huggingFaceError) {
+          console.error("Error with Hugging Face API, falling back to Perplexity:", huggingFaceError);
+          // Fallback to Perplexity if Hugging Face API fails
+          aiResponse = await chatGPT(message, language);
+        }
+      }
       
       // Store AI response
       await storage.createChatMessage({
