@@ -76,6 +76,8 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
       // Create FormData for file upload
       const formData = new FormData();
       formData.append('document', file);
+      formData.append('language', language); // Add language parameter
+      formData.append('pageType', 'sahayak'); // Always use sahayak for document analysis
 
       // Use fetch directly since we're sending FormData
       const response = await fetch('/api/documents/analyze', {

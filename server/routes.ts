@@ -137,29 +137,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "No file uploaded" });
       }
       
-      // Get language preference
+      // Get language preference and page type
       const language = req.body.language || 'english';
+      const pageType = req.body.pageType || 'sahayak'; // Default to sahayak
       
       // Read file content
       const filePath = req.file.path;
       const fileContent = fs.readFileSync(filePath, 'utf8');
       
-      // Analyze document using DeepSeek with language preference
-      const { simplifiedText, keyPoints } = await analyzeDocument(fileContent, language);
+      let analysisResult;
+      
+      // Use different API based on the pageType (no need to analyze documents for sarkara,
+      // but we'll include the check for consistency and future-proofing)
+      if (pageType === 'sarkara') {
+        // For NammaSarkara, use the Perplexity API
+        console.log("Using Perplexity API for document analysis (NammaSarkara)");
+        analysisResult = await analyzeDocument(fileContent, language);
+      } else {
+        // For NammaSahayak, use the Hugging Face API
+        console.log("Using Hugging Face API for document analysis (NammaSahayak)");
+        try {
+          analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
+        } catch (huggingFaceError) {
+          console.error("Error with Hugging Face API for document analysis, falling back to Perplexity:", huggingFaceError);
+          // Fallback to Perplexity if Hugging Face API fails
+          analysisResult = await analyzeDocument(fileContent, language);
+        }
+      }
       
       // Store document analysis
       const document = await storage.createDocument({
         originalText: fileContent,
-        simplifiedText,
-        keyPoints
+        simplifiedText: analysisResult.simplifiedText,
+        keyPoints: analysisResult.keyPoints
       });
       
       // Clean up uploaded file
       fs.unlinkSync(filePath);
       
       res.json({ 
-        simplifiedText,
-        keyPoints
+        simplifiedText: analysisResult.simplifiedText,
+        keyPoints: analysisResult.keyPoints
       });
     } catch (err) {
       handleError(err, res);

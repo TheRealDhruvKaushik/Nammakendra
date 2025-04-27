@@ -228,7 +228,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     try {
       const response = await apiRequest("POST", "/api/chat", { 
         message: input,
-        language: language // Send the current language to the backend
+        language: language, // Send the current language to the backend
+        pageType: pageType // Send pageType to differentiate between sahayak and sarkara
       });
       
       const data = await response.json();
