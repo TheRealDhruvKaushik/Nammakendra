@@ -11,6 +11,7 @@ const Header = () => {
   const navItems = [
     { href: "/", label: t('nav.home'), key: "home" },
     { href: "/namma-sahayak", label: t('nav.sahayak'), key: "namma_sahayak" },
+    { href: "/namma-sarkara", label: t('nav.sarkara'), key: "namma_sarkara" },
     { href: "/namma-vidhana", label: t('nav.vidhana'), key: "namma_vidhana" },
     { href: "/contact", label: t('nav.contact'), key: "contact" }
   ];

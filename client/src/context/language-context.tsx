@@ -22,6 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Home',
     'nav.sahayak': 'Namma Sahayak',
+    'nav.sarkara': 'Namma Sarkara',
     'nav.vidhana': 'Namma Vidhana',
     'nav.contact': 'Contact',
     'nav.slogan': 'Legal Assistance Simplified',

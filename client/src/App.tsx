@@ -8,6 +8,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import Home from "@/pages/home";
 import NammaSahayak from "@/pages/namma-sahayak";
+import NammaSarkara from "@/pages/namma-sarkara";
 import NammaVidhana from "@/pages/namma-vidhana";
 import Contact from "@/pages/contact";
 import About from "@/pages/about";
@@ -23,6 +24,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/namma-sahayak" component={NammaSahayak} />
+        <Route path="/namma-sarkara" component={NammaSarkara} />
         <Route path="/namma-vidhana" component={NammaVidhana} />
         <Route path="/contact" component={Contact} />
         <Route path="/about" component={About} />
