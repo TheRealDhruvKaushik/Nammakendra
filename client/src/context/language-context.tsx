@@ -142,6 +142,24 @@ const translations: Record<Language, Record<string, string>> = {
     'sahayak.topic4': 'Consumer rights',
     'sahayak.tip': 'Tip: Try to ask your question as specifically as possible so we can give you a more helpful answer.',
     
+    // NammaSarkara Page
+    'sarkara.title': 'Namma Sarkara',
+    'sarkara.subtitle': 'Get information about government services',
+    'sarkara.description': 'Namma Sarkara is an AI-powered chatbot that provides district-specific and category-specific information on requirements for government services. Type your question or use your microphone to speak.',
+    'sarkara.features.title': 'Features of this service',
+    'sarkara.feature1.title': 'Location-Specific Information',
+    'sarkara.feature1.description': 'Get district-specific requirements for government services in your area.',
+    'sarkara.feature2.title': 'Document Checklists',
+    'sarkara.feature2.description': 'Find out exactly what documents you need to bring for various government applications.',
+    'sarkara.feature3.title': 'Step-by-Step Guidance',
+    'sarkara.feature3.description': 'Learn the process for accessing government services from start to finish.',
+    'sarkara.commonTopics': 'Common Topics',
+    'sarkara.topic1': 'Aadhaar card updates and applications',
+    'sarkara.topic2': 'Voter ID and election services',
+    'sarkara.topic3': 'Passport application requirements',
+    'sarkara.topic4': 'Property registration procedures',
+    'sarkara.tip': 'Tip: Mention your district for location-specific requirements and procedures.',
+    
     // NammaVidhana Page
     'vidhana.title': 'Namma Vidhana Document Simplifier',
     'vidhana.description': 'Upload legal documents and get them explained in simple, easy-to-understand language. Our AI helps you make sense of complex legal jargon.',
@@ -158,6 +176,24 @@ const translations: Record<Language, Record<string, string>> = {
     'vidhana.docType3': 'Government Notices',
     'vidhana.docType4': 'Property Documents',
     
+    // NammaSarkara Page - Kannada
+    'sarkara.title': 'ನಮ್ಮ ಸರ್ಕಾರ',
+    'sarkara.subtitle': 'ಸರ್ಕಾರಿ ಸೇವೆಗಳ ಬಗ್ಗೆ ಮಾಹಿತಿ ಪಡೆಯಿರಿ',
+    'sarkara.description': 'ನಮ್ಮ ಸರ್ಕಾರ ಅನ್ನು ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗಾಗಿ ಜಿಲ್ಲಾ-ನಿರ್ದಿಷ್ಟ ಮತ್ತು ವರ್ಗದ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ AI-ಆಧಾರಿತ ಚಾಟ್‌ಬಾಟ್ ಆಗಿದೆ. ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಲು ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಬಳಸಿ.',
+    'sarkara.features.title': 'ಈ ಸೇವೆಯ ವೈಶಿಷ್ಟ್ಯಗಳು',
+    'sarkara.feature1.title': 'ಸ್ಥಳ-ನಿರ್ದಿಷ್ಟ ಮಾಹಿತಿ',
+    'sarkara.feature1.description': 'ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗೆ ಜಿಲ್ಲಾ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳನ್ನು ಪಡೆಯಿರಿ.',
+    'sarkara.feature2.title': 'ದಾಖಲೆಗಳ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ',
+    'sarkara.feature2.description': 'ವಿವಿಧ ಸರ್ಕಾರಿ ಅರ್ಜಿಗಳಿಗೆ ನೀವು ತರಬೇಕಾದ ದಾಖಲೆಗಳನ್ನು ಸರಿಯಾಗಿ ಕಂಡುಕೊಳ್ಳಿ.',
+    'sarkara.feature3.title': 'ಹಂತ-ಹಂತದ ಮಾರ್ಗದರ್ಶನ',
+    'sarkara.feature3.description': 'ಪ್ರಾರಂಭದಿಂದ ಅಂತ್ಯದವರೆಗೆ ಸರ್ಕಾರಿ ಸೇವೆಗಳನ್ನು ಪಡೆಯುವ ಪ್ರಕ್ರಿಯೆಯನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ.',
+    'sarkara.commonTopics': 'ಸಾಮಾನ್ಯ ವಿಷಯಗಳು',
+    'sarkara.topic1': 'ಆಧಾರ್ ಕಾರ್ಡ್ ನವೀಕರಣ ಮತ್ತು ಅರ್ಜಿಗಳು',
+    'sarkara.topic2': 'ಮತದಾರರ ID ಮತ್ತು ಚುನಾವಣಾ ಸೇವೆಗಳು',
+    'sarkara.topic3': 'ಪಾಸ್‌ಪೋರ್ಟ್ ಅಪ್ಲಿಕೇಶನ್ ಅಗತ್ಯತೆಗಳು',
+    'sarkara.topic4': 'ಆಸ್ತಿ ನೋಂದಣಿ ಕಾರ್ಯವಿಧಾನಗಳು',
+    'sarkara.tip': 'ಸಲಹೆ: ಸ್ಥಳ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳು ಮತ್ತು ಕಾರ್ಯವಿಧಾನಗಳಿಗಾಗಿ ನಿಮ್ಮ ಜಿಲ್ಲೆಯನ್ನು ಉಲ್ಲೇಖಿಸಿ.',
+
     // About Page
     'about.title': 'About Us',
     'about.nammaKendra': 'About NammaKendra',
