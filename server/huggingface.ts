@@ -10,10 +10,10 @@ const huggingFaceClient = axios.create({
 });
 
 // Use a suitable model for legal assistant features
-const LEGAL_ASSISTANT_MODEL = "meta-llama/Llama-2-70b-chat-hf";
+const LEGAL_ASSISTANT_MODEL = "google/gemma-1.1-7b-it";
 
 // Use a suitable model for document analysis
-const DOCUMENT_ANALYSIS_MODEL = "meta-llama/Llama-2-70b-chat-hf";
+const DOCUMENT_ANALYSIS_MODEL = "google/gemma-1.1-7b-it";
 
 // Check if API key is a dummy value
 const isDummyKey = !process.env.HUGGING_FACE_TOKEN || process.env.HUGGING_FACE_TOKEN === "dummy-key";
@@ -64,16 +64,7 @@ export async function chatWithHuggingFace(message: string, language: string = 'e
     
     // Call Hugging Face API
     const response = await huggingFaceClient.post(`/${LEGAL_ASSISTANT_MODEL}`, {
-      inputs: `<s>[INST] ${systemContent} [/INST]
-
-[INST] ${message} [/INST]`,
-      parameters: {
-        max_new_tokens: 800,
-        temperature: 0.7,
-        top_p: 0.9,
-        do_sample: true,
-        return_full_text: false
-      }
+      inputs: `${systemContent}\n\nUser: ${message}`
     });
 
     // Extract response text
@@ -146,16 +137,7 @@ export async function analyzeDocumentWithHuggingFace(documentText: string, langu
     
     // Call Hugging Face API
     const response = await huggingFaceClient.post(`/${DOCUMENT_ANALYSIS_MODEL}`, {
-      inputs: `<s>[INST] ${systemContent} [/INST]
-
-[INST] ${documentText} [/INST]`,
-      parameters: {
-        max_new_tokens: 1500,
-        temperature: 0.3,
-        top_p: 0.9,
-        do_sample: true,
-        return_full_text: false
-      }
+      inputs: `${systemContent}\n\nUser: ${documentText}`
     });
 
     // Try to parse JSON from the response

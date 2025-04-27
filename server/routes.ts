@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { chatGPT, analyzeDocument } from "./deepseek";
+import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 import { 
   insertContactSchema, 

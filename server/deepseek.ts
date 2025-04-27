@@ -16,13 +16,25 @@ const deepseekClient = axios.create({
 // Check if API key is a dummy value
 const isDummyKey = !process.env.PERPLEXITY_API_KEY || process.env.PERPLEXITY_API_KEY === "dummy-key";
 
+// Check if we have a Hugging Face token
+export const hasHuggingFaceToken = process.env.HUGGING_FACE_TOKEN && process.env.HUGGING_FACE_TOKEN !== "dummy-key";
+
 /**
  * Process a user's legal question and return a simple explanation
  * @param message User's question
  * @param language Language preference ('english' or 'kannada')
  * @returns AI response
  */
+// Forward declaration of imported function
+import { chatWithHuggingFace } from "./huggingface";
+
 export async function chatGPT(message: string, language: string = 'english'): Promise<string> {
+  // Use Hugging Face if Perplexity API key is missing but Hugging Face token is available
+  if (isDummyKey && hasHuggingFaceToken) {
+    console.log("Perplexity API key missing but Hugging Face token available, using Hugging Face");
+    return await chatWithHuggingFace(message, language);
+  }
+  
   // Return dummy response if no valid API key
   if (isDummyKey) {
     console.log("Using dummy response for chatGPT (no API key provided)");
