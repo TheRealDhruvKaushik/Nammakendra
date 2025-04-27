@@ -1,4 +1,5 @@
 import axios from "axios";
+import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 
 // DeepSeek's free API endpoint for the Llama-3.1-Sonar-Small model
 const DEEPSEEK_API_URL = "https://api.perplexity.ai/chat/completions";
@@ -25,8 +26,6 @@ export const hasHuggingFaceToken = process.env.HUGGING_FACE_TOKEN && process.env
  * @param language Language preference ('english' or 'kannada')
  * @returns AI response
  */
-// Forward declaration of imported function
-import { chatWithHuggingFace } from "./huggingface";
 
 export async function chatGPT(message: string, language: string = 'english'): Promise<string> {
   // Use Hugging Face if Perplexity API key is missing but Hugging Face token is available
@@ -107,6 +106,12 @@ export async function analyzeDocument(documentText: string, language: string = '
   simplifiedText: string;
   keyPoints: string[];
 }> {
+  // Use Hugging Face if Perplexity API key is missing but Hugging Face token is available
+  if (isDummyKey && hasHuggingFaceToken) {
+    console.log("Perplexity API key missing but Hugging Face token available, using Hugging Face for document analysis");
+    return await analyzeDocumentWithHuggingFace(documentText, language);
+  }
+  
   // Return dummy response if no valid API key
   if (isDummyKey) {
     console.log("Using dummy response for document analysis (no API key provided)");
