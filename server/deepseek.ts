@@ -1,5 +1,6 @@
 import axios from "axios";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
+import { chatWithGroq, analyzeDocumentWithGroq } from "./groq";
 
 // DeepSeek's free API endpoint for the Llama-3.1-Sonar-Small model
 const DEEPSEEK_API_URL = "https://api.perplexity.ai/chat/completions";
@@ -14,8 +15,9 @@ const deepseekClient = axios.create({
   }
 });
 
-// Check if API key is a dummy value
-const isDummyKey = !process.env.PERPLEXITY_API_KEY || process.env.PERPLEXITY_API_KEY === "dummy-key";
+// Check if API keys are dummy values
+const isPerplexityDummy = !process.env.PERPLEXITY_API_KEY || process.env.PERPLEXITY_API_KEY === "dummy-key";
+const isGroqDummy = !process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === "dummy-key";
 
 // Check if we have a Hugging Face token
 export const hasHuggingFaceToken = process.env.HUGGING_FACE_TOKEN && process.env.HUGGING_FACE_TOKEN !== "dummy-key";
@@ -28,72 +30,90 @@ export const hasHuggingFaceToken = process.env.HUGGING_FACE_TOKEN && process.env
  */
 
 export async function chatGPT(message: string, language: string = 'english'): Promise<string> {
-  // Use Hugging Face if Perplexity API key is missing but Hugging Face token is available
-  if (isDummyKey && hasHuggingFaceToken) {
-    console.log("Perplexity API key missing but Hugging Face token available, using Hugging Face");
-    return await chatWithHuggingFace(message, language);
-  }
-  
-  // Return dummy response if no valid API key
-  if (isDummyKey) {
-    console.log("Using dummy response for chatGPT (no API key provided)");
-    return generateDummyChatResponse(message, language);
-  }
-  
-  try {
-    // Define language-specific system instructions
-    let systemContent = '';
-    
-    if (language === 'kannada') {
-      systemContent = `You are NammaSahayak, a helpful AI legal assistant designed to help ordinary citizens in India understand legal concepts.
-      
-      Follow these guidelines:
-      1. VERY IMPORTANT: Always respond in Kannada language only. Do not use English.
-      2. Explain legal concepts in simple, everyday Kannada language
-      3. Avoid technical jargon or define it when necessary in Kannada
-      4. Be concise but thorough in your explanations
-      5. Focus on Indian legal context, especially Karnataka state laws when relevant
-      6. When explaining procedures, break them down into clear steps
-      7. Acknowledge when something may require professional legal advice
-      
-      Your goal is to make legal information accessible to everyone in Kannada, especially elderly users or those with limited legal knowledge.`;
-    } else {
-      systemContent = `You are NammaSahayak, a helpful AI legal assistant designed to help ordinary citizens in India understand legal concepts. 
-      
-      Follow these guidelines:
-      1. Explain legal concepts in simple, everyday language
-      2. Avoid technical jargon or define it when necessary
-      3. Be concise but thorough in your explanations
-      4. Focus on Indian legal context
-      5. When explaining procedures, break them down into clear steps
-      6. Acknowledge when something may require professional legal advice
-      
-      Your goal is to make legal information accessible to everyone, especially elderly users or those with limited legal knowledge.`;
+  // Try Groq first if API key is available
+  if (!isGroqDummy) {
+    console.log("Using Groq for chat response");
+    try {
+      return await chatWithGroq(message, language);
+    } catch (error) {
+      console.error("Error with Groq API, falling back to alternatives:", error);
+      // Fall through to other options
     }
-    
-    // Call DeepSeek API
-    const response = await deepseekClient.post('/chat/completions', {
-      model: DEEPSEEK_MODEL,
-      messages: [
-        {
-          role: "system",
-          content: systemContent
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 800,
-      stream: false
-    });
-
-    return response.data.choices[0].message.content || "I'm sorry, I couldn't generate a response.";
-  } catch (error) {
-    console.error("Error calling DeepSeek API:", error);
-    throw new Error("Failed to get response from AI assistant. Please try again later.");
   }
+
+  // Try Hugging Face next if token is available
+  if (hasHuggingFaceToken) {
+    console.log("Falling back to Hugging Face for chat");
+    try {
+      return await chatWithHuggingFace(message, language);
+    } catch (error) {
+      console.error("Error with Hugging Face API, falling back to Perplexity:", error);
+      // Fall through to Perplexity
+    }
+  }
+  
+  // Try Perplexity if API key is available
+  if (!isPerplexityDummy) {
+    console.log("Using Perplexity for chat response");
+    try {
+      // Define language-specific system instructions
+      let systemContent = '';
+      
+      if (language === 'kannada') {
+        systemContent = `You are NammaSahayak, a helpful AI legal assistant designed to help ordinary citizens in India understand legal concepts.
+        
+        Follow these guidelines:
+        1. VERY IMPORTANT: Always respond in Kannada language only. Do not use English.
+        2. Explain legal concepts in simple, everyday Kannada language
+        3. Avoid technical jargon or define it when necessary in Kannada
+        4. Be concise but thorough in your explanations
+        5. Focus on Indian legal context, especially Karnataka state laws when relevant
+        6. When explaining procedures, break them down into clear steps
+        7. Acknowledge when something may require professional legal advice
+        
+        Your goal is to make legal information accessible to everyone in Kannada, especially elderly users or those with limited legal knowledge.`;
+      } else {
+        systemContent = `You are NammaSahayak, a helpful AI legal assistant designed to help ordinary citizens in India understand legal concepts. 
+        
+        Follow these guidelines:
+        1. Explain legal concepts in simple, everyday language
+        2. Avoid technical jargon or define it when necessary
+        3. Be concise but thorough in your explanations
+        4. Focus on Indian legal context
+        5. When explaining procedures, break them down into clear steps
+        6. Acknowledge when something may require professional legal advice
+        
+        Your goal is to make legal information accessible to everyone, especially elderly users or those with limited legal knowledge.`;
+      }
+      
+      // Call Perplexity API
+      const response = await deepseekClient.post('/chat/completions', {
+        model: DEEPSEEK_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: systemContent
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 800,
+        stream: false
+      });
+
+      return response.data.choices[0].message.content || "I'm sorry, I couldn't generate a response.";
+    } catch (error) {
+      console.error("Error calling Perplexity API:", error);
+      // Fall through to default response
+    }
+  }
+  
+  // Return default message if all options fail
+  console.log("All API options failed, returning default message");
+  return generateDummyChatResponse(message, language);
 }
 
 /**
@@ -106,15 +126,31 @@ export async function analyzeDocument(documentText: string, language: string = '
   simplifiedText: string;
   keyPoints: string[];
 }> {
-  // Use Hugging Face if Perplexity API key is missing but Hugging Face token is available
-  if (isDummyKey && hasHuggingFaceToken) {
-    console.log("Perplexity API key missing but Hugging Face token available, using Hugging Face for document analysis");
-    return await analyzeDocumentWithHuggingFace(documentText, language);
+  // Try Groq first if API key is available
+  if (!isGroqDummy) {
+    console.log("Using Groq for document analysis");
+    try {
+      return await analyzeDocumentWithGroq(documentText, language);
+    } catch (error) {
+      console.error("Error with Groq API for document analysis, falling back to alternatives:", error);
+      // Fall through to other options
+    }
+  }
+
+  // Try Hugging Face next if token is available
+  if (hasHuggingFaceToken) {
+    console.log("Falling back to Hugging Face for document analysis");
+    try {
+      return await analyzeDocumentWithHuggingFace(documentText, language);
+    } catch (error) {
+      console.error("Error with Hugging Face API for document analysis, falling back to Perplexity:", error);
+      // Fall through to Perplexity
+    }
   }
   
-  // Return dummy response if no valid API key
-  if (isDummyKey) {
-    console.log("Using dummy response for document analysis (no API key provided)");
+  // Return dummy response if no APIs are available or working
+  if (isPerplexityDummy) {
+    console.log("Using dummy response for document analysis (no API keys provided or all APIs failed)");
     return generateDummyDocumentAnalysis(documentText, language);
   }
   
