@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { 
   Card, 
@@ -21,9 +21,11 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { cn } from "@/lib/utils";
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
   
@@ -35,9 +37,7 @@ const ContactForm = () => {
     email: z.string().email(language === 'english' ? 
       "Please enter a valid email address" : 
       t('contact.form.emailInvalid')),
-    phone: z.string().min(10, language === 'english' ? 
-      "Please enter a valid phone number" : 
-      t('contact.form.phoneInvalid')),
+    phone: z.string().optional(),
     message: z.string().min(10, language === 'english' ? 
       "Message must be at least 10 characters" : 
       t('contact.form.messageTooShort')),
@@ -51,7 +51,22 @@ const ContactForm = () => {
       phone: "",
       message: "",
     },
+    mode: "onChange",
   });
+  
+  // Track form validity changes
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      // Check if required fields are filled
+      const hasName = !!value.name && value.name.length >= 2;
+      const hasValidEmail = !!value.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email);
+      const hasMessage = !!value.message && value.message.length >= 10;
+      
+      setFormIsValid(hasName && hasValidEmail && hasMessage);
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form.watch]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
@@ -65,6 +80,7 @@ const ContactForm = () => {
       });
       
       form.reset();
+      setFormIsValid(false);
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -76,6 +92,11 @@ const ContactForm = () => {
       setIsSubmitting(false);
     }
   };
+  
+  // Red asterisk component for required fields
+  const RequiredMark = () => (
+    <span className="text-red-500 ml-1">*</span>
+  );
 
   return (
     <Card className="w-full max-w-3xl mx-auto">
@@ -89,7 +110,10 @@ const ContactForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">{t('contact.form.name')}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t('contact.form.name')}
+                    <RequiredMark />
+                  </FormLabel>
                   <FormControl>
                     <Input 
                       placeholder={language === 'english' ? "Enter your full name" : t('contact.form.name')} 
@@ -109,7 +133,10 @@ const ContactForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base">{t('contact.form.email')}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t('contact.form.email')}
+                      <RequiredMark />
+                    </FormLabel>
                     <FormControl>
                       <Input 
                         placeholder={language === 'english' ? "Enter your email" : t('contact.form.email')} 
@@ -129,10 +156,12 @@ const ContactForm = () => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base">{t('contact.form.phone')}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t('contact.form.phone')} {/* No asterisk for phone as it's optional */}
+                    </FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder={language === 'english' ? "Enter your phone number" : t('contact.form.phone')} 
+                        placeholder={language === 'english' ? "Enter your phone number (optional)" : t('contact.form.phone')} 
                         type="tel" 
                         {...field} 
                         className="h-12"
@@ -150,7 +179,10 @@ const ContactForm = () => {
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">{t('contact.form.message')}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t('contact.form.message')}
+                    <RequiredMark />
+                  </FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder={language === 'english' ? "How can we help you?" : t('contact.form.message')} 
@@ -166,7 +198,10 @@ const ContactForm = () => {
             
             <Button 
               type="submit" 
-              className="w-full md:w-auto md:min-w-[200px] h-12"
+              className={cn(
+                "w-full md:w-auto md:min-w-[200px] h-12 transition-colors duration-200",
+                formIsValid ? "opacity-100" : "opacity-70 bg-primary/70"
+              )}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
