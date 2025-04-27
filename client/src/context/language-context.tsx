@@ -25,21 +25,22 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.sarkara': 'Namma Sarkara',
     'nav.vidhana': 'Namma Vidhana',
     'nav.contact': 'Contact',
-    'nav.slogan': 'Legal Assistance Simplified',
+    'nav.about': 'About Us',
+    'nav.slogan': 'Bringing The Government At Your Doorstep',
     'nav.logo': 'NammaKendra',
     
     // Hero Section
-    'hero.title': 'Legal Help Made Simple',
-    'hero.subtitle': 'Access legal information in a way you can understand',
+    'hero.title': 'Services Made Simple',
+    'hero.subtitle': 'Access information in a way you can understand',
     'hero.getStarted': 'Get Started',
     'hero.learnMore': 'Learn More',
     'hero.name': 'NammaKendra',
     'hero.tagline': 'Legal Assistance Simplified - Your resource for legal knowledge',
-    'hero.mission': 'Our mission is to make legal knowledge accessible to all through AI-powered tools and easy-to-understand content.',
+    'hero.mission': 'Our mission is to make the government accessible to all through AI-powered tools and easy-to-understand content.',
     
     // Services Section
     'services.title': 'Our Services',
-    'services.subtitle': 'We provide tools to help you navigate complex legal matters with ease and confidence.',
+    'services.subtitle': 'We provide tools to help you navigate complex matters with ease and confidence.',
     'services.sahayak.title': 'Namma Sahayak',
     'services.sahayak.description': 'Our AI-powered chatbot that answers your legal questions in simple language and helps guide you through common legal procedures.',
     'services.sahayak.feature1': '✔️24/7 answers to legal questions',
@@ -365,7 +366,8 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.sarkara': 'ನಮ್ಮ ಸರ್ಕಾರ',
     'nav.vidhana': 'ನಮ್ಮ ವಿಧಾನ',
     'nav.contact': 'ಸಂಪರ್ಕ',
-    'nav.slogan': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ',
+    'nav.about': 'ನಮ್ಮ ಬಗ್ಗೆ',
+    'nav.slogan': 'ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಸರ್ಕಾರ',
     'nav.logo': 'ನಮ್ಮಕೇಂದ್ರ',
     
     // About Us Page
@@ -446,17 +448,17 @@ const translations: Record<Language, Record<string, string>> = {
     'sarkara.tip': 'ಸಲಹೆ: ಸ್ಥಳ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳು ಮತ್ತು ಕಾರ್ಯವಿಧಾನಗಳಿಗಾಗಿ ನಿಮ್ಮ ಜಿಲ್ಲೆಯನ್ನು ಉಲ್ಲೇಖಿಸಿ.',
     
     // Hero Section
-    'hero.title': 'ಕಾನೂನು ಸಹಾಯ ಸರಳವಾಗಿಸಲಾಗಿದೆ',
-    'hero.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ರೀತಿಯಲ್ಲಿ ಕಾನೂನು ಮಾಹಿತಿಯನ್ನು ಪಡೆಯಿರಿ',
+    'hero.title': 'ಸುಲಭ ಸೇವೆಗಳು',
+    'hero.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ರೀತಿಯಲ್ಲಿ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯಿರಿ',
     'hero.getStarted': 'ಆರಂಭಿಸಿ',
     'hero.learnMore': 'ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ',
     'hero.name': 'ನಮ್ಮಕೇಂದ್ರ',
     'hero.tagline': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ - ಕಾನೂನು ಜ್ಞಾನಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಂಪನ್ಮೂಲ',
-    'hero.mission': 'ನಮ್ಮ ಗುರಿ ಎಲ್ಲರಿಗೂ ಕಾನೂನು ಜ್ಞಾನವನ್ನು AI-ಆಧಾರಿತ ಉಪಕರಣಗಳು ಮತ್ತು ಸುಲಭವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಬಹುದಾದ ವಿಷಯಗಳ ಮೂಲಕ ಲಭ್ಯವಾಗುವಂತೆ ಮಾಡುವುದು.',
+    'hero.mission': 'ನಮ್ಮ ಉದ್ದೇಶ: ಎಐ ಆಧಾರಿತ ಸಾಧನಗಳು ಮತ್ತು ಸರಳ ವಿಷಯದ ಮೂಲಕ ಸರ್ಕಾರವನ್ನು ಎಲ್ಲರಿಗೂ ತಲುಪಿಸುವುದು.',
     
     // Services Section
     'services.title': 'ನಮ್ಮ ಸೇವೆಗಳು',
-    'services.subtitle': 'ನಾವು ಜಟಿಲ ಕಾನೂನು ವಿಷಯಗಳನ್ನು ಸುಲಭ ಮತ್ತು ವಿಶ್ವಾಸದೊಂದಿಗೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ಸಹಾಯ ಮಾಡುವ ಉಪಕರಣಗಳನ್ನು ಒದಗಿಸುತ್ತೇವೆ.',
+    'services.subtitle': 'ನಾವು ಜಟಿಲ ವಿಷಯಗಳನ್ನು ಸುಲಭ ಮತ್ತು ವಿಶ್ವಾಸದೊಂದಿಗೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ಸಹಾಯ ಮಾಡುವ ಉಪಕರಣಗಳನ್ನು ಒದಗಿಸುತ್ತೇವೆ.',
     'services.sahayak.title': 'ನಮ್ಮ ಸಹಾಯಕ',
     'services.sahayak.description': 'ನಮ್ಮ AI-ಆಧಾರಿತ ಚಾಟ್‌ಬಾಟ್ ನಿಮ್ಮ ಕಾನೂನು ಪ್ರಶ್ನೆಗಳಿಗೆ ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಉತ್ತರಿಸುತ್ತದೆ ಮತ್ತು ಸಾಮಾನ್ಯ ಕಾನೂನು ಕ್ರಮವಿಧಾನಗಳ ಮೂಲಕ ನಿಮಗೆ ಮಾರ್ಗದರ್ಶನ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
     'services.sahayak.feature1': '✔️ಕಾನೂನು ಪ್ರಶ್ನೆಗಳಿಗೆ 24/7 ಉತ್ತರಗಳು',
