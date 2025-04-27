@@ -346,7 +346,7 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.contact': 'Contact Us',
     'footer.address': '106, Indigo, HM World City Apartments, JP Nagar, Bangalore, Karnataka',
     'footer.phone': '+91 808 804 6586',
-    'footer.email': 'info@nammasahayak.org',
+    'footer.email': 'Dhruvkkaushik8@gmail.com',
     'footer.copyright': 'All rights reserved.',
     'footer.privacyPolicy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',

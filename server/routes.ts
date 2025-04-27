@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { chatGPT, analyzeDocument } from "./openai";
+import { chatGPT, analyzeDocument } from "./deepseek";
 import { 
   insertContactSchema, 
   insertChatMessageSchema 
@@ -93,7 +93,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         content: message
       });
       
-      // Get response from OpenAI with language preference
+      // Get response from DeepSeek with language preference
       const aiResponse = await chatGPT(message, language);
       
       // Store AI response
@@ -126,7 +126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const filePath = req.file.path;
       const fileContent = fs.readFileSync(filePath, 'utf8');
       
-      // Analyze document using OpenAI with language preference
+      // Analyze document using DeepSeek with language preference
       const { simplifiedText, keyPoints } = await analyzeDocument(fileContent, language);
       
       // Store document analysis

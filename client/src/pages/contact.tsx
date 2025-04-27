@@ -27,7 +27,7 @@ const Contact = () => {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-2 text-black">{t('contact.phone')}</h2>
-                <p className="text-neutral text-black">+91 123 456 7890</p>
+                <p className="text-neutral text-black">{t('footer.phone')}</p>
                 <p className="text-neutral text-sm mt-2 text-black">{t('contact.phone.availability')}</p>
               </div>
               
@@ -38,7 +38,7 @@ const Contact = () => {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-2 text-black">{t('contact.email')}</h2>
-                <p className="text-neutral text-black">info@nammasahayak.org</p>
+                <p className="text-neutral text-black">{t('footer.email')}</p>
                 <p className="text-neutral text-sm mt-2 text-black">{t('contact.email.response')}</p>
               </div>
               

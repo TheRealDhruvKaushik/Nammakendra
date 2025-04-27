@@ -1,12 +1,20 @@
-import OpenAI from "openai";
+import axios from "axios";
 
-// the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || "sk-dummy-key-for-development" 
+// DeepSeek's free API endpoint for the Llama-3.1-Sonar-Small model
+const DEEPSEEK_API_URL = "https://api.perplexity.ai/chat/completions";
+const DEEPSEEK_MODEL = "llama-3.1-sonar-small-128k-online";
+
+// Initialize axios instance for DeepSeek API
+const deepseekClient = axios.create({
+  baseURL: "https://api.perplexity.ai",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${process.env.PERPLEXITY_API_KEY || "dummy-key"}`
+  }
 });
 
 // Check if API key is a dummy value
-const isDummyKey = !process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "sk-dummy-key-for-development";
+const isDummyKey = !process.env.PERPLEXITY_API_KEY || process.env.PERPLEXITY_API_KEY === "dummy-key";
 
 /**
  * Process a user's legal question and return a simple explanation
@@ -52,8 +60,9 @@ export async function chatGPT(message: string, language: string = 'english'): Pr
       Your goal is to make legal information accessible to everyone, especially elderly users or those with limited legal knowledge.`;
     }
     
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    // Call DeepSeek API
+    const response = await deepseekClient.post('/chat/completions', {
+      model: DEEPSEEK_MODEL,
       messages: [
         {
           role: "system",
@@ -65,12 +74,13 @@ export async function chatGPT(message: string, language: string = 'english'): Pr
         }
       ],
       temperature: 0.7,
-      max_tokens: 800
+      max_tokens: 800,
+      stream: false
     });
 
-    return response.choices[0].message.content || "I'm sorry, I couldn't generate a response.";
+    return response.data.choices[0].message.content || "I'm sorry, I couldn't generate a response.";
   } catch (error) {
-    console.error("Error calling OpenAI:", error);
+    console.error("Error calling DeepSeek API:", error);
     throw new Error("Failed to get response from AI assistant. Please try again later.");
   }
 }
@@ -131,8 +141,9 @@ export async function analyzeDocument(documentText: string, language: string = '
       Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     }
     
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    // Call DeepSeek API with instruction to return JSON
+    const response = await deepseekClient.post('/chat/completions', {
+      model: DEEPSEEK_MODEL,
       messages: [
         {
           role: "system",
@@ -143,19 +154,42 @@ export async function analyzeDocument(documentText: string, language: string = '
           content: documentText
         }
       ],
-      response_format: { type: "json_object" },
       temperature: 0.3,
-      max_tokens: 1500
+      max_tokens: 1500,
+      stream: false
     });
 
-    const result = JSON.parse(response.choices[0].message.content || "{}");
-    
-    return {
-      simplifiedText: result.simplifiedText || "Could not simplify the document.",
-      keyPoints: result.keyPoints || []
-    };
+    // Since DeepSeek might not have a built-in JSON response format, we need to parse the text
+    // The model should be instructed to return a JSON structure
+    try {
+      // Try to parse the response as JSON
+      const jsonStart = response.data.choices[0].message.content.indexOf('{');
+      const jsonEnd = response.data.choices[0].message.content.lastIndexOf('}') + 1;
+      
+      if (jsonStart >= 0 && jsonEnd > jsonStart) {
+        const jsonString = response.data.choices[0].message.content.substring(jsonStart, jsonEnd);
+        const result = JSON.parse(jsonString);
+        
+        return {
+          simplifiedText: result.simplifiedText || "Could not simplify the document.",
+          keyPoints: result.keyPoints || []
+        };
+      } else {
+        // Fallback in case response isn't properly formatted JSON
+        return {
+          simplifiedText: response.data.choices[0].message.content || "Could not simplify the document.",
+          keyPoints: ["Could not extract key points from the document"]
+        };
+      }
+    } catch (parseError) {
+      console.error("Error parsing JSON from DeepSeek response:", parseError);
+      return {
+        simplifiedText: response.data.choices[0].message.content || "Could not simplify the document.",
+        keyPoints: ["Error extracting key points from the document"]
+      };
+    }
   } catch (error) {
-    console.error("Error analyzing document:", error);
+    console.error("Error analyzing document with DeepSeek:", error);
     throw new Error("Failed to analyze document. Please try again later.");
   }
 }
@@ -172,9 +206,9 @@ function generateDummyChatResponse(message: string, language: string = 'english'
     // Kannada dummy responses
     const kannadaDummyResponses = [
       "ಇದು ಅಭಿವೃದ್ಧಿಗಾಗಿ ಒಂದು ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ ಪ್ರತಿಕ್ರಿಯೆ. ನಿಜವಾದ ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ, ಇದು AI ನಿಂದ ಕಾನೂನು ವಿವರಣೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.",
-      "ನಿಮ್ಮ ಪ್ರಶ್ನೆಗೆ ಧನ್ಯವಾದಗಳು. ಪ್ರಸ್ತುತ OpenAI API ಕೀ ಇಲ್ಲದೆ ಡೆವಲಪ್‌ಮೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ. ನಿಜವಾದ ಅಪ್ಲಿಕೇಶನ್ ಇಲ್ಲಿ ವಿವರವಾದ ಕಾನೂನು ಮಾರ್ಗದರ್ಶನವನ್ನು ಒದಗಿಸುತ್ತದೆ.",
+      "ನಿಮ್ಮ ಪ್ರಶ್ನೆಗೆ ಧನ್ಯವಾದಗಳು. ಪ್ರಸ್ತುತ Perplexity API ಕೀ ಇಲ್ಲದೆ ಡೆವಲಪ್‌ಮೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ. ನಿಜವಾದ ಅಪ್ಲಿಕೇಶನ್ ಇಲ್ಲಿ ವಿವರವಾದ ಕಾನೂನು ಮಾರ್ಗದರ್ಶನವನ್ನು ಒದಗಿಸುತ್ತದೆ.",
       "ನಿಮ್ಮ ಕಾನೂನು ಪ್ರಶ್ನೆಯನ್ನು ನಾನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತೇನೆ. ಇದು ಡೆವಲಪ್‌ಮೆಂಟ್ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ - ಪೂರ್ಣ ಅಪ್ಲಿಕೇಶನ್ ಭಾರತೀಯ ಕಾನೂನಿನ ಆಧಾರದಲ್ಲಿ ಸಹಾಯಕ ಉತ್ತರವನ್ನು ಒದಗಿಸುತ್ತದೆ.",
-      "ಕಾನೂನು ವಿಷಯಗಳ ಬಗ್ಗೆ ನಿಮ್ಮ ಪ್ರಶ್ನೆಗೆ ಸಾಮಾನ್ಯವಾಗಿ ನಮ್ಮ AI ಉತ್ತರಿಸುತ್ತದೆ. ಪೂರ್ಣ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ದಯವಿಟ್ಟು OpenAI API ಕೀ ಅನ್ನು ಸೇರಿಸಿ.",
+      "ಕಾನೂನು ವಿಷಯಗಳ ಬಗ್ಗೆ ನಿಮ್ಮ ಪ್ರಶ್ನೆಗೆ ಸಾಮಾನ್ಯವಾಗಿ ನಮ್ಮ AI ಉತ್ತರಿಸುತ್ತದೆ. ಪೂರ್ಣ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ದಯವಿಟ್ಟು Perplexity API ಕೀ ಅನ್ನು ಸೇರಿಸಿ.",
     ];
     
     // Return a random Kannada response
@@ -184,9 +218,9 @@ function generateDummyChatResponse(message: string, language: string = 'english'
     // English dummy responses
     const englishDummyResponses = [
       "This is a placeholder response for development. In the actual application, this would provide a legal explanation from the AI.",
-      "Thank you for your question. Currently running in development mode without an OpenAI API key. The real app would provide detailed legal guidance here.",
+      "Thank you for your question. Currently running in development mode without a Perplexity API key. The real app would provide detailed legal guidance here.",
       "I understand your legal question. This is a development placeholder - the fully integrated app would provide a helpful answer based on Indian law.",
-      "Your question about legal matters would normally be answered by our AI. Please add an OpenAI API key to enable the full functionality.",
+      "Your question about legal matters would normally be answered by our AI. Please add a Perplexity API key to enable the full functionality.",
     ];
     
     // Return a random English response
@@ -210,22 +244,22 @@ function generateDummyDocumentAnalysis(documentText: string, language: string = 
   
   if (language === 'kannada') {
     return {
-      simplifiedText: `ಅಭಿವೃದ್ಧಿ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಇದು ಒಂದು ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ ಸರಳೀಕರಿಸಿದ ಪಠ್ಯ. ನಿಜವಾದ ಅಪ್ಲಿಕೇಶನ್ OpenAI ಬಳಸಿ ನಿಮ್ಮ ${wordCount}-ಪದ ದಾಖಲೆಯ ವಿವರವಾದ ಸರಳೀಕರಣವನ್ನು ಒದಗಿಸುತ್ತದೆ. ಪೂರ್ಣ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ದಯವಿಟ್ಟು OpenAI API ಕೀ ಅನ್ನು ಸೇರಿಸಿ.`,
+      simplifiedText: `ಅಭಿವೃದ್ಧಿ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಇದು ಒಂದು ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ ಸರಳೀಕರಿಸಿದ ಪಠ್ಯ. ನಿಜವಾದ ಅಪ್ಲಿಕೇಶನ್ DeepSeek ಬಳಸಿ ನಿಮ್ಮ ${wordCount}-ಪದ ದಾಖಲೆಯ ವಿವರವಾದ ಸರಳೀಕರಣವನ್ನು ಒದಗಿಸುತ್ತದೆ. ಪೂರ್ಣ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ದಯವಿಟ್ಟು Perplexity API ಕೀ ಅನ್ನು ಸೇರಿಸಿ.`,
       keyPoints: [
         "ಇದು ಡೆವಲಪ್‌ಮೆಂಟ್ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ - ಪ್ರಮುಖ ಅಂಶ 1",
         "ಇದು ಡೆವಲಪ್‌ಮೆಂಟ್ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ - ಪ್ರಮುಖ ಅಂಶ 2",
         "ಇದು ಡೆವಲಪ್‌ಮೆಂಟ್ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ - ಪ್ರಮುಖ ಅಂಶ 3",
-        "ನಿಜವಾದ ದಾಖಲೆ ವಿಶ್ಲೇಷಣೆಯನ್ನು ಪಡೆಯಲು OpenAI API ಕೀ ಅನ್ನು ಸೇರಿಸಿ"
+        "ನಿಜವಾದ ದಾಖಲೆ ವಿಶ್ಲೇಷಣೆಯನ್ನು ಪಡೆಯಲು Perplexity API ಕೀ ಅನ್ನು ಸೇರಿಸಿ"
       ]
     };
   } else {
     return {
-      simplifiedText: `This is a placeholder simplified text for development purposes. The actual application would provide a detailed simplification of your ${wordCount}-word document using OpenAI. Please add an OpenAI API key to enable the full functionality.`,
+      simplifiedText: `This is a placeholder simplified text for development purposes. The actual application would provide a detailed simplification of your ${wordCount}-word document using DeepSeek. Please add a Perplexity API key to enable the full functionality.`,
       keyPoints: [
         "This is a development placeholder - key point 1",
         "This is a development placeholder - key point 2",
         "This is a development placeholder - key point 3",
-        "Add an OpenAI API key to get actual document analysis"
+        "Add a Perplexity API key to get actual document analysis"
       ]
     };
   }

@@ -23,6 +23,11 @@ import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { cn } from "@/lib/utils";
 
+// Required field marker component
+const RequiredMark = () => {
+  return <span className="text-red-500 ml-1">*</span>;
+};
+
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
@@ -93,10 +98,7 @@ const ContactForm = () => {
     }
   };
   
-  // Red asterisk component for required fields
-  const RequiredMark = () => (
-    <span className="text-red-500 ml-1">*</span>
-  );
+  // Required field marker already defined at the top of the file
 
   return (
     <Card className="w-full max-w-3xl mx-auto">
