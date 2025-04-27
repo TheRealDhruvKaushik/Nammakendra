@@ -178,23 +178,7 @@ const translations: Record<Language, Record<string, string>> = {
     'vidhana.docType3': 'Government Notices',
     'vidhana.docType4': 'Property Documents',
     
-    // NammaSarkara Page - Kannada
-    'sarkara.title': 'ನಮ್ಮ ಸರ್ಕಾರ',
-    'sarkara.subtitle': 'ಸರ್ಕಾರಿ ಸೇವೆಗಳ ಬಗ್ಗೆ ಮಾಹಿತಿ ಪಡೆಯಿರಿ',
-    'sarkara.description': 'ನಮ್ಮ ಸರ್ಕಾರ ಅನ್ನು ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗಾಗಿ ಜಿಲ್ಲಾ-ನಿರ್ದಿಷ್ಟ ಮತ್ತು ವರ್ಗದ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ AI-ಆಧಾರಿತ ಚಾಟ್‌ಬಾಟ್ ಆಗಿದೆ. ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಲು ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಬಳಸಿ.',
-    'sarkara.features.title': 'ಈ ಸೇವೆಯ ವೈಶಿಷ್ಟ್ಯಗಳು',
-    'sarkara.feature1.title': 'ಸ್ಥಳ-ನಿರ್ದಿಷ್ಟ ಮಾಹಿತಿ',
-    'sarkara.feature1.description': 'ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗೆ ಜಿಲ್ಲಾ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳನ್ನು ಪಡೆಯಿರಿ.',
-    'sarkara.feature2.title': 'ದಾಖಲೆಗಳ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ',
-    'sarkara.feature2.description': 'ವಿವಿಧ ಸರ್ಕಾರಿ ಅರ್ಜಿಗಳಿಗೆ ನೀವು ತರಬೇಕಾದ ದಾಖಲೆಗಳನ್ನು ಸರಿಯಾಗಿ ಕಂಡುಕೊಳ್ಳಿ.',
-    'sarkara.feature3.title': 'ಹಂತ-ಹಂತದ ಮಾರ್ಗದರ್ಶನ',
-    'sarkara.feature3.description': 'ಪ್ರಾರಂಭದಿಂದ ಅಂತ್ಯದವರೆಗೆ ಸರ್ಕಾರಿ ಸೇವೆಗಳನ್ನು ಪಡೆಯುವ ಪ್ರಕ್ರಿಯೆಯನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ.',
-    'sarkara.commonTopics': 'ಸಾಮಾನ್ಯ ವಿಷಯಗಳು',
-    'sarkara.topic1': 'ಆಧಾರ್ ಕಾರ್ಡ್ ನವೀಕರಣ ಮತ್ತು ಅರ್ಜಿಗಳು',
-    'sarkara.topic2': 'ಮತದಾರರ ID ಮತ್ತು ಚುನಾವಣಾ ಸೇವೆಗಳು',
-    'sarkara.topic3': 'ಪಾಸ್‌ಪೋರ್ಟ್ ಅಪ್ಲಿಕೇಶನ್ ಅಗತ್ಯತೆಗಳು',
-    'sarkara.topic4': 'ಆಸ್ತಿ ನೋಂದಣಿ ಕಾರ್ಯವಿಧಾನಗಳು',
-    'sarkara.tip': 'ಸಲಹೆ: ಸ್ಥಳ-ನಿರ್ದಿಷ್ಟ ಅಗತ್ಯತೆಗಳು ಮತ್ತು ಕಾರ್ಯವಿಧಾನಗಳಿಗಾಗಿ ನಿಮ್ಮ ಜಿಲ್ಲೆಯನ್ನು ಉಲ್ಲೇಖಿಸಿ.',
+    // Removed duplicate NammaSarkara translations
 
     // About Page
     'about.title': 'About Us',
@@ -378,6 +362,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'ಮುಖಪುಟ',
     'nav.sahayak': 'ನಮ್ಮ ಸಹಾಯಕ',
+    'nav.sarkara': 'ನಮ್ಮ ಸರ್ಕಾರ',
     'nav.vidhana': 'ನಮ್ಮ ವಿಧಾನ',
     'nav.contact': 'ಸಂಪರ್ಕ',
     'nav.slogan': 'ಕಾನೂನು ಸಹಾಯ ಸರಳೀಕರಿಸಲಾಗಿದೆ',

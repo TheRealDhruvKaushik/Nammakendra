@@ -37,7 +37,7 @@ const NammaSarkara = () => {
               </ul>
             </div>
             
-            <ChatInterface />
+            <ChatInterface pageType="sarkara" />
             
             <div className="mt-8 bg-primary/5 p-6 rounded-lg border border-primary/20">
               <h2 className="text-xl font-bold mb-4">{t('sarkara.commonTopics')}</h2>
