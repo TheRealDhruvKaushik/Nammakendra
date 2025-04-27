@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
+import Tesseract from 'tesseract.js';
 import { 
   insertContactSchema, 
   insertChatMessageSchema 
@@ -37,12 +38,14 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
   fileFilter: (req, file, cb) => {
-    // Allow only specific file types
-    const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
-    if (allowedTypes.includes(file.mimetype)) {
+    // Allow document and image file types
+    const allowedDocTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    
+    if (allowedDocTypes.includes(file.mimetype) || allowedImageTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only PDF, DOCX, and TXT are allowed.') as any);
+      cb(new Error('Invalid file type. Only PDF, DOCX, TXT, JPEG, PNG and WEBP are allowed.') as any);
     }
   }
 });
