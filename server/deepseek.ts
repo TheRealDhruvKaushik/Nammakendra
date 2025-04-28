@@ -180,18 +180,19 @@ export async function analyzeDocument(documentText: string, language: string = '
       systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens. 
       
       Your task is to:
-      1. Analyze the legal document
-      2. Create a simplified summary in plain language
-      3. Extract key points, deadlines, requirements, and actions needed
+      1. Analyze the legal document (even if it appears to be OCR text with errors, try to make sense of it)
+      2. Create a simplified summary in plain language that anyone can understand
+      3. Extract at least 5 key points, deadlines, requirements, and actions needed
       4. Explain legal jargon in simple terms
+      5. If the document appears to be from an image with OCR, try to intelligently reconstruct meaning
       
       Format your response as JSON with the following structure:
       {
-        "simplifiedText": "A comprehensive simplified version of the document in plain language",
-        "keyPoints": ["Key point 1", "Key point 2", ...]
+        "simplifiedText": "A comprehensive simplified version of the document in plain language with thorough explanation of what this document is about and what the reader should know",
+        "keyPoints": ["Key point 1", "Key point 2", "Key point 3", "Key point 4", "Key point 5", ...]
       }
       
-      Make your explanation accessible to elderly users or those with limited legal knowledge.`;
+      Make your explanation accessible to elderly users or those with limited legal knowledge. Be thorough and clear.`;
     }
     
     // Call DeepSeek API with instruction to return JSON

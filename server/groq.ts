@@ -90,6 +90,26 @@ export async function chatWithGroq(message: string, language: string = 'english'
 }
 
 /**
+ * Truncate or chunk text to fit within API limits
+ * @param text The text to process
+ * @param maxLength Maximum character length (default 10000)
+ * @returns Processed text that fits within the limit
+ */
+function truncateText(text: string, maxLength: number = 10000): string {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  
+  // If text is too long, take first 70% and last 30% of allowed length to preserve context
+  const firstPart = Math.floor(maxLength * 0.7);
+  const lastPart = maxLength - firstPart;
+  
+  return text.substring(0, firstPart) + 
+    "\n\n[...Content truncated due to length...]\n\n" + 
+    text.substring(text.length - lastPart);
+}
+
+/**
  * Analyzes a legal document using Groq and returns a simplified version with key points
  * @param documentText Original document text
  * @param language Language preference ('english' or 'kannada')
@@ -106,6 +126,11 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
   }
   
   try {
+    // Truncate document text to avoid API limits (Groq has ~30K token limit)
+    // For text, roughly 1 token = 4 chars, so 8000 chars should be safe
+    const processedText = truncateText(documentText, 8000);
+    console.log(`Original text length: ${documentText.length}, Processed text length: ${processedText.length}`);
+    
     // Define language-specific system instructions
     let systemContent = '';
     
@@ -115,7 +140,7 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
       VERY IMPORTANT: Always respond in Kannada language only. Do not use English.
       
       Your task is to:
-      1. Analyze the legal document
+      1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
       2. Create a simplified summary in plain Kannada language
       3. Extract key points, deadlines, requirements, and actions needed
       4. Explain legal jargon in simple Kannada terms
@@ -131,10 +156,11 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
       systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens. 
       
       Your task is to:
-      1. Analyze the legal document
+      1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
       2. Create a simplified summary in plain language
-      3. Extract key points, deadlines, requirements, and actions needed
+      3. Extract key points, deadlines, requirements, and actions needed (at least 5 key points)
       4. Explain legal jargon in simple terms
+      5. If the document appears to be an image with OCR text, try to make sense of it even if there are errors
       
       Format your response as JSON with the following structure:
       {
@@ -145,26 +171,28 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
       Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     }
     
-    // Call Groq API with OpenAI-compatible endpoint
-    const response = await groqClient.post('/chat/completions', {
-      model: DOCUMENT_MODEL,
-      messages: [
-        {
-          role: "system",
-          content: systemContent
-        },
-        {
-          role: "user",
-          content: documentText
-        }
-      ],
-      temperature: 0.3,
-      max_tokens: 1500
-    });
-
-    // Try to parse JSON from the response
     try {
+      // Call Groq API with OpenAI-compatible endpoint
+      console.log("Sending request to Groq API for document analysis");
+      const response = await groqClient.post('/chat/completions', {
+        model: DOCUMENT_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: systemContent
+          },
+          {
+            role: "user",
+            content: processedText
+          }
+        ],
+        temperature: 0.3,
+        max_tokens: 1500
+      });
+
+      // Try to parse JSON from the response
       const responseText = response.data.choices[0].message.content.trim();
+      console.log("Received response from Groq API, length:", responseText.length);
       
       // Find JSON in the response
       const jsonStart = responseText.indexOf('{');
@@ -172,30 +200,88 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
       
       if (jsonStart >= 0 && jsonEnd > jsonStart) {
         const jsonString = responseText.substring(jsonStart, jsonEnd);
-        const result = JSON.parse(jsonString);
-        
-        return {
-          simplifiedText: result.simplifiedText || "Could not simplify the document.",
-          keyPoints: result.keyPoints || []
-        };
+        try {
+          const result = JSON.parse(jsonString);
+          
+          return {
+            simplifiedText: result.simplifiedText || "Could not simplify the document.",
+            keyPoints: result.keyPoints || []
+          };
+        } catch (jsonError) {
+          console.error("Error parsing JSON from Groq response:", jsonError);
+          // If JSON parsing fails, return the raw text response
+          return {
+            simplifiedText: responseText || "Could not simplify the document.",
+            keyPoints: ["Error extracting key points from the document"]
+          };
+        }
       } else {
         // Fallback in case response isn't properly formatted JSON
+        console.log("Response is not valid JSON, using raw text");
         return {
           simplifiedText: responseText || "Could not simplify the document.",
           keyPoints: ["Could not extract key points from the document"]
         };
       }
-    } catch (parseError) {
-      console.error("Error parsing JSON from Groq response:", parseError);
-      const responseText = response.data.choices[0].message.content.trim();
+    } catch (apiError: any) {
+      console.error("Error calling Groq API:", apiError.message);
       
-      return {
-        simplifiedText: responseText || "Could not simplify the document.",
-        keyPoints: ["Error extracting key points from the document"]
-      };
+      // If the error is related to payload size (413), try with an even shorter text
+      if (apiError.response && apiError.response.status === 413) {
+        console.log("Payload too large (413), retrying with shorter text");
+        
+        // Reduce text to 4000 chars for a much smaller payload
+        const shorterText = truncateText(documentText, 4000);
+        
+        // Call Groq API with shorter text
+        const retryResponse = await groqClient.post('/chat/completions', {
+          model: DOCUMENT_MODEL,
+          messages: [
+            {
+              role: "system",
+              content: systemContent
+            },
+            {
+              role: "user",
+              content: shorterText
+            }
+          ],
+          temperature: 0.3,
+          max_tokens: 1500
+        });
+        
+        // Process response
+        const retryResponseText = retryResponse.data.choices[0].message.content.trim();
+        const jsonStart = retryResponseText.indexOf('{');
+        const jsonEnd = retryResponseText.lastIndexOf('}') + 1;
+        
+        if (jsonStart >= 0 && jsonEnd > jsonStart) {
+          const jsonString = retryResponseText.substring(jsonStart, jsonEnd);
+          try {
+            const result = JSON.parse(jsonString);
+            return {
+              simplifiedText: result.simplifiedText || "Could not simplify the document.",
+              keyPoints: result.keyPoints || []
+            };
+          } catch (parseError) {
+            return {
+              simplifiedText: retryResponseText || "Could not simplify the document.",
+              keyPoints: ["Could not extract key points from the document"]
+            };
+          }
+        } else {
+          return {
+            simplifiedText: retryResponseText || "Could not simplify the document.",
+            keyPoints: ["Could not extract key points from the document"]
+          };
+        }
+      }
+      
+      // For other errors, rethrow
+      throw apiError;
     }
   } catch (error) {
-    console.error("Error analyzing document with Groq:", error);
+    console.error("Error with Groq API for document analysis, falling back to alternatives:", error);
     throw new Error("Failed to analyze document. Please try again later.");
   }
 }

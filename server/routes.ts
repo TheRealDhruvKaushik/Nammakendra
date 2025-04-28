@@ -150,15 +150,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Use Tesseract.js to extract text from images
         console.log("Using Tesseract OCR for image document");
         try {
+          // Configure Tesseract with more options for better accuracy
           const { data } = await Tesseract.recognize(
             filePath,
             'eng', // Use English for OCR
             { 
-              logger: m => console.log(m) 
-            }
+              logger: m => {
+                if (m.status === 'recognizing text') {
+                  // Only log progress updates at 25% increments to reduce noise
+                  if (m.progress === 0 || m.progress === 0.25 || m.progress === 0.5 || m.progress === 0.75 || m.progress === 1) {
+                    console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
+                  }
+                } else {
+                  console.log(`OCR Status: ${m.status}`);
+                }
+              }
+            } as any // Cast to any to avoid TypeScript errors with Tesseract options
           );
+          
           fileContent = data.text;
           console.log("OCR completed, extracted text length:", fileContent.length);
+          
+          // If the extracted text is very short, it might be an OCR failure
+          if (fileContent.length < 50) {
+            console.warn("OCR extracted very little text, might be a low-quality image or an error");
+          }
         } catch (ocrError) {
           console.error("Tesseract OCR Error:", ocrError);
           throw new Error("Failed to extract text from the image. Please try a clearer image or a different format.");
@@ -166,7 +182,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         // Read file content for text-based formats
         try {
+          // For PDF files, we should use a PDF parser, but for now we'll read as text
+          // Note: This will only work for text-based PDFs, not scanned PDFs
           fileContent = fs.readFileSync(filePath, 'utf8');
+          console.log(`Read text file with ${fileContent.length} characters`);
         } catch (readError) {
           console.error("File reading error:", readError);
           throw new Error("Failed to read file. The file may be corrupted or in an unsupported format.");
@@ -184,9 +203,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { chatWithGroq, analyzeDocumentWithGroq } = require('./groq');
         console.log("Using Groq API for document analysis");
         analysisResult = await analyzeDocumentWithGroq(fileContent, language);
-      } catch (groqError) {
+      } catch (groqError: any) {
         console.log("Groq API error, falling back to default AI stack:", groqError.message);
-        analysisResult = await analyzeDocument(fileContent, language);
+        
+        // Try using the Hugging Face stack first if available
+        if (hasHuggingFaceToken) {
+          try {
+            console.log("Falling back to Hugging Face for document analysis");
+            analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
+          } catch (hfError) {
+            console.log("Hugging Face API error, falling back to our final stack:", hfError.message);
+            // Final fallback to our built-in solution
+            analysisResult = await analyzeDocument(fileContent, language);
+          }
+        } else {
+          // Fallback directly to our built-in solution if Hugging Face is not available
+          analysisResult = await analyzeDocument(fileContent, language);
+        }
       }
       
       // Store document analysis
