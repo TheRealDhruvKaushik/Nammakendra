@@ -136,23 +136,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get language preference and page type
       const language = req.body.language || 'english';
-      const pageType = req.body.pageType || 'sahayak'; // Default to sahayak
+      const pageType = req.body.pageType || 'vidhana'; // Default to vidhana
       
-      // Read file content
+      // Get file information
       const filePath = req.file.path;
-      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const fileType = req.file.mimetype;
+      let fileContent = '';
+      
+      // Check if file is an image type
+      const isImage = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(fileType);
+      
+      if (isImage) {
+        // Use Tesseract.js to extract text from images
+        console.log("Using Tesseract OCR for image document");
+        try {
+          const { data } = await Tesseract.recognize(
+            filePath,
+            'eng', // Use English for OCR
+            { 
+              logger: m => console.log(m) 
+            }
+          );
+          fileContent = data.text;
+          console.log("OCR completed, extracted text length:", fileContent.length);
+        } catch (ocrError) {
+          console.error("Tesseract OCR Error:", ocrError);
+          throw new Error("Failed to extract text from the image. Please try a clearer image or a different format.");
+        }
+      } else {
+        // Read file content for text-based formats
+        try {
+          fileContent = fs.readFileSync(filePath, 'utf8');
+        } catch (readError) {
+          console.error("File reading error:", readError);
+          throw new Error("Failed to read file. The file may be corrupted or in an unsupported format.");
+        }
+      }
+      
+      if (!fileContent || fileContent.trim().length === 0) {
+        throw new Error("No text content found in the document. Please try a different file.");
+      }
       
       let analysisResult;
       
-      // Use different API based on the pageType (no need to analyze documents for sarkara,
-      // but we'll include the check for consistency and future-proofing)
-      if (pageType === 'sarkara') {
-        // For NammaSarkara, use our AI stack with government-specific processing
-        console.log("Using AI stack for document analysis (NammaSarkara)");
-        analysisResult = await analyzeDocument(fileContent, language);
-      } else {
-        // For NammaSahayak, use our AI stack for legal document analysis
-        console.log("Using AI stack for document analysis (NammaSahayak)");
+      // Use Groq for document analysis if API key is available, otherwise fallback to the existing solution
+      try {
+        const { chatWithGroq, analyzeDocumentWithGroq } = require('./groq');
+        console.log("Using Groq API for document analysis");
+        analysisResult = await analyzeDocumentWithGroq(fileContent, language);
+      } catch (groqError) {
+        console.log("Groq API error, falling back to default AI stack:", groqError.message);
         analysisResult = await analyzeDocument(fileContent, language);
       }
       

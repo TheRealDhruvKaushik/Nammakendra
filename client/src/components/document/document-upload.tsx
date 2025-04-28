@@ -21,12 +21,15 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
   };
 
   const validateAndSetFile = (file: File) => {
-    // Check file type (PDF, DOCX, TXT)
-    const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    // Check file type (PDF, DOCX, TXT, and images)
+    const validDocTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    const validTypes = [...validDocTypes, ...validImageTypes];
+    
     if (!validTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please upload a PDF, DOCX, or TXT file.",
+        description: "Please upload a PDF, DOCX, TXT file, or an image (JPEG, PNG).",
         variant: "destructive"
       });
       return;
@@ -40,6 +43,14 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
         variant: "destructive"
       });
       return;
+    }
+
+    // If it's an image, inform the user about OCR processing
+    if (validImageTypes.includes(file.type)) {
+      toast({
+        title: "Image document detected",
+        description: "We'll use OCR to extract text from your image. This might take a moment.",
+      });
     }
 
     setFile(file);
@@ -77,7 +88,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
       const formData = new FormData();
       formData.append('document', file);
       formData.append('language', language); // Add language parameter
-      formData.append('pageType', 'sahayak'); // Always use sahayak for document analysis
+      formData.append('pageType', 'vidhana'); // Use vidhana for document analysis
 
       // Use fetch directly since we're sending FormData
       const response = await fetch('/api/documents/analyze', {
@@ -154,7 +165,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
                     type="file" 
                     className="hidden" 
                     onChange={handleFileChange}
-                    accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+                    accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/jpeg,image/png,image/jpg,image/webp"
                   />
                 </label>
               </div>
