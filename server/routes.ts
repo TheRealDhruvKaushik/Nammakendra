@@ -198,29 +198,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       let analysisResult;
       
-      // Use Groq for document analysis if API key is available, otherwise fallback to the existing solution
-      try {
-        // Import directly from groq.ts instead of using require
-        const { analyzeDocumentWithGroq } = await import('./groq');
-        console.log("Using Groq API for document analysis");
-        analysisResult = await analyzeDocumentWithGroq(fileContent, language);
-      } catch (groqError: any) {
-        console.log("Groq API error, falling back to default AI stack:", groqError.message);
-        
-        // Try using the Hugging Face stack first if available
-        if (hasHuggingFaceToken) {
-          try {
-            console.log("Falling back to Hugging Face for document analysis");
-            analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
-          } catch (hfError) {
-            console.log("Hugging Face API error, falling back to our final stack:", hfError.message);
-            // Final fallback to our built-in solution
+      // Try to directly import Groq and use it for document analysis
+      const groqAvailable = process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== "dummy-key";
+      const hfAvailable = process.env.HUGGING_FACE_TOKEN && process.env.HUGGING_FACE_TOKEN !== "dummy-key";
+      
+      if (groqAvailable) {
+        try {
+          // Import directly from groq.ts instead of using require
+          const { analyzeDocumentWithGroq } = await import('./groq');
+          console.log("Using Groq API for document analysis");
+          analysisResult = await analyzeDocumentWithGroq(fileContent, language);
+        } catch (groqError: any) {
+          console.log("Groq API error, falling back to alternatives:", groqError.message);
+          
+          // Try using the Hugging Face stack next if available
+          if (hfAvailable) {
+            try {
+              console.log("Falling back to Hugging Face for document analysis");
+              analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
+            } catch (hfError: any) {
+              console.log("Hugging Face API error, using DeepSeek fallback:", hfError.message);
+              // Final fallback to our built-in solution
+              analysisResult = await analyzeDocument(fileContent, language);
+            }
+          } else {
+            // Fallback directly to our built-in solution if Hugging Face is not available
             analysisResult = await analyzeDocument(fileContent, language);
           }
-        } else {
-          // Fallback directly to our built-in solution if Hugging Face is not available
+        }
+      } else if (hfAvailable) {
+        // Try Hugging Face if Groq is not available
+        try {
+          console.log("Groq not available, using Hugging Face for document analysis");
+          analysisResult = await analyzeDocumentWithHuggingFace(fileContent, language);
+        } catch (hfError: any) {
+          console.log("Hugging Face API error, using DeepSeek fallback:", hfError.message);
+          // Fallback to our built-in solution
           analysisResult = await analyzeDocument(fileContent, language);
         }
+      } else {
+        // If neither API is available, use our built-in solution
+        console.log("No AI services available, using DeepSeek fallback for document analysis");
+        analysisResult = await analyzeDocument(fileContent, language);
       }
       
       // Store document analysis

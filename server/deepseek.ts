@@ -34,8 +34,12 @@ export async function chatGPT(message: string, language: string = 'english'): Pr
     console.log("Using Groq for chat response");
     try {
       // Import dynamically to avoid circular dependencies
-      const { chatWithGroq } = await import('./groq');
-      return await chatWithGroq(message, language);
+      const groqModule = await import('./groq');
+      if (groqModule && typeof groqModule.chatWithGroq === 'function') {
+        return await groqModule.chatWithGroq(message, language);
+      } else {
+        console.error("Groq module loaded but chatWithGroq function not found, falling back to alternatives");
+      }
     } catch (error) {
       console.error("Error with Groq API, falling back to alternatives:", error);
       // Fall through to other options
@@ -132,8 +136,12 @@ export async function analyzeDocument(documentText: string, language: string = '
     console.log("Using Groq directly from deepseek.ts for document analysis");
     try {
       // Import the function dynamically to avoid circular dependencies
-      // const { analyzeDocumentWithGroq } = await import('./groq');
-      return await analyzeDocumentWithGroq(documentText, language);
+      const groqModule = await import('./groq');
+      if (groqModule && typeof groqModule.analyzeDocumentWithGroq === 'function') {
+        return await groqModule.analyzeDocumentWithGroq(documentText, language);
+      } else {
+        console.error("Groq module loaded but analyzeDocumentWithGroq function not found, falling back to alternatives");
+      }
     } catch (error) {
       console.error("Error with Groq API for document analysis, falling back to alternatives:", error);
       // Fall through to other options
