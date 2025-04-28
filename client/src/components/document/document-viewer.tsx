@@ -7,10 +7,11 @@ import { useToast } from "@/hooks/use-toast";
 
 interface DocumentViewerProps {
   simplifiedText: string;
+  keyPoints?: string[];
   onReset: () => void;
 }
 
-const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
+const DocumentViewer = ({ simplifiedText, keyPoints: providedKeyPoints, onReset }: DocumentViewerProps) => {
   const [activeTab, setActiveTab] = useState("simplified");
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
@@ -20,7 +21,9 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
 
   // Get summary and key points
   const summary = sections[0] || "No summary available";
-  const keyPoints = sections.slice(1);
+  
+  // Use provided key points if available, otherwise extract from simplified text
+  const keyPoints = providedKeyPoints || sections.slice(1);
 
   // Function to copy text to clipboard
   const copyToClipboard = async () => {
@@ -93,7 +96,7 @@ const DocumentViewer = ({ simplifiedText, onReset }: DocumentViewerProps) => {
     toast({
       title: "Download ZIP",
       description: "This feature is not yet implemented",
-      variant: "warning"
+      variant: "destructive"
     });
   };
 

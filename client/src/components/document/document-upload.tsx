@@ -7,7 +7,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/language-context";
 
-const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: string) => void }) => {
+const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: { simplifiedText: string; keyPoints: string[] }) => void }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -103,8 +103,11 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (text: s
 
       const data = await response.json();
       
-      // Call the callback with processed text
-      onDocumentProcessed(data.simplifiedText);
+      // Call the callback with processed text and key points
+      onDocumentProcessed({
+        simplifiedText: data.simplifiedText,
+        keyPoints: data.keyPoints || []
+      });
       
       toast({
         title: "Document processed successfully",

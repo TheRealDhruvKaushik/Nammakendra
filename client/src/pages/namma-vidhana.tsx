@@ -5,17 +5,20 @@ import DocumentViewer from "@/components/document/document-viewer";
 import { useLanguage } from "@/context/language-context";
 
 const NammaVidhana = () => {
-  const [simplifiedText, setSimplifiedText] = useState<string | null>(null);
+  const [documentAnalysis, setDocumentAnalysis] = useState<{
+    simplifiedText: string;
+    keyPoints: string[];
+  } | null>(null);
   const { t } = useLanguage();
 
-  const handleDocumentProcessed = (text: string) => {
-    setSimplifiedText(text);
+  const handleDocumentProcessed = (data: { simplifiedText: string; keyPoints: string[] }) => {
+    setDocumentAnalysis(data);
     // Scroll to the results
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleReset = () => {
-    setSimplifiedText(null);
+    setDocumentAnalysis(null);
   };
 
   return (
@@ -32,9 +35,10 @@ const NammaVidhana = () => {
               {t('vidhana.description')}
             </p>
             
-            {simplifiedText ? (
+            {documentAnalysis ? (
               <DocumentViewer 
-                simplifiedText={simplifiedText} 
+                simplifiedText={documentAnalysis.simplifiedText} 
+                keyPoints={documentAnalysis.keyPoints}
                 onReset={handleReset} 
               />
             ) : (
@@ -59,7 +63,7 @@ const NammaVidhana = () => {
               </>
             )}
             
-            {!simplifiedText && (
+            {!documentAnalysis && (
               <div className="mt-8 bg-primary/5 p-6 rounded-lg border border-primary/20">
                 <h2 className="text-xl font-bold mb-4">{t('vidhana.documentTypes')}</h2>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
