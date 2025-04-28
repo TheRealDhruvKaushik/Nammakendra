@@ -1,6 +1,5 @@
 import axios from "axios";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
-import { chatWithGroq, analyzeDocumentWithGroq } from "./groq";
 
 // DeepSeek's free API endpoint for the Llama-3.1-Sonar-Small model
 const DEEPSEEK_API_URL = "https://api.perplexity.ai/chat/completions";
@@ -34,6 +33,8 @@ export async function chatGPT(message: string, language: string = 'english'): Pr
   if (!isGroqDummy) {
     console.log("Using Groq for chat response");
     try {
+      // Import dynamically to avoid circular dependencies
+      const { chatWithGroq } = await import('./groq');
       return await chatWithGroq(message, language);
     } catch (error) {
       console.error("Error with Groq API, falling back to alternatives:", error);
@@ -128,8 +129,10 @@ export async function analyzeDocument(documentText: string, language: string = '
 }> {
   // Try Groq first if API key is available
   if (!isGroqDummy) {
-    console.log("Using Groq for document analysis");
+    console.log("Using Groq directly from deepseek.ts for document analysis");
     try {
+      // Import the function dynamically to avoid circular dependencies
+      // const { analyzeDocumentWithGroq } = await import('./groq');
       return await analyzeDocumentWithGroq(documentText, language);
     } catch (error) {
       console.error("Error with Groq API for document analysis, falling back to alternatives:", error);

@@ -200,7 +200,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use Groq for document analysis if API key is available, otherwise fallback to the existing solution
       try {
-        const { chatWithGroq, analyzeDocumentWithGroq } = require('./groq');
+        // Import directly from groq.ts instead of using require
+        const { analyzeDocumentWithGroq } = await import('./groq');
         console.log("Using Groq API for document analysis");
         analysisResult = await analyzeDocumentWithGroq(fileContent, language);
       } catch (groqError: any) {
