@@ -12,6 +12,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadOption, setUploadOption] = useState<'initial' | 'options'>('initial');
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const isMobile = useIsMobile();
@@ -20,10 +21,16 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
+  
+  // Handle clicking the main upload button
+  const handleUploadClick = () => {
+    setUploadOption('options');
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       validateAndSetFile(e.target.files[0]);
+      setUploadOption('initial'); // Reset upload option after file selection
     }
   };
 
@@ -82,6 +89,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       validateAndSetFile(e.dataTransfer.files[0]);
+      setUploadOption('initial'); // Reset upload option after file drop
     }
   };
 
@@ -154,39 +162,47 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
               <Upload className="h-8 w-8 text-primary" />
             </div>
             
-            <div className="space-y-1">
-              <p className="text-lg font-medium">
-                {file ? file.name : t('document.drag')}
-              </p>
-              <p className="text-sm text-neutral">
-                {file 
-                  ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` 
-                  : t('document.browse')}
-              </p>
-            </div>
-            
-            {!file && (
-              <div className="pt-4 flex flex-wrap gap-2 justify-center">
-                {/* Browse Files */}
-                <label className="cursor-pointer">
-                  <Button variant="outline" type="button" className="flex items-center gap-2">
-                    <FolderOpen className="h-4 w-4" />
-                    <span>Browse Files</span>
-                  </Button>
-                  <input 
-                    ref={fileInputRef}
-                    type="file" 
-                    className="hidden" 
-                    onChange={handleFileChange}
-                    accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/jpeg,image/png,image/jpg,image/webp"
-                  />
-                </label>
-                
-                {/* Take Photo */}
-                {isMobile && (
-                  <label className="cursor-pointer">
-                    <Button variant="outline" type="button" className="flex items-center gap-2">
-                      <Camera className="h-4 w-4" />
+            {file ? (
+              <div className="space-y-1">
+                <p className="text-lg font-medium">{file.name}</p>
+                <p className="text-sm text-neutral">{`${(file.size / (1024 * 1024)).toFixed(2)} MB`}</p>
+              </div>
+            ) : uploadOption === 'initial' ? (
+              <div className="space-y-4">
+                <p className="text-lg font-medium">{t('document.drag')}</p>
+                <p className="text-sm text-neutral">{t('document.browse')}</p>
+                <Button 
+                  onClick={handleUploadClick}
+                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+                  size="lg"
+                >
+                  <Upload className="h-5 w-5" />
+                  <span>Upload Document</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4 w-full">
+                <p className="text-lg font-medium">Choose an upload option:</p>
+                <div className="pt-1 flex flex-wrap gap-3 justify-center">
+                  {/* Browse Files */}
+                  <label className="cursor-pointer w-full sm:w-auto">
+                    <Button variant="outline" type="button" className="flex items-center gap-2 w-full" size="lg">
+                      <FolderOpen className="h-5 w-5" />
+                      <span>Browse Files</span>
+                    </Button>
+                    <input 
+                      ref={fileInputRef}
+                      type="file" 
+                      className="hidden" 
+                      onChange={handleFileChange}
+                      accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/jpeg,image/png,image/jpg,image/webp"
+                    />
+                  </label>
+                  
+                  {/* Take Photo */}
+                  <label className="cursor-pointer w-full sm:w-auto">
+                    <Button variant="outline" type="button" className="flex items-center gap-2 w-full" size="lg">
+                      <Camera className="h-5 w-5" />
                       <span>Take Photo</span>
                     </Button>
                     <input 
@@ -198,13 +214,11 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
                       accept="image/jpeg,image/png,image/jpg,image/webp"
                     />
                   </label>
-                )}
-                
-                {/* Choose from Gallery */}
-                {isMobile && (
-                  <label className="cursor-pointer">
-                    <Button variant="outline" type="button" className="flex items-center gap-2">
-                      <Image className="h-4 w-4" />
+                  
+                  {/* Choose from Gallery */}
+                  <label className="cursor-pointer w-full sm:w-auto">
+                    <Button variant="outline" type="button" className="flex items-center gap-2 w-full" size="lg">
+                      <Image className="h-5 w-5" />
                       <span>From Gallery</span>
                     </Button>
                     <input 
@@ -215,7 +229,14 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
                       accept="image/jpeg,image/png,image/jpg,image/webp"
                     />
                   </label>
-                )}
+                </div>
+                <Button 
+                  variant="ghost" 
+                  className="mt-4 text-sm"
+                  onClick={() => setUploadOption('initial')}
+                >
+                  Cancel
+                </Button>
               </div>
             )}
           </div>
