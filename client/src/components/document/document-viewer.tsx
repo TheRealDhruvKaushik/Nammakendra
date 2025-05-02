@@ -22,8 +22,59 @@ const DocumentViewer = ({ simplifiedText, keyPoints: providedKeyPoints, onReset 
   // Get summary and key points
   const summary = sections[0] || "No summary available";
   
-  // Use provided key points if available, otherwise extract from simplified text
-  const keyPoints = providedKeyPoints || sections.slice(1);
+  // Check if we have valid key points
+  let keyPoints: string[] = [];
+  
+  // First attempt to use provided key points if they exist and have content
+  if (providedKeyPoints && providedKeyPoints.length > 0) {
+    keyPoints = providedKeyPoints;
+  } else {
+    // Look for a "Key Points" section in the text
+    const keyPointsIndex = sections.findIndex(section => 
+      section.toLowerCase().includes('key points') || 
+      section.toLowerCase().includes('important points')
+    );
+    
+    if (keyPointsIndex >= 0 && keyPointsIndex < sections.length - 1) {
+      // Take everything after the "Key Points" header section
+      keyPoints = sections.slice(keyPointsIndex + 1);
+    } else {
+      // Extract bullet points or numbered points from the text
+      const bulletPointPattern = /[•\-*]\s+(.+)/g;
+      const numberedPointPattern = /\d+\.\s+(.+)/g;
+      
+      const extractedPoints = [];
+      
+      // Search for bullet points in the text
+      let match;
+      const combinedText = simplifiedText;
+      
+      while ((match = bulletPointPattern.exec(combinedText)) !== null) {
+        extractedPoints.push(match[1]);
+      }
+      
+      // If no bullet points, search for numbered points
+      if (extractedPoints.length === 0) {
+        while ((match = numberedPointPattern.exec(combinedText)) !== null) {
+          extractedPoints.push(match[1]);
+        }
+      }
+      
+      // If we found some points, use them
+      if (extractedPoints.length > 0) {
+        keyPoints = extractedPoints;
+      } else {
+        // Otherwise, use sections from the text as a last resort
+        // Skip the first section which we're using as summary
+        keyPoints = sections.slice(1);
+      }
+    }
+  }
+  
+  // Ensure we have at least one key point
+  if (keyPoints.length === 0) {
+    keyPoints = ["No key points could be extracted from this document."]
+  }
 
   // Function to copy text to clipboard
   const copyToClipboard = async () => {

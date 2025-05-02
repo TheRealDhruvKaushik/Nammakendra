@@ -163,8 +163,9 @@ export async function analyzeDocumentWithGroq(
         Format your response as JSON with the following structure:
         {
           "simplifiedText": "A comprehensive simplified version of the document in plain language",
-          "keyPoints": ["Key point 1", "Key point 2", ...]
-        }`;
+          "keyPoints": ["Key point 1", "Key point 2", "Key point 3", "Key point 4", "Key point 5", "Key point 6"]
+        }
+        IMPORTANT: Always include at least 5-6 key points in the keyPoints array, even if the document is in a different language or has been translated.`;
       }
     } else {
       // For regular document analysis, use the full system prompt
@@ -191,16 +192,18 @@ export async function analyzeDocumentWithGroq(
         
         Your task is to:
         1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
-        2. Create a simplified summary in plain language
-        3. Extract key points, deadlines, requirements, and actions needed (at least 5 key points)
+        2. Create a simplified summary in plain English
+        3. Extract key points, deadlines, requirements, and actions needed
         4. Explain legal jargon in simple terms
-        5. If the document appears to be an image with OCR text, try to make sense of it even if there are errors
+        5. If the document appears to be in a non-English language or contains OCR text, do your best to comprehend it
         
         Format your response as JSON with the following structure:
         {
           "simplifiedText": "A comprehensive simplified version of the document in plain language",
-          "keyPoints": ["Key point 1", "Key point 2", ...]
+          "keyPoints": ["Key point 1", "Key point 2", "Key point 3", "Key point 4", "Key point 5", "Key point 6"]
         }
+        
+        IMPORTANT: Always include at least 5-6 key points in the keyPoints array.
         
         Make your explanation accessible to elderly users or those with limited legal knowledge.`;
       }
