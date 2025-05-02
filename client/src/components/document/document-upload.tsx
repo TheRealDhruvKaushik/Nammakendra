@@ -168,12 +168,12 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
                 <p className="text-sm text-neutral">{`${(file.size / (1024 * 1024)).toFixed(2)} MB`}</p>
               </div>
             ) : uploadOption === 'initial' ? (
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col items-center">
                 <p className="text-lg font-medium">{t('document.drag')}</p>
                 <p className="text-sm text-neutral">{t('document.browse')}</p>
                 <Button 
                   onClick={handleUploadClick}
-                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2 mx-auto mt-2"
                   size="lg"
                 >
                   <Upload className="h-5 w-5" />
@@ -182,7 +182,7 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
               </div>
             ) : (
               <div className="space-y-4 w-full">
-                <p className="text-lg font-medium">Choose an upload option:</p>
+                <p className="text-lg font-medium text-center">Choose an upload option:</p>
                 <div className="pt-1 flex flex-wrap gap-3 justify-center">
                   {/* Browse Files */}
                   <label className="cursor-pointer w-full sm:w-auto">
@@ -230,13 +230,15 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
                     />
                   </label>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  className="mt-4 text-sm"
-                  onClick={() => setUploadOption('initial')}
-                >
-                  Cancel
-                </Button>
+                <div className="flex justify-center">
+                  <Button 
+                    variant="ghost" 
+                    className="mt-4 text-sm"
+                    onClick={() => setUploadOption('initial')}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
             )}
           </div>
