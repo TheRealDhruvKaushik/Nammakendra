@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Upload, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+import { Upload, Loader2, Camera, FolderOpen, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/language-context";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: { simplifiedText: string; keyPoints: string[] }) => void }) => {
   const [file, setFile] = useState<File | null>(null);
@@ -13,6 +14,12 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  const isMobile = useIsMobile();
+  
+  // Refs for file inputs
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -159,18 +166,56 @@ const DocumentUpload = ({ onDocumentProcessed }: { onDocumentProcessed: (data: {
             </div>
             
             {!file && (
-              <div className="pt-4">
+              <div className="pt-4 flex flex-wrap gap-2 justify-center">
+                {/* Browse Files */}
                 <label className="cursor-pointer">
-                  <Button variant="outline" type="button">
-                    {t('document.browseButton')}
+                  <Button variant="outline" type="button" className="flex items-center gap-2">
+                    <FolderOpen className="h-4 w-4" />
+                    <span>Browse Files</span>
                   </Button>
                   <input 
+                    ref={fileInputRef}
                     type="file" 
                     className="hidden" 
                     onChange={handleFileChange}
                     accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/jpeg,image/png,image/jpg,image/webp"
                   />
                 </label>
+                
+                {/* Take Photo */}
+                {isMobile && (
+                  <label className="cursor-pointer">
+                    <Button variant="outline" type="button" className="flex items-center gap-2">
+                      <Camera className="h-4 w-4" />
+                      <span>Take Photo</span>
+                    </Button>
+                    <input 
+                      ref={cameraInputRef}
+                      type="file" 
+                      capture="environment"
+                      className="hidden" 
+                      onChange={handleFileChange}
+                      accept="image/jpeg,image/png,image/jpg,image/webp"
+                    />
+                  </label>
+                )}
+                
+                {/* Choose from Gallery */}
+                {isMobile && (
+                  <label className="cursor-pointer">
+                    <Button variant="outline" type="button" className="flex items-center gap-2">
+                      <Image className="h-4 w-4" />
+                      <span>From Gallery</span>
+                    </Button>
+                    <input 
+                      ref={galleryInputRef}
+                      type="file" 
+                      className="hidden" 
+                      onChange={handleFileChange}
+                      accept="image/jpeg,image/png,image/jpg,image/webp"
+                    />
+                  </label>
+                )}
               </div>
             )}
           </div>

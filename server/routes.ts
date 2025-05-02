@@ -155,10 +155,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Use Tesseract.js to extract text from images
         console.log("Using Tesseract OCR for image document");
         try {
+          // Determine OCR language based on user preference
+          // Use Kannada language setting for Kannada users, otherwise English
+          const tesseractLang = language === 'kannada' ? 'eng+kan' : 'eng';
+          
           // Configure Tesseract with more options for better accuracy
           const { data } = await Tesseract.recognize(
             filePath,
-            'eng', // Use English for OCR
+            tesseractLang, // Use English + Kannada (if needed)
             { 
               logger: m => {
                 if (m.status === 'recognizing text') {
@@ -184,11 +188,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("Tesseract OCR Error:", ocrError);
           throw new Error("Failed to extract text from the image. Please try a clearer image or a different format.");
         }
-      } else {
-        // Read file content for text-based formats
+      } else if (fileType === 'application/pdf') {
+        // Use PyMuPDF to extract text from PDF files
+        console.log("Using PyMuPDF for PDF text extraction");
         try {
-          // For PDF files, we should use a PDF parser, but for now we'll read as text
-          // Note: This will only work for text-based PDFs, not scanned PDFs
+          // Execute our Python script to extract text from PDF
+          const pythonCommand = `python3 -c "import sys; sys.path.append('server'); from document_processor import extract_text_from_pdf; print(extract_text_from_pdf('${filePath}'))"`;
+          
+          const { stdout, stderr } = await execPromise(pythonCommand);
+          
+          if (stderr) {
+            console.error("Python PDF extraction error:", stderr);
+            throw new Error("Failed to extract text from PDF. The file may be corrupted or protected.");
+          }
+          
+          fileContent = stdout.trim();
+          console.log(`Extracted PDF text with ${fileContent.length} characters`);
+          
+          if (fileContent.length < 50) {
+            console.warn("PDF extraction yielded very little text, might be a scanned PDF without text layer");
+          }
+        } catch (pdfError) {
+          console.error("PDF extraction error:", pdfError);
+          throw new Error("Failed to extract text from the PDF. Please ensure the file is not corrupted or password-protected.");
+        }
+      } else {
+        // Read file content for other text-based formats (DOCX, TXT, etc.)
+        try {
           fileContent = fs.readFileSync(filePath, 'utf8');
           console.log(`Read text file with ${fileContent.length} characters`);
         } catch (readError) {
@@ -201,6 +227,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
         throw new Error("No text content found in the document. Please try a different file.");
       }
       
+      // Detect language of the extracted text
+      console.log("Detecting language of extracted text");
+      let detectedLanguage = 'english'; // Default
+      let needsTranslation = false;
+      
+      try {
+        // Use Python script to detect language
+        const detectCommand = `python3 -c "import sys; sys.path.append('server'); from document_processor import detect_language; print(detect_language('''${fileContent.replace(/'/g, "\\'")}'''))"`;
+        
+        const { stdout, stderr } = await execPromise(detectCommand);
+        
+        if (!stderr) {
+          detectedLanguage = stdout.trim();
+          console.log(`Detected language: ${detectedLanguage}`);
+          
+          // Check if translation is needed
+          needsTranslation = detectedLanguage !== language;
+          
+          if (needsTranslation) {
+            console.log(`Translation needed from ${detectedLanguage} to ${language}`);
+          }
+        }
+      } catch (langError) {
+        console.error("Language detection error:", langError);
+        // Continue with default language assumptions
+      }
+      
+      // Translate text if needed and if HF token is available
+      if (needsTranslation && process.env.HUGGING_FACE_TOKEN && process.env.HUGGING_FACE_TOKEN !== "dummy-key") {
+        try {
+          console.log(`Translating text from ${detectedLanguage} to ${language}`);
+          const translateCommand = `python3 -c "import sys; sys.path.append('server'); from document_processor import translate_with_indictrans; print(translate_with_indictrans('''${fileContent.replace(/'/g, "\\'")}''', '${detectedLanguage}', '${language}'))"`;
+          
+          const { stdout, stderr } = await execPromise(translateCommand);
+          
+          if (!stderr) {
+            fileContent = stdout.trim();
+            console.log(`Translation completed, new text length: ${fileContent.length}`);
+          } else {
+            console.error("Translation error:", stderr);
+          }
+        } catch (translateError) {
+          console.error("Translation execution error:", translateError);
+          // Continue with original text if translation fails
+        }
+      } else if (needsTranslation) {
+        console.log("Translation needed but no Hugging Face token available, proceeding with original text");
+      }
+      
+      // Prepare custom prompt based on language
+      let customPrompt = '';
+      if (language === 'kannada') {
+        customPrompt = `ಇದೊಂದು ಕಾನೂನು ಡಾಕ್ಯುಮೆಂಟ್ ಆಗಿದೆ. ಇದನ್ನು ಸರಳ ಕನ್ನಡದಲ್ಲಿ, ಸಾಮಾನ್ಯ ವ್ಯಕ್ತಿಗೆ ಅರ್ಥವಾಗುವ ರೀತಿಯಲ್ಲಿ ವಿವರಿಸಿ. ಇದನ್ನು ಸೂಕ್ಷ್ಮವಾಗಿ ವ್ಯಾಖ್ಯಾನಿಸಿ ಆದರೆ ಕಾನೂನು ಅರ್ಥವನ್ನು ಕಳೆದುಕೊಳ್ಳದಂತೆ ನೋಡಿ.\n---\n${fileContent}`;
+      } else {
+        customPrompt = `This is a legal document. Please simplify it in plain English so that a common person can understand it clearly. Retain the legal meaning but remove complex terminology and structure.\n---\n${fileContent}`;
+      }
+      
       let analysisResult;
       
       // Try to directly import Groq and use it for document analysis
@@ -210,9 +293,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (groqAvailable) {
         try {
           // Import directly from groq.ts instead of using require
-          const { analyzeDocumentWithGroq } = await import('./groq');
-          console.log("Using Groq API for document analysis");
-          analysisResult = await analyzeDocumentWithGroq(fileContent, language);
+          const groqModule = await import('./groq');
+          console.log("Using Groq API for document analysis with custom prompt");
+          analysisResult = await groqModule.analyzeDocumentWithGroq(customPrompt, language, true);
         } catch (groqError: any) {
           console.log("Groq API error, falling back to alternatives:", groqError.message);
           

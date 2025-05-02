@@ -113,11 +113,16 @@ function truncateText(text: string, maxLength: number = 10000): string {
 
 /**
  * Analyzes a legal document using Groq and returns a simplified version with key points
- * @param documentText Original document text
+ * @param documentText Original document text or custom prompt
  * @param language Language preference ('english' or 'kannada')
+ * @param isCustomPrompt Whether the documentText is a custom prompt (true) or raw text (false)
  * @returns Simplified text and key points
  */
-export async function analyzeDocumentWithGroq(documentText: string, language: string = 'english'): Promise<{
+export async function analyzeDocumentWithGroq(
+  documentText: string, 
+  language: string = 'english',
+  isCustomPrompt: boolean = false
+): Promise<{
   simplifiedText: string;
   keyPoints: string[];
 }> {
@@ -128,49 +133,77 @@ export async function analyzeDocumentWithGroq(documentText: string, language: st
   }
   
   try {
-    // Truncate document text to avoid API limits (Groq has ~30K token limit)
-    // For text, roughly 1 token = 4 chars, so 8000 chars should be safe
-    const processedText = truncateText(documentText, 8000);
-    console.log(`Original text length: ${documentText.length}, Processed text length: ${processedText.length}`);
+    let processedText: string;
+    
+    if (isCustomPrompt) {
+      // If using a custom prompt, use it directly (already formatted with the custom prompt)
+      processedText = documentText;
+      console.log("Using custom prompt for document analysis");
+    } else {
+      // Otherwise, truncate the text as usual
+      processedText = truncateText(documentText, 8000);
+      console.log(`Original text length: ${documentText.length}, Processed text length: ${processedText.length}`);
+    }
     
     // Define language-specific system instructions
     let systemContent = '';
     
-    if (language === 'kannada') {
-      systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens.
-      
-      VERY IMPORTANT: Always respond in Kannada language only. Do not use English.
-      
-      Your task is to:
-      1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
-      2. Create a simplified summary in plain Kannada language
-      3. Extract key points, deadlines, requirements, and actions needed
-      4. Explain legal jargon in simple Kannada terms
-      
-      Format your response as JSON with the following structure:
-      {
-        "simplifiedText": "A comprehensive simplified version of the document in Kannada language",
-        "keyPoints": ["Key point 1 in Kannada", "Key point 2 in Kannada", ...]
+    if (isCustomPrompt) {
+      // For custom prompts, use a minimal system prompt
+      if (language === 'kannada') {
+        systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens. 
+        VERY IMPORTANT: Always respond in Kannada language only.
+        Format your response as JSON with the following structure:
+        {
+          "simplifiedText": "A comprehensive simplified version of the document in Kannada language",
+          "keyPoints": ["Key point 1 in Kannada", "Key point 2 in Kannada", ...]
+        }`;
+      } else {
+        systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens.
+        Format your response as JSON with the following structure:
+        {
+          "simplifiedText": "A comprehensive simplified version of the document in plain language",
+          "keyPoints": ["Key point 1", "Key point 2", ...]
+        }`;
       }
-      
-      Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     } else {
-      systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens. 
-      
-      Your task is to:
-      1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
-      2. Create a simplified summary in plain language
-      3. Extract key points, deadlines, requirements, and actions needed (at least 5 key points)
-      4. Explain legal jargon in simple terms
-      5. If the document appears to be an image with OCR text, try to make sense of it even if there are errors
-      
-      Format your response as JSON with the following structure:
-      {
-        "simplifiedText": "A comprehensive simplified version of the document in plain language",
-        "keyPoints": ["Key point 1", "Key point 2", ...]
+      // For regular document analysis, use the full system prompt
+      if (language === 'kannada') {
+        systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens.
+        
+        VERY IMPORTANT: Always respond in Kannada language only. Do not use English.
+        
+        Your task is to:
+        1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
+        2. Create a simplified summary in plain Kannada language
+        3. Extract key points, deadlines, requirements, and actions needed
+        4. Explain legal jargon in simple Kannada terms
+        
+        Format your response as JSON with the following structure:
+        {
+          "simplifiedText": "A comprehensive simplified version of the document in Kannada language",
+          "keyPoints": ["Key point 1 in Kannada", "Key point 2 in Kannada", ...]
+        }
+        
+        Make your explanation accessible to elderly users or those with limited legal knowledge.`;
+      } else {
+        systemContent = `You are a legal document analyzer that simplifies complex legal text for ordinary citizens. 
+        
+        Your task is to:
+        1. Analyze the legal document (note: if the document is truncated, focus on analyzing the visible parts)
+        2. Create a simplified summary in plain language
+        3. Extract key points, deadlines, requirements, and actions needed (at least 5 key points)
+        4. Explain legal jargon in simple terms
+        5. If the document appears to be an image with OCR text, try to make sense of it even if there are errors
+        
+        Format your response as JSON with the following structure:
+        {
+          "simplifiedText": "A comprehensive simplified version of the document in plain language",
+          "keyPoints": ["Key point 1", "Key point 2", ...]
+        }
+        
+        Make your explanation accessible to elderly users or those with limited legal knowledge.`;
       }
-      
-      Make your explanation accessible to elderly users or those with limited legal knowledge.`;
     }
     
     try {
