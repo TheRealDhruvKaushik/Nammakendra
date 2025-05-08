@@ -1,0 +1,30 @@
+Purpose:
+To obtain an official identity card for senior citizens issued by the Department of Empowerment of Differently Abled and Senior Citizens.
+
+Online Mode:
+Portal: Seva Sindhu
+
+Steps:
+
+1.Select the department → “Application for Senior Citizen Card”
+
+2.Login using OTP and CAPTCHA
+
+3.Fill applicant details and verify
+
+4.Attach scanned annexures (ID proof, age proof)
+
+5.eSign using Aadhaar OTP
+
+6.Submit and receive digital acknowledgment
+
+7.Use reference number to track and download the final certificate
+
+Offline Mode:
+
+1.Visit the Department of Empowerment of Differently Abled and Senior Citizens or a designated Bangalore One/Karnataka One/Gram One center.
+
+2.Collect and submit a printed form along with required documents.
+
+3.Acknowledgment and card are issued after processing.
+

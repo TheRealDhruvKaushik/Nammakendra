@@ -1,0 +1,39 @@
+eJanMa – Birth and Death Registration System
+
+Purpose:
+State-wide online platform for birth, death, and stillbirth registration in Karnataka.
+
+Online Procedure:
+Used by Authorized Operators only (citizens cannot directly register online).
+
+Steps include data entry by staff → verification by health officials → digital signature by registrar → issuance of certificates.
+
+Public portal: ejanma.karnataka.gov.in
+
+Offline Procedure (for citizens):
+Where to apply:
+
+Rural: Village Accountant, PHC, Taluk Hospitals
+
+Urban: Medical Officers, Health Inspectors, Sanitary Inspectors
+
+
+Documents Required (Bring Originals):
+
+Hospital birth/death report
+
+Aadhaar card of applicant and deceased (if applicable)
+
+Identity proof of parents (for birth) or family (for death)
+
+Residential proof (utility bill, ration card, etc.)
+
+Stillbirth cases require medical certificate from hospital
+
+
+Process:
+
+Visit authority → fill form → submit original docs → officer enters data into eJanMa → certificate issued after verification
+
+
+

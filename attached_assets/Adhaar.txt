@@ -1,0 +1,146 @@
+KEY:
+"Aadhaar" = "A 12-digit unique identity number issued by UIDAI to Indian residents"
+"UIDAI" = "Unique Identification Authority of India"
+"PoI" = "Proof of Identity (document must contain name and photograph)"
+"PoA" = "Proof of Address (document must contain name and address)"
+"PoR" = "Proof of Relationship (document must contain name of applicant and name of Head of Family)"
+"DoB" = "Date of Birth (document must contain name and date of birth)"
+"HoF" = "Head of Family"
+"OCI" = "Overseas Citizen of India"
+"LTV" = "Long Term Visa"
+"FRRO/FRO" = "Foreigners Regional Registration Office / Foreigners Registration Office"
+"EPFO" = "Employees' Provident Fund Organisation"
+"PSU" = "Public Sector Undertaking"
+"CGHS" = "Central Government Health Scheme"
+"ECHS" = "Ex-Servicemen Contributory Health Scheme"
+"ESIC" = "Employees’ State Insurance Corporation"
+"RSBY" = "Rashtriya Swasthya Bima Yojana"
+"SLC" = "School Leaving Certificate"
+"TC" = "Transfer Certificate"
+"MP/MLA/MLC" = "Member of Parliament / Member of Legislative Assembly / Member of Legislative Council"
+"PID" = "Prisoner Induction Document"
+"NRI" = "Non-Resident Indian"
+"NACO" = "National AIDS Control Organisation"
+"BLO" = "Booth Level Officer"
+"ERO" = "Electoral Registration Officer"
+"NVSP" = "National Voters’ Service Portal"
+"PAN" = "Permanent Account Number"
+"MGNREGA/NREGS" = "Mahatma Gandhi National Rural Employment Guarantee Act / Scheme"
+
+
+### Aadhaar Enrolment (0–5 Years)
+
+**Enrolment Type I – Head of the Family (HoF) Based Enrolment:**
+
+Child is enrolled using documents that link the child to a Head of Family (typically a parent) who already possesses an Aadhaar number.
+
+**Acceptable Proof of Relationship (PoR) and Date of Birth (DoB) Documents:**
+
+1. Birth Certificate issued by Authorized Authority under Registration of Births and Deaths Act, 1969 and respective state rules – ✅ PoR, ✅ DoB
+2. Indian/Foreign Passport (for children born outside India) – ✅ PoR, ❌ DoB
+3. Nepal/Bhutan Passport OR:
+
+   * a. Nepalese/Bhutanese Citizenship Certificate
+   * b. Limited Validity Photo ID Certificate issued by Nepalese/Bhutanese Mission in India (for stays over 182 days) – ✅ PoR, ❌ DoB
+
+**Enrolment Type II – Document Based (for children in orphanages/shelters):**
+
+4. UIDAI Standard Certificate issued by:
+
+   * Superintendent/Warden/Matron/Head of Institution of recognized shelter homes/orphanages – ✅ PoI, ✅ PoA
+
+**Important Notes:**
+a) HoF enrolment is mandatory for 0–5 year children unless in orphanage/shelter
+b) HoF must have valid Aadhaar
+c) Aadhaar of both parents is needed; biometric auth by one is mandatory
+d) Child and HoF names must be in PoR document
+e) Child’s Aadhaar address will match HoF’s
+f) Aadhaar for foreign residents valid until VISA expiry; 10 years for Nepal/Bhutan nationals
+g) OCI Aadhaar valid 10 years
+h) LTV Aadhaar valid until LTV expiry
+i) Acceptable PoI documents for children include: Passport, Domicile Certificate, Caste Certificate, Disability ID, OCI card, VISA with Passport
+j) Exception handling under UIDAI RO jurisdiction only
+k) Only original documents accepted
+
+---
+
+### Aadhaar Enrolment (Above 5 Years)
+
+**PoI/PoA/PoR/DoB Acceptability Matrix:**
+
+| S.No | Document                                   | PoI | PoA | PoR | DoB |
+| ---- | ------------------------------------------ | --- | --- | --- | --- |
+| 1    | Indian Passport                            | ✅ | ✅  | ✅  | ✅ |
+| 2    | PAN/e-PAN Card                             | ✅ | ❌  | ❌  | ❌ |
+| 3    | Ration Card/e-Ration                       | ✅ | ✅  | ✅  | ❌ |
+| 4    | Voter ID                                   | ✅ | ✅  | ❌  | ❌ |
+| 5    | Driving License                            | ✅ | ❌  | ❌  | ❌ |
+| 6    | Govt Service ID                            | ✅ | ❌  | ❌  | ✅ |
+| 7    | Pension/Freedom Fighter ID                 | ✅ | ❌  | ✅  | ✅ |
+| 8    | CGHS/ESIC/RSBY/Medi-Claim Card             | ✅ | ❌  | ❌  | ❌ |
+| 9    | Disability ID                              | ✅ | ✅  | ❌  | ❌ |
+| 10   | Govt-issued ID (e.g. MGNREGA, Labour Card) | ✅ | ✅  | ✅  | ❌ |
+| 11   | Marriage Certificate (with photo)          | ❌ | ❌  | ✅  | ❌ |
+| 12   | Caste Certificate                          | ✅ | ✅  | ✅  | ❌ |
+| 13   | School/University Marksheet                | ✅ | ❌  | ✅  | ✅ |
+| 14   | Transgender ID Card                        | ✅ | ✅  | ✅  | ✅ |
+
+**UIDAI Certificate Format Issuers (PoA only unless noted):**
+
+* MP/MLA/MLC/Municipal Councillor – ✅ PoA only
+* Gazetted Officer Group A/B, EPFO Officer, Tehsildar – ✅ PoA only
+* Shelter Home Official – ✅ PoI + PoA
+* Head of Educational Institute – ✅ PoA
+* Panchayat Head/Secretary/VRO (rural) – ✅ PoA
+
+**Utility/Financial/Lease Documents (PoA only):**
+
+* Electricity/Water/Gas/Telephone bills (<3 months)
+* Rent agreement (registered or not)
+* Property Tax receipt (<1 year)
+* Insurance Policy (<1 year)
+* Bank/PO Passbook or Statement (<3 months)
+
+**Resident Foreigners/Nepal-Bhutan Nationals:**
+
+| S.No | Document                                                                         | PoI | PoA |
+| ---- | -------------------------------------------------------------------------------- | --- | --- |
+| 26   | OCI + Passport (182+ day stay)                                                   | ✅   | ❌|
+| 27   | LTV + Foreign Passport (minority communities)                                    | ✅   | ✅|
+| 28   | Nepal/Bhutan Passport OR 2 out of: Citizenship Certificate, Voter ID, Mission ID | ✅   | ❌|
+| 29   | VISA + Foreign Passport (182+ days)                                              | ✅   | ❌|
+| 30   | FRRO/FRO permit                                                                  | ❌   | ✅|
+
+---
+
+### Aadhaar Update (All Age Groups)
+
+Same documentation matrix applies as enrolment above with following exceptions:
+
+* **DoB Documents:** Must contain name + date of birth. Marked with `*` where applicable.
+* **Self Declaration (HoF Address Update):**
+
+  * Format includes:
+
+    * HoF Aadhaar, Name
+    * Relationship with resident
+    * Signature and Stamp of HoF
+    * Resident's photo (3.5x4.5cm) cross signed + stamped
+    * Valid for 3 months from date of issue
+
+**Exception Handling Documents:**
+
+* **Name Change:** Gazette Notification + old PoI
+* **Gender Change:** Medical Certificate from surgeon
+* **DoB Change:** Birth Certificate + Self Declaration per UIDAI format
+
+**Note:**
+
+* All documents must be original
+* No photocopies required
+* Aadhaar for foreign nationals limited by VISA validity or 10 years (Nepal, Bhutan, OCI, LTV)
+* Aadhaar updates for foreigners must be done at Adult Enrolment Centres
+
+---
+
+This completes the exhaustive listing of accepted Aadhaar documents with PoI, PoA, PoR, and DoB classification, valid as of 26 January 2023.

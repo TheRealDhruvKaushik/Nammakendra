@@ -27,6 +27,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'Contact',
     'nav.slogan': 'Bringing The Government At Your Doorstep',
     'nav.logo': 'NammaKendra',
+    'nav.about': 'About Us',
     
     // Hero Section
     'hero.title': 'Services Made Simple',
@@ -84,8 +85,11 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Chat interface
     'chat.title': 'NammaSahayak Chat',
+    'chat.sarkara.title': 'NammaSarkara Chat',
     'chat.subtitle': 'Ask me any legal questions you have',
+    'chat.sarkara.subtitle': 'Ask me any governmental questions you have',
     'chat.placeholder': 'Type your legal question...',
+    'chat.sarkara.placeholder': 'Type your governmental question...',
     'chat.send': 'Send message',
     'chat.startRecording': 'Start recording',
     'chat.stopRecording': 'Stop recording',
@@ -512,7 +516,10 @@ const translations: Record<Language, Record<string, string>> = {
     'chat.error': 'ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
     'chat.speechError': 'ಮಾತನ್ನು ಗುರುತಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
     'chat.speechNotSupported': 'ನಿಮ್ಮ ಬ್ರೌಸರ್ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಯನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ.',
-    
+    'chat.sarkara.title': 'ನಮ್ಮಸರ್ಕಾರ ಚಾಟ್',
+    'chat.sarkara.subtitle': 'ನೀವು ಹೊಂದಿರುವ ಸರ್ಕಾರ ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ',
+    'chat.sarkara.placeholder': 'ನಿಮ್ಮ ಸರ್ಕಾರ ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಯನ್ನು ಇಲ್ಲಿ টাইಪ್ ಮಾಡಿ...',
+
     // Document upload
     'document.title': 'ಕಾನೂನು ದಾಖಲೆಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ',
     'document.description': 'ಸರಳೀಕೃತ ವಿವರಣೆಯನ್ನು ಪಡೆಯಲು ನಿಮ್ಮ ಕಾನೂನು ದಾಖಲೆಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ. ನಾವು PDF, DOCX, ಮತ್ತು TXT ಫೈಲ್‌ಗಳನ್ನು 10MB ವರೆಗೆ ಬೆಂಬಲಿಸುತ್ತೇವೆ.',
@@ -523,6 +530,11 @@ const translations: Record<Language, Record<string, string>> = {
     'document.analyze': 'ಡಾಕ್ಯುಮೆಂಟ್ ವಿಶ್ಲೇಷಿಸಿ',
     'document.processing': 'ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ...',
     'document.howItWorks': 'ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ',
+    'document.step1': 'ನಿಮ್ಮ ಕಾನೂನು ಡಾಕ್ಯುಮೆಂಟ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (ಕೋರ್ಟ್ ಆದೇಶ, ಒಪ್ಪಂದ ಇತ್ಯಾದಿ)',
+    'document.step2': 'ನಮ್ಮ AI ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್ ಅನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ',
+    'document.step3': 'ಸರಳವಾದ ವಿವರಣೆ ಮತ್ತು ಮುಖ್ಯ ಅಂಶಗಳೊಂದಿಗೆ ಫಲಿತಾಂಶವನ್ನು ಪಡೆಯಿರಿ',
+    'document.step4': 'ಅವಧಿಗಳು, ಅಗತ್ಯತೆಗಳು ಮತ್ತು ತೆಗೆದುಕೊಳ್ಳಬೇಕಾದ ಕ್ರಮಗಳನ್ನು ನೋಡಿ',
+
     // NammaVidhana Page
     'vidhana.title': 'ನಮ್ಮ ವಿಧಾನ ಡಾಕ್ಯುಮೆಂಟ್ ಸರಳೀಕರಣ',
     'vidhana.description': 'ಕಾನೂನು ದಾಖಲೆಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಅವುಗಳನ್ನು ಸರಳ, ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸುಲಭವಾದ ಭಾಷೆಯಲ್ಲಿ ವಿವರಿಸಿ. ನಮ್ಮ AI ಜಟಿಲ ಕಾನೂನು ಜಾರ್ಗಾನ್ ಅನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ.',

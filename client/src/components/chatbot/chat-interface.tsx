@@ -63,7 +63,10 @@ interface ChatInterfaceProps {
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) => {
   const { t, language } = useLanguage();
-  
+  const [title] = useState(pageType === 'sahayak' ? t('chat.title') : t('chat.sarkara.title'));
+  const [subtitle] = useState(pageType === 'sahayak' ? t('chat.subtitle') : t('chat.sarkara.subtitle'));
+  const [placeholder] = useState(pageType === 'sahayak' ? t('chat.placeholder') : t('chat.sarkara.placeholder'));
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -88,6 +91,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   
   // Update welcome message when language changes
   useEffect(() => {
+    
     setMessages(messages => {
       const updatedMessages = [...messages];
       // Find and update the welcome message
@@ -96,6 +100,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
         updatedMessages[welcomeIndex] = {
           ...updatedMessages[welcomeIndex],
           content: pageType === 'sahayak' ? t('chat.welcome') : t('chat.sarkara.welcome')
+
+      
         };
       }
       return updatedMessages;
@@ -257,8 +263,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   return (
     <div className="flex flex-col h-[600px] max-h-[80vh] rounded-lg border">
       <div className="bg-primary text-white p-4 rounded-t-lg">
-        <h2 className="text-xl font-bold">{t('chat.title')}</h2>
-        <p className="text-sm text-white/80">{t('chat.subtitle')}</p>
+        <h2 className="text-xl font-bold">{title}</h2>
+        <p className="text-sm text-white/80">{subtitle}</p>
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
@@ -293,8 +299,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
           <input
             type="text"
             value={input}
+            placeholder = {placeholder}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={t('chat.placeholder')}
             className="flex-1 min-h-10 rounded-md border border-input bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={isLoading}
           />

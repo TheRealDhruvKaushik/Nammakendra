@@ -1,0 +1,107 @@
+
+##  EPIC Card Issuance – Bengaluru Urban
+
+### What is it for?
+
+The **EPIC (Electors Photo Identity Card)** serves as an official identity document issued by the Election Commission of India to eligible voters. It is essential for casting votes in elections and also functions as a valid proof of identity and address for various purposes.
+
+---
+
+###  Offline Steps – KarnatakaOne Centers
+
+**Where to Apply:**
+
+* Visit any **KarnatakaOne Center** in Bengaluru.([Deccan Herald][1])
+
+**Process:**
+
+1. Provide your **Constituency**, **Name**, and **Relation Name** to the operator.
+2. The operator will search for your details in the Department Portal.
+3. Upon verification, the EPIC card will be printed and laminated on the spot.
+4. The card is handed over **only to the respective applicant**; it will not be issued to any other person on their behalf.([Bankbazaar][2])
+
+**Service Charge:**
+
+* ₹10 (Cash payment only)
+
+**Contact:**
+
+* **Phone:** 080-49203888 / 8904085030
+* **Email:** [onehelpdesk@karnataka.gov.in](mailto:onehelpdesk@karnataka.gov.in)
+
+
+---
+
+###  Offline Steps – Postal Delivery via India Post
+
+**Process:**
+
+* EPIC cards are dispatched through **Speed Post** by the Karnataka Postal Department.
+* Delivery is executed through all **9,613 post offices** in the state.
+* Cards are delivered to the address specified by the voter.
+* Tracking and tracing of the dispatched cards are available.
+* Postal staff use the **Postman Mobile App** to update delivery information in real-time.
+* Vigilance squads monitor the dispatch process to prevent malpractices.([The New Indian Express][3])
+
+
+---
+
+###  Online Steps – e-EPIC (Digital Voter ID)
+
+**What is e-EPIC?**
+
+The **e-EPIC** is a portable document format (PDF) version of the EPIC, which can be downloaded and stored digitally.
+
+**Features:**
+
+* Contains a secure QR code for verification.
+* Can be stored on mobile devices, uploaded to DigiLocker, or printed and self-laminated.
+* Available for download to all electors with a unique mobile number in the electoral roll.
+* If the mobile number is not unique or not registered, e-KYC is required before downloading.
+
+**How to Download:**
+
+1. Visit the [National Voters Service Portal (NVSP)](https://www.nvsp.in/) or [Voter Portal](https://voterportal.eci.gov.in/).
+2. Log in using your credentials.
+3. Navigate to the 'Download e-EPIC' section.
+4. Enter your EPIC number and complete the OTP verification.
+5. Download the e-EPIC PDF.([Digit Insurance][4])
+
+
+---
+
+###  Documents Needed
+
+**For New Voter Registration:**
+
+* Proof of age (e.g., Birth Certificate, School Leaving Certificate).
+* Proof of residence (e.g., Utility bills, Rental agreement).
+* Recent passport-sized photograph.
+
+**For Corrections or Updates:**
+
+* Existing EPIC card.
+* Relevant documents supporting the correction (e.g., Marriage Certificate for name change).
+
+---
+
+###  Processing Time
+
+* **KarnatakaOne Centers:** EPIC cards are issued immediately upon verification.
+* **Postal Delivery:** Delivery timelines may vary; tracking is available through the Postman Mobile App.
+* **e-EPIC Download:** Available instantly upon successful verification.([YouTube][5])
+
+---
+
+### Helpline and Support
+
+* **KarnatakaOne Helpdesk:**
+
+  * **Phone:** 080-49203888 / 8904085030
+  * **Email:** [onehelpdesk@karnataka.gov.in](mailto:onehelpdesk@karnataka.gov.in)
+* **Voter Helpline:**
+
+  * **Phone:** 1950 (toll-free)
+  * **Website:** [https://www.nvsp.in/](https://www.nvsp.in/)([chikkaballapur.nic.in][6])
+
+---

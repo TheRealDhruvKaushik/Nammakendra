@@ -43,7 +43,7 @@ const NammaVidhana = () => {
               />
             ) : (
               <>
-                <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+                <div className="bg-white p-6 rounded-lg shadow-md mb-8">
                   <h2 className="text-xl font-bold mb-4 text-gray-600">{t('vidhana.service')}</h2>
                   <p className="text-gray-600 mb-4">
                     {t('vidhana.serviceDesc')}

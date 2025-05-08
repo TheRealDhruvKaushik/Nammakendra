@@ -1,0 +1,28 @@
+New e-Khata Certificate
+
+Purpose:
+Digitally issued Khata certificate for properties under Bangalore Development Authority.
+
+Online Mode:
+Steps:
+
+Go to Seva Sindhu → Select BDA → “Application for New e-Khata”
+
+Login with credentials or OTP
+
+Fill details of property and applicant
+
+Upload annexures (property documents, tax paid receipt, ID)
+
+eSign and submit
+
+Track status via reference number and download when ready
+
+Offline Mode:
+
+Visit BDA office or designated Atalji Janasnehi Kendra.
+
+Submit filled physical application with ownership and tax documents.
+
+Certificate issued post-verification by BDA engineer.
+
