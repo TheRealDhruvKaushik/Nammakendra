@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
+import { processGovernmentServiceQuestion } from "./sarkara";
 import Tesseract from 'tesseract.js';
 import { 
   insertContactSchema, 
@@ -107,11 +108,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use different API based on the pageType
       if (pageType === 'sarkara') {
-        // For NammaSarkara, use the same AI stack but with government-specific prompts
-        console.log("Using AI for NammaSarkara");
-        aiResponse = await chatGPT(message, language);
+        // For NammaSarkara, use our reference document system for government service info
+        console.log("Using reference documents for NammaSarkara");
+        aiResponse = await processGovernmentServiceQuestion(message, language);
       } else {
-        // For NammaSahayak, use the AI stack (Groq -> Hugging Face -> Perplexity fallback)
+        // For NammaSahayak, use the AI stack (Groq -> Hugging Face fallback)
         console.log("Using AI for NammaSahayak");
         aiResponse = await chatGPT(message, language);
       }
