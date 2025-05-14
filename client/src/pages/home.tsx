@@ -3,15 +3,26 @@ import ServicesSection from "@/components/home/services-section";
 import HowItWorksSection from "@/components/home/how-it-works-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import CTASection from "@/components/home/cta-section";
-import { Helmet } from "react-helmet";
+import SEOHead from "@/components/seo/seo-head";
+import { pageMetadata } from "@/lib/seo";
+import { useLanguage } from "@/context/language-context";
 
 const Home = () => {
+  const { language } = useLanguage();
+  
+  // Create language alternatives for SEO
+  const langAlternates = [
+    { lang: 'en', path: '/' },
+    { lang: 'kn', path: '/' }
+  ];
+  
   return (
     <>
-      <Helmet>
-        <title>NammaKendra - Legal Assistance for Everyone</title>
-        <meta name="description" content="Access, understand, and navigate legal information with ease. NammaKendra makes legal help simple and accessible for all citizens." />
-      </Helmet>
+      <SEOHead 
+        pageMetadata={pageMetadata.home}
+        pagePath="/"
+        langAlternates={langAlternates}
+      />
       <main>
         <HeroSection />
         <ServicesSection />

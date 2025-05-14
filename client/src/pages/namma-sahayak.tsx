@@ -1,16 +1,24 @@
-import { Helmet } from "react-helmet";
 import ChatInterface from "@/components/chatbot/chat-interface";
 import { useLanguage } from "@/context/language-context";
+import SEOHead from "@/components/seo/seo-head";
+import { pageMetadata } from "@/lib/seo";
 
 const NammaSahayak = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Create language alternatives for SEO
+  const langAlternates = [
+    { lang: 'en', path: '/namma-sahayak' },
+    { lang: 'kn', path: '/namma-sahayak' }
+  ];
   
   return (
     <>
-      <Helmet>
-        <title>{t('sahayak.title')} - NammaSahayak</title>
-        <meta name="description" content="Get simple answers to your legal questions with our AI-powered chatbot. No legal jargon, just clear guidance." />
-      </Helmet>
+      <SEOHead 
+        pageMetadata={pageMetadata.nammaSahayak}
+        pagePath="/namma-sahayak"
+        langAlternates={langAlternates}
+      />
       <main className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">

@@ -180,7 +180,7 @@ export const pageMetadata: Record<string, PageMetadata> = {
 
   about: {
     title: 'About NammaKendra | Our Mission and Services',
-    description: 'Learn about NammaKendra's mission to make legal information and government services accessible to all citizens, especially the elderly and underprivileged.',
+    description: 'Learn about NammaKendra\'s mission to make legal information and government services accessible to all citizens, especially the elderly and underprivileged.',
     ogType: 'website',
     keywords: [
       'about NammaKendra', 
@@ -405,10 +405,10 @@ export const offPageSEOStrategy = [
   {
     category: 'Community Organizations',
     opportunities: [
-      'Senior Citizens' Associations',
+      'Senior Citizens Associations',
       'Rural Community Development Organizations',
       'Disability Rights Groups',
-      'Women's Self-Help Groups',
+      'Women Self-Help Groups',
       'Resident Welfare Associations'
     ]
   },
