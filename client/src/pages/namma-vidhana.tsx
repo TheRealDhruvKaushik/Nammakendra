@@ -5,6 +5,7 @@ import { useLanguage } from "@/context/language-context";
 import SEOHead from "@/components/seo/seo-head";
 import { pageMetadata } from "@/lib/seo";
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
+import FAQSection from "@/components/seo/faq-section";
 
 const NammaVidhana = () => {
   const [documentAnalysis, setDocumentAnalysis] = useState<{
@@ -79,35 +80,65 @@ const NammaVidhana = () => {
             )}
             
             {!documentAnalysis && (
-              <div className="mt-8 bg-primary/5 p-6 rounded-lg border border-primary/20">
-                <h2 className="text-xl font-bold mb-4">{t('vidhana.documentTypes')}</h2>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <li className="flex items-start">
-                    <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>{t('vidhana.docType1')}</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>{t('vidhana.docType2')}</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>{t('vidhana.docType3')}</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>{t('vidhana.docType4')}</span>
-                  </li>
-                </ul>
-              </div>
+              <>
+                <div className="mt-8 bg-primary/5 p-6 rounded-lg border border-primary/20">
+                  <h2 className="text-xl font-bold mb-4">{t('vidhana.documentTypes')}</h2>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>{t('vidhana.docType1')}</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>{t('vidhana.docType2')}</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>{t('vidhana.docType3')}</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-primary mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>{t('vidhana.docType4')}</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* FAQ Section with structured data for SEO */}
+                <FAQSection 
+                  title="Frequently Asked Questions"
+                  className="mt-12"
+                  faqs={[
+                    {
+                      question: "What types of documents can I upload?",
+                      answer: "You can upload legal documents including court notices, property documents, contracts, government notices, and other legal papers. We support PDF files and images (JPG/PNG)."
+                    },
+                    {
+                      question: "Is my document information kept confidential?",
+                      answer: "Yes, we take privacy and confidentiality seriously. Your documents are processed securely, and we don't store the document content after processing is complete."
+                    },
+                    {
+                      question: "How accurate is the document analysis?",
+                      answer: "Our AI provides a helpful simplification of legal documents, but it's not a substitute for professional legal advice. Always consult with a legal professional for important matters."
+                    },
+                    {
+                      question: "Can I use this service in Kannada?",
+                      answer: "Yes, our service supports both English and Kannada. You can upload documents in either language, and our system will automatically detect and process them accordingly."
+                    },
+                    {
+                      question: "Is there a limit to how many documents I can upload?",
+                      answer: "We currently limit users to processing one document at a time, but you can use the service as often as needed. There are no daily or monthly limits."
+                    }
+                  ]}
+                />
+              </>
             )}
           </div>
         </div>
