@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Home Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/" />
+  </url>
+  
+  <!-- Namma Sahayak Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/namma-sahayak</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/namma-sahayak" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/namma-sahayak" />
+  </url>
+  
+  <!-- Namma Sarkara Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/namma-sarkara</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/namma-sarkara" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/namma-sarkara" />
+  </url>
+  
+  <!-- Namma Vidhana Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/namma-vidhana</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/namma-vidhana" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/namma-vidhana" />
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/about</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/about" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/about" />
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://nammakendra.replit.app/contact</loc>
+    <lastmod>2024-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nammakendra.replit.app/contact" />
+    <xhtml:link rel="alternate" hreflang="kn" href="https://nammakendra.replit.app/contact" />
+  </url>
+</urlset>

@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Ensure search engines can access all important content
+Allow: /namma-sahayak
+Allow: /namma-sarkara
+Allow: /namma-vidhana
+Allow: /about
+Allow: /contact
+
+# Avoid crawling redundant or unnecessary pages
+Disallow: /api/
+Disallow: /admin/
+Disallow: /assets/
+Disallow: /uploads/
+
+# Sitemap location
+Sitemap: https://nammakendra.replit.app/sitemap.xml
