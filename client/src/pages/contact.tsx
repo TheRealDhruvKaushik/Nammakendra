@@ -1,16 +1,24 @@
-import { Helmet } from "react-helmet";
 import ContactForm from "@/components/contact/contact-form";
 import { useLanguage } from "@/context/language-context";
+import SEOHead from "@/components/seo/seo-head";
+import { pageMetadata } from "@/lib/seo";
 
 const Contact = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Create language alternatives for SEO
+  const langAlternates = [
+    { lang: 'en', path: '/contact' },
+    { lang: 'kn', path: '/contact' }
+  ];
   
   return (
     <>
-      <Helmet>
-        <title>{t('contact.title')} - NammaSahayak</title>
-        <meta name="description" content="Get in touch with the NammaSahayak team. We're here to help with any questions or feedback you may have." />
-      </Helmet>
+      <SEOHead 
+        pageMetadata={pageMetadata.contact}
+        pagePath="/contact"
+        langAlternates={langAlternates}
+      />
       <main className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">

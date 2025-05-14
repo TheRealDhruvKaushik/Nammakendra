@@ -1,16 +1,24 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import { useLanguage } from "@/context/language-context";
+import SEOHead from "@/components/seo/seo-head";
+import { pageMetadata } from "@/lib/seo";
 
 const AboutPage = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Create language alternatives for SEO
+  const langAlternates = [
+    { lang: 'en', path: '/about' },
+    { lang: 'kn', path: '/about' }
+  ];
   
   return (
     <>
-      <Helmet>
-        <title>{t('about.title')} | NammaKendra</title>
-        <meta name="description" content="Learn about NammaKendra's mission to simplify legal information for all citizens." />
-      </Helmet>
+      <SEOHead 
+        pageMetadata={pageMetadata.about}
+        pagePath="/about"
+        langAlternates={langAlternates}
+      />
 
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center header-title bg-gradient-to-r from-primary via-purple-600 to-amber-500 bg-clip-text text-transparent">{t('about.nammaKendra')}</h1>

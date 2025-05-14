@@ -1,15 +1,22 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import DocumentUpload from "@/components/document/document-upload";
 import DocumentViewer from "@/components/document/document-viewer";
 import { useLanguage } from "@/context/language-context";
+import SEOHead from "@/components/seo/seo-head";
+import { pageMetadata } from "@/lib/seo";
 
 const NammaVidhana = () => {
   const [documentAnalysis, setDocumentAnalysis] = useState<{
     simplifiedText: string;
     keyPoints: string[];
   } | null>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  // Create language alternatives for SEO
+  const langAlternates = [
+    { lang: 'en', path: '/namma-vidhana' },
+    { lang: 'kn', path: '/namma-vidhana' }
+  ];
 
   const handleDocumentProcessed = (data: { simplifiedText: string; keyPoints: string[] }) => {
     setDocumentAnalysis(data);
@@ -23,10 +30,11 @@ const NammaVidhana = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{t('vidhana.title')}</title>
-        <meta name="description" content="Upload legal documents and get them explained in simple language. Understand contracts, notices, and other legal papers easily." />
-      </Helmet>
+      <SEOHead 
+        pageMetadata={pageMetadata.nammaVidhana}
+        pagePath="/namma-vidhana"
+        langAlternates={langAlternates}
+      />
       <main className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
