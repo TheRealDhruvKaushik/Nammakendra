@@ -4,6 +4,7 @@ import DocumentViewer from "@/components/document/document-viewer";
 import { useLanguage } from "@/context/language-context";
 import SEOHead from "@/components/seo/seo-head";
 import { pageMetadata } from "@/lib/seo";
+import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 
 const NammaVidhana = () => {
   const [documentAnalysis, setDocumentAnalysis] = useState<{
@@ -38,6 +39,12 @@ const NammaVidhana = () => {
       <main className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
+            <Breadcrumbs
+              items={[
+                { name: t('nav.home'), path: '/' },
+                { name: t('vidhana.title'), path: '/namma-vidhana' }
+              ]}
+            />
             <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">{t('vidhana.title')}</h1>
             <p className="text-lg text-neutral mb-8">
               {t('vidhana.description')}
