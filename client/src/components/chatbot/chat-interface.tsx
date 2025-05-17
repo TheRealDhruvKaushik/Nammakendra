@@ -270,7 +270,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     }
   };
   
-  // Toggle voice chat mode
+  // Toggle voice chat mode with Google Cloud voice integration
   const toggleVoiceMode = () => {
     if (isListening) {
       // Stop the web speech API if it's active
@@ -278,7 +278,19 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
       setIsListening(false);
     }
     
+    // Cancel any ongoing speech synthesis
+    window.speechSynthesis?.cancel();
+    
+    // Toggle voice mode state
     setIsVoiceModeActive(prev => !prev);
+    
+    // Clear input field when activating voice mode
+    if (!isVoiceModeActive) {
+      setInput("");
+      console.log("Activating Google Cloud voice mode");
+    } else {
+      console.log("Deactivating voice mode");
+    }
   };
 
   return (

@@ -88,24 +88,48 @@ export async function startRecording(): Promise<void> {
  */
 export function stopRecording(): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    if (!mediaRecorder) {
-      reject(new Error('No active recording'));
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+      // If no recording is active, return an empty audio blob
+      console.log('No active recording to stop');
+      resolve(new Blob([], { type: 'audio/wav' }));
       return;
     }
     
+    // Handle the stop event
     mediaRecorder.onstop = () => {
-      // Create a single Blob from all recorded chunks
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      try {
+        // Create a single Blob from all recorded chunks
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        
+        // Clean up
+        if (mediaRecorder && mediaRecorder.stream) {
+          mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        }
+        
+        // Reset for next recording
+        audioChunks = [];
+        
+        resolve(audioBlob);
+      } catch (err) {
+        console.error('Error creating audio blob:', err);
+        reject(new Error('Failed to process recorded audio'));
+      }
+    };
+    
+    // Stop recording
+    try {
+      mediaRecorder.stop();
+    } catch (err) {
+      console.error('Error stopping MediaRecorder:', err);
       
-      // Clean up
+      // Cleanup anyway and resolve with empty blob
       if (mediaRecorder && mediaRecorder.stream) {
         mediaRecorder.stream.getTracks().forEach(track => track.stop());
       }
+      audioChunks = [];
       
-      resolve(audioBlob);
-    };
-    
-    mediaRecorder.stop();
+      resolve(new Blob([], { type: 'audio/wav' }));
+    }
   });
 }
 
