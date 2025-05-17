@@ -94,19 +94,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // In-memory chat history storage (session ID -> messages array)
+  const chatSessions = new Map<string, Array<{role: string, content: string}>>();
+  
   // Chat with AI
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message, language, pageType } = z.object({
+      const { message, language, pageType, sessionId: requestSessionId } = z.object({
         message: z.string().min(1, "Message cannot be empty"),
         language: z.string().optional().default('english'),
-        pageType: z.enum(['sahayak', 'sarkara']).optional().default('sahayak')
+        pageType: z.enum(['sahayak', 'sarkara']).optional().default('sahayak'),
+        sessionId: z.string().optional()
       }).parse(req.body);
       
       // Generate a session ID if not provided
-      const sessionId = req.body.sessionId || uuidv4();
+      const sessionId = requestSessionId || uuidv4();
       
-      // Store user message
+      // Initialize chat history for this session if it doesn't exist
+      if (!chatSessions.has(sessionId)) {
+        chatSessions.set(sessionId, []);
+      }
+      
+      // Get current chat history
+      const chatHistory = chatSessions.get(sessionId)!;
+      
+      // Add user message to chat history
+      const userMessage = { role: "user", content: message };
+      chatHistory.push(userMessage);
+      
+      // Store user message in database
       await storage.createChatMessage({
         sessionId,
         role: "user",
@@ -121,12 +137,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("Using reference documents for NammaSarkara");
         aiResponse = await processGovernmentServiceQuestion(message, language);
       } else {
-        // For NammaSahayak, use the AI stack (Groq -> Hugging Face fallback)
-        console.log("Using AI for NammaSahayak");
-        aiResponse = await chatGPT(message, language);
+        // For NammaSahayak, use the AI stack with conversation history (Groq -> Hugging Face fallback)
+        console.log("Using AI for NammaSahayak with conversation history");
+        
+        try {
+          // Try with Groq first, passing the full chat history
+          aiResponse = await chatWithGroq(chatHistory, language, pageType);
+        } catch (groqError) {
+          console.log("Groq API error, falling back to DeepSeek:", groqError);
+          // Fall back to DeepSeek without conversation history (current implementation)
+          aiResponse = await chatGPT(message, language);
+        }
       }
       
-      // Store AI response
+      // Add AI response to chat history
+      chatHistory.push({ role: "assistant", content: aiResponse });
+      
+      // Store AI response in database
       await storage.createChatMessage({
         sessionId,
         role: "assistant",
@@ -136,6 +163,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ 
         message: aiResponse,
         sessionId 
+      });
+    } catch (err) {
+      handleError(err, res);
+    }
+  });
+  
+  // Clear chat session
+  app.post("/api/chat/clear", async (req, res) => {
+    try {
+      const { sessionId } = z.object({
+        sessionId: z.string().min(1, "Session ID cannot be empty")
+      }).parse(req.body);
+      
+      // Clear the chat history for this session
+      chatSessions.delete(sessionId);
+      
+      res.json({ 
+        success: true,
+        message: "Chat session cleared successfully"
       });
     } catch (err) {
       handleError(err, res);
