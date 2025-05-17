@@ -14,7 +14,7 @@ import { Phone, PhoneOff, Mic, MicOff } from 'lucide-react';
 // Define props for the voice chat component
 interface VoiceChatModeProps {
   language: Language;
-  onSendMessage: (message: string) => Promise<string>; // Returns AI response
+  onSendMessage: (e?: React.FormEvent, message?: string) => Promise<string>; // Returns AI response
   onToggleVoiceMode: () => void;
   isActive: boolean;
 }
@@ -157,7 +157,7 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       
       // Get response from AI
       setStatus('Getting response...');
-      const response = await onSendMessage(text);
+      const response = await onSendMessage(undefined, text);
       
       // Add assistant message
       const assistantMessage = { role: 'assistant' as const, content: response };

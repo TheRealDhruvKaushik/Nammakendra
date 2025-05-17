@@ -30,10 +30,14 @@ export async function checkVoiceAvailability(): Promise<boolean> {
  * @returns Boolean indicating if browser supports required audio features
  */
 export function isBrowserSupported(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return false;
+  }
+  
   return !!(
     navigator.mediaDevices &&
-    navigator.mediaDevices.getUserMedia &&
-    window.AudioContext &&
+    typeof navigator.mediaDevices.getUserMedia === 'function' &&
+    (window.AudioContext || (window as any).webkitAudioContext) &&
     window.MediaRecorder
   );
 }
