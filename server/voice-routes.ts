@@ -35,7 +35,7 @@ voiceRouter.post('/api/voice/recognize', upload.single('audio'), async (req: Req
     const text = await speechToText(req.file.buffer, language);
     
     res.json({ text });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in speech recognition endpoint:', error);
     res.status(500).json({ error: error.message || 'Failed to recognize speech' });
   }
@@ -54,7 +54,7 @@ voiceRouter.post('/api/voice/synthesize', async (req: Request, res: Response) =>
     const audioBase64 = await textToSpeechAudio(text, language as Language);
     
     res.json({ audio: audioBase64 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in text-to-speech endpoint:', error);
     res.status(500).json({ error: error.message || 'Failed to synthesize speech' });
   }

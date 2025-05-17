@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 import { processGovernmentServiceQuestion } from "./sarkara";
+import voiceRouter from "./voice-routes";
+import { isGoogleCloudConfigured } from "./google-voice-service";
 import Tesseract from 'tesseract.js';
 import { 
   insertContactSchema, 
@@ -57,6 +59,13 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Register voice routes
+  app.use(voiceRouter);
+  
+  // Check if Google Cloud APIs are configured and log status
+  const googleCloudReady = isGoogleCloudConfigured();
+  console.log(`Google Cloud voice services are ${googleCloudReady ? 'enabled' : 'disabled'}`);
+  
   // Error handler middleware
   const handleError = (err: any, res: any) => {
     if (err instanceof ZodError) {

@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { SendHorizontal, Loader2, Mic, MicOff } from "lucide-react";
+import { SendHorizontal, Loader2, Mic, MicOff, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import VoiceChatMode from "./voice-chat-mode";
 import { useLanguage } from "@/context/language-context";
 
 // TypeScript definitions for Web Speech API
