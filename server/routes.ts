@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
+import { chatWithGroq } from "./groq";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 import { processGovernmentServiceQuestion } from "./sarkara";
 import voiceRouter from "./voice-routes";
@@ -220,7 +221,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             filePath,
             tesseractLang, // Use English + Kannada (if needed)
             { 
-              logger: m => {
+              logger: (m: any) => {
                 if (m.status === 'recognizing text') {
                   // Only log progress updates at 25% increments to reduce noise
                   if (m.progress === 0 || m.progress === 0.25 || m.progress === 0.5 || m.progress === 0.75 || m.progress === 1) {
