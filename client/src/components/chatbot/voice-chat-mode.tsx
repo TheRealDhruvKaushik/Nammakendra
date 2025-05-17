@@ -96,17 +96,23 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       setIsSpeaking(true);
       setStatus('Speaking...');
       
+      // Use Google Cloud Text-to-Speech to convert response to audio
+      console.log('Converting text to speech via Google Cloud:', text.substring(0, 50) + '...');
       const audio = await textToSpeech(text, language);
+      
+      // Play the audio response
+      console.log('Playing audio response');
       await playAudio(audio);
       
       // Only continue if still in voice mode
       if (isActiveRef.current) {
         setStatus('Listening...');
+        // After speaking, automatically start listening for user response
         await startListening();
       }
     } catch (err) {
       console.error('Error in text-to-speech:', err);
-      setError('Failed to speak response');
+      setError('Failed to speak response. Please check your network connection.');
     } finally {
       setIsSpeaking(false);
     }
@@ -121,10 +127,12 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       setStatus('Listening...');
       setError(null);
       
+      // Start recording audio using MediaRecorder
+      console.log('Starting audio recording...');
       await startRecording();
     } catch (err) {
       console.error('Error starting recording:', err);
-      setError('Failed to access microphone');
+      setError('Failed to access microphone. Please check your permissions.');
       setIsRecording(false);
     }
   };
@@ -137,9 +145,11 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       setStatus('Processing...');
       
       // Stop recording and get audio
+      console.log('Stopping recording and getting audio blob...');
       const audioBlob = await stopRecording();
       
-      // Convert speech to text
+      // Convert speech to text using Google Cloud Speech-to-Text
+      console.log('Converting speech to text via Google Cloud...');
       const text = await speechToText(audioBlob, language);
       
       if (!text || text.trim() === '') {
@@ -151,23 +161,33 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
         return;
       }
       
-      // Add user message
+      console.log('Speech recognized:', text);
+      
+      // Add user message to conversation
       const userMessage = { role: 'user' as const, content: text };
       setMessages(prev => [...prev, userMessage]);
       
-      // Get response from AI
-      setStatus('Getting response...');
+      // Get response from AI through the chat interface
+      setStatus('Getting response from AI...');
       const response = await onSendMessage(undefined, text);
       
-      // Add assistant message
+      // Add assistant message to conversation
       const assistantMessage = { role: 'assistant' as const, content: response };
       setMessages(prev => [...prev, assistantMessage]);
       
-      // Speak the response
+      // Speak the response using Google Cloud Text-to-Speech
+      console.log('Speaking response...');
       await speakAssistantMessage(response);
     } catch (err) {
       console.error('Error processing voice:', err);
-      setError('Failed to process voice input');
+      setError('Failed to process voice input. Please try again.');
+      
+      // Try to restart listening after error
+      setTimeout(() => {
+        if (isActiveRef.current && !isRecording) {
+          startListening();
+        }
+      }, 3000);
     } finally {
       setIsRecording(false);
     }
