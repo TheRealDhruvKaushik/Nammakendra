@@ -13,8 +13,9 @@ const __dirname = dirname(__filename);
 // Define Language type if importing fails
 export type Language = 'english' | 'kannada';
 
-// Use the GOOGLE_APPLICATION_CREDENTIALS environment variable directly
-// The path is already set in the environment by the system
+// Use environment variables for credentials
+// Note: The credentials file must be available in the root directory
+process.env.GOOGLE_APPLICATION_CREDENTIALS = './attached_assets/gcloud-credentials.json';
 
 // Log the credentials path for debugging
 console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);

@@ -79,7 +79,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isVoiceCallMode, setIsVoiceCallMode] = useState(false); // Single voice call mode toggle
+  const [isVoiceCallMode, setIsVoiceCallMode] = useState(false); // Voice call mode toggle
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
@@ -104,7 +104,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
         updatedMessages[welcomeIndex] = {
           ...updatedMessages[welcomeIndex],
           content: pageType === 'sahayak' ? t('chat.welcome') : t('chat.sarkara.welcome')
-
       
         };
       }
@@ -289,10 +288,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
 
       setMessages(prev => [...prev, assistantMessage]);
       
-      // If voice mode is on, speak the response
-      if (voiceModeOn) {
-        await speakText(data.message);
-      }
+      // No automatic speech in text mode - voice call mode handles speech separately
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -305,7 +301,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     }
   };
 
-  // Toggle voice call mode - simplified to a single mode
+  // Toggle voice call mode - single mode implementation
   const toggleVoiceCallMode = () => {
     // If turning off voice mode, stop any ongoing audio
     if (isVoiceCallMode && audioRef.current) {
@@ -334,44 +330,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
             <p className="text-sm text-white/80">{subtitle}</p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Voice Mode Toggle Button */}
+            {/* Single Voice Call Mode Button */}
             <button
-              onClick={toggleVoiceMode}
-              className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors ${
-                voiceModeOn 
-                  ? 'bg-white text-primary' 
-                  : 'bg-primary-700 text-white/80 border border-white/30'
-              }`}
-              title={voiceModeOn ? "Turn off voice responses" : "Turn on voice responses"}
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                <line x1="12" y1="19" x2="12" y2="23"/>
-                <line x1="8" y1="23" x2="16" y2="23"/>
-              </svg>
-              <span>{voiceModeOn ? "Voice On" : "Voice Mode"}</span>
-            </button>
-            
-            {/* Full Voice Conversation Mode Button */}
-            <button
-              onClick={toggleFullVoiceMode}
-              className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors ${
-                isFullVoiceMode 
-                  ? 'bg-white text-primary' 
-                  : 'bg-primary-700 text-white/80 border border-white/30'
-              }`}
-              title={isFullVoiceMode ? "Exit voice call mode" : "Start voice call mode"}
+              onClick={toggleVoiceCallMode}
+              className="px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors
+                bg-primary-700 text-white/80 border border-white/30 hover:bg-white hover:text-primary
+              "
+              title="Start voice call mode"
             >
               <Phone size={16} />
               <span>Voice Call</span>
@@ -380,9 +345,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
         </div>
       </div>
       
-      {isFullVoiceMode ? (
-        /* Render the full voice conversation mode */
-        <VoiceChatMode
+      {isVoiceCallMode ? (
+        /* Render the voice call mode with NammaKendra logo */
+        <VoiceCallMode
           language={language}
           onSendMessage={async (message: string) => {
             // Use the same API endpoint as the regular chat
@@ -400,8 +365,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
               throw new Error("Failed to get response");
             }
           }}
-          onToggleVoiceMode={toggleFullVoiceMode}
-          isActive={isFullVoiceMode}
+          onEndCall={toggleVoiceCallMode}
         />
       ) : (
         /* Regular chat UI */
@@ -460,19 +424,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
                 ) : (
                   <Mic className="h-5 w-5" />
                 )}
-                <span className="sr-only">{!isListening ? t('chat.startRecording') : t('chat.stopRecording')}</span>
               </Button>
               <Button 
                 type="submit" 
+                className="px-3"
                 disabled={isLoading || !input.trim()}
-                title={t('chat.send')}
               >
                 {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <SendHorizontal className="h-4 w-4" />
+                  <SendHorizontal className="h-5 w-5" />
                 )}
-                <span className="sr-only">{t('chat.send')}</span>
               </Button>
             </div>
           </form>
