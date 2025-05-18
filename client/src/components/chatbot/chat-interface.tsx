@@ -375,80 +375,122 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
               </svg>
               <span>{voiceModeOn ? "Voice On" : "Voice Mode"}</span>
             </button>
+            
+            {/* Full Voice Conversation Mode Button */}
+            <button
+              onClick={toggleFullVoiceMode}
+              className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors ${
+                isFullVoiceMode 
+                  ? 'bg-white text-primary' 
+                  : 'bg-primary-700 text-white/80 border border-white/30'
+              }`}
+              title={isFullVoiceMode ? "Exit voice call mode" : "Start voice call mode"}
+            >
+              <Phone size={16} />
+              <span>Voice Call</span>
+            </button>
           </div>
         </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-        {messages.map((message) => (
-          <div 
-            key={message.id} 
-            className={`mb-4 ${
-              message.role === "user" ? "flex justify-end" : "flex justify-start"
-            }`}
-          >
-            <Card className={`max-w-[80%] ${
-              message.role === "user" ? "bg-primary text-white" : "bg-white"
-            }`}>
-              <CardContent className="p-3">
-                <p className="whitespace-pre-wrap">{message.content}</p>
-                <div className={`text-xs mt-1 ${
-                  message.role === "user" ? "text-white/70" : "text-gray-400"
+      {isFullVoiceMode ? (
+        /* Render the full voice conversation mode */
+        <VoiceChatMode
+          language={language}
+          onSendMessage={async (message: string) => {
+            // Use the same API endpoint as the regular chat
+            try {
+              const response = await apiRequest("POST", "/api/chat", { 
+                message,
+                language,
+                pageType
+              });
+              
+              const data = await response.json();
+              return data.message;
+            } catch (error) {
+              console.error("Error in voice chat:", error);
+              throw new Error("Failed to get response");
+            }
+          }}
+          onToggleVoiceMode={toggleFullVoiceMode}
+          isActive={isFullVoiceMode}
+        />
+      ) : (
+        /* Regular chat UI */
+        <>
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+            {messages.map((message) => (
+              <div 
+                key={message.id} 
+                className={`mb-4 ${
+                  message.role === "user" ? "flex justify-end" : "flex justify-start"
+                }`}
+              >
+                <Card className={`max-w-[80%] ${
+                  message.role === "user" ? "bg-primary text-white" : "bg-white"
                 }`}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
-              </CardContent>
-            </Card>
+                  <CardContent className="p-3">
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <div className={`text-xs mt-1 ${
+                      message.role === "user" ? "text-white/70" : "text-gray-400"
+                    }`}>
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-      
-      <Separator />
-      
-      <form onSubmit={handleSendMessage} className="p-4 bg-white rounded-b-lg">
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={input}
-            placeholder = {placeholder}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 min-h-10 rounded-md border border-input bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={isLoading}
-          />
-          <Button 
-            type="button" 
-            variant="ghost"
-            onClick={toggleListening}
-            className={`px-3 transition-colors duration-300 ${
-              !isListening 
-                ? "bg-red-100 text-red-600 hover:bg-red-500 hover:text-white" 
-                : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
-            }`}
-            disabled={isLoading}
-            title={!isListening ? t('chat.startRecording') : t('chat.stopRecording')}
-          >
-            {!isListening ? (
-              <MicOff className="h-5 w-5" />
-            ) : (
-              <Mic className="h-5 w-5" />
-            )}
-            <span className="sr-only">{!isListening ? t('chat.startRecording') : t('chat.stopRecording')}</span>
-          </Button>
-          <Button 
-            type="submit" 
-            disabled={isLoading || !input.trim()}
-            title={t('chat.send')}
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <SendHorizontal className="h-4 w-4" />
-            )}
-            <span className="sr-only">{t('chat.send')}</span>
-          </Button>
-        </div>
-      </form>
+          
+          <Separator />
+          
+          <form onSubmit={handleSendMessage} className="p-4 bg-white rounded-b-lg">
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={input}
+                placeholder={placeholder}
+                onChange={(e) => setInput(e.target.value)}
+                className="flex-1 min-h-10 rounded-md border border-input bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isLoading}
+              />
+              <Button 
+                type="button" 
+                variant="ghost"
+                onClick={toggleListening}
+                className={`px-3 transition-colors duration-300 ${
+                  !isListening 
+                    ? "bg-red-100 text-red-600 hover:bg-red-500 hover:text-white" 
+                    : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
+                }`}
+                disabled={isLoading}
+                title={!isListening ? t('chat.startRecording') : t('chat.stopRecording')}
+              >
+                {!isListening ? (
+                  <MicOff className="h-5 w-5" />
+                ) : (
+                  <Mic className="h-5 w-5" />
+                )}
+                <span className="sr-only">{!isListening ? t('chat.startRecording') : t('chat.stopRecording')}</span>
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={isLoading || !input.trim()}
+                title={t('chat.send')}
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <SendHorizontal className="h-4 w-4" />
+                )}
+                <span className="sr-only">{t('chat.send')}</span>
+              </Button>
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 };
