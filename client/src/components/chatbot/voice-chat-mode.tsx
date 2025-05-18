@@ -139,6 +139,17 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
     if (!isActiveRef.current || isRecording) return;
     
     try {
+      // First, check if we have microphone permissions
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        .catch(err => {
+          console.error('Microphone permission error:', err);
+          setError('Please allow microphone access to use voice mode');
+          throw err;
+        });
+      
+      // If we got here, we have permission, so stop the test stream
+      stream.getTracks().forEach(track => track.stop());
+      
       setIsRecording(true);
       setStatus('Listening...');
       setError(null);
@@ -148,7 +159,7 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       await startRecording();
     } catch (err) {
       console.error('Error starting recording:', err);
-      setError('Failed to access microphone. Please check your permissions.');
+      setError('Failed to access microphone. Please check your browser permissions.');
       setIsRecording(false);
     }
   };
@@ -165,7 +176,17 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       const audioBlob = await stopRecording();
       
       // Convert speech to text using Google Cloud Speech-to-Text
-      console.log('Converting speech to text via Google Cloud...');
+      console.log('Converting speech to text via Google Cloud...', audioBlob.size, 'bytes');
+      
+      // Only proceed if we have actual audio data
+      if (audioBlob.size < 100) {
+        setStatus('No audio detected. Please try again.');
+        setTimeout(() => {
+          if (isActiveRef.current) startListening();
+        }, 2000);
+        return;
+      }
+      
       const text = await speechToText(audioBlob, language);
       
       if (!text || text.trim() === '') {
