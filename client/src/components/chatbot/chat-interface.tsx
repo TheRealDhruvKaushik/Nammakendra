@@ -79,11 +79,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [voiceModeOn, setVoiceModeOn] = useState(false); // Voice Mode toggle state
+  const [isFullVoiceMode, setIsFullVoiceMode] = useState(false); // Full voice conversation mode
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
   // Reference for speech recognition
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // Reference for TTS audio element
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
@@ -217,6 +221,44 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Function to convert text to speech and play audio
+  const speakText = async (text: string) => {
+    if (!voiceModeOn) return;
+    
+    try {
+      // Call the TTS API endpoint
+      const response = await apiRequest("POST", "/api/voice/synthesize", {
+        text,
+        language
+      });
+      
+      const data = await response.json();
+      
+      if (data.audio) {
+        // Create audio element
+        const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+        
+        // Store reference to audio element
+        audioRef.current = audio;
+        
+        // Play the audio
+        await audio.play();
+        
+        // Return a promise that resolves when audio finishes playing
+        return new Promise<void>((resolve) => {
+          audio.onended = () => resolve();
+        });
+      }
+    } catch (error) {
+      console.error("Error in text-to-speech:", error);
+      toast({
+        title: "Voice Error",
+        description: "Failed to play voice response",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -249,6 +291,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // If voice mode is on, speak the response
+      if (voiceModeOn) {
+        await speakText(data.message);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -261,11 +308,75 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     }
   };
 
+  // Toggle the voice mode
+  const toggleVoiceMode = () => {
+    setVoiceModeOn(prev => !prev);
+    
+    // Show toast notification when toggling
+    toast({
+      title: !voiceModeOn ? "Voice Mode On" : "Voice Mode Off",
+      description: !voiceModeOn 
+        ? "Responses will now be spoken aloud"
+        : "Responses will be text only",
+      variant: !voiceModeOn ? "default" : "destructive"
+    });
+    
+    // If turning off voice mode, stop any ongoing audio
+    if (voiceModeOn && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+  };
+  
+  // Toggle full voice conversation mode 
+  const toggleFullVoiceMode = () => {
+    // If activating full voice mode, also activate regular voice mode
+    if (!isFullVoiceMode) {
+      setVoiceModeOn(true);
+    }
+    
+    setIsFullVoiceMode(prev => !prev);
+  };
+
   return (
     <div className="flex flex-col h-[600px] max-h-[80vh] rounded-lg border">
       <div className="bg-primary text-white p-4 rounded-t-lg">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <p className="text-sm text-white/80">{subtitle}</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-bold">{title}</h2>
+            <p className="text-sm text-white/80">{subtitle}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* Voice Mode Toggle Button */}
+            <button
+              onClick={toggleVoiceMode}
+              className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors ${
+                voiceModeOn 
+                  ? 'bg-white text-primary' 
+                  : 'bg-primary-700 text-white/80 border border-white/30'
+              }`}
+              title={voiceModeOn ? "Turn off voice responses" : "Turn on voice responses"}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+              <span>{voiceModeOn ? "Voice On" : "Voice Mode"}</span>
+            </button>
+          </div>
+        </div>
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
