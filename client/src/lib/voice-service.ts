@@ -30,14 +30,10 @@ export async function checkVoiceAvailability(): Promise<boolean> {
  * @returns Boolean indicating if browser supports required audio features
  */
 export function isBrowserSupported(): boolean {
-  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
-    return false;
-  }
-  
   return !!(
     navigator.mediaDevices &&
-    typeof navigator.mediaDevices.getUserMedia === 'function' &&
-    (window.AudioContext || (window as any).webkitAudioContext) &&
+    navigator.mediaDevices.getUserMedia &&
+    window.AudioContext &&
     window.MediaRecorder
   );
 }
@@ -88,48 +84,24 @@ export async function startRecording(): Promise<void> {
  */
 export function stopRecording(): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-      // If no recording is active, return an empty audio blob
-      console.log('No active recording to stop');
-      resolve(new Blob([], { type: 'audio/wav' }));
+    if (!mediaRecorder) {
+      reject(new Error('No active recording'));
       return;
     }
     
-    // Handle the stop event
     mediaRecorder.onstop = () => {
-      try {
-        // Create a single Blob from all recorded chunks
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        
-        // Clean up
-        if (mediaRecorder && mediaRecorder.stream) {
-          mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        }
-        
-        // Reset for next recording
-        audioChunks = [];
-        
-        resolve(audioBlob);
-      } catch (err) {
-        console.error('Error creating audio blob:', err);
-        reject(new Error('Failed to process recorded audio'));
-      }
-    };
-    
-    // Stop recording
-    try {
-      mediaRecorder.stop();
-    } catch (err) {
-      console.error('Error stopping MediaRecorder:', err);
+      // Create a single Blob from all recorded chunks
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
       
-      // Cleanup anyway and resolve with empty blob
+      // Clean up
       if (mediaRecorder && mediaRecorder.stream) {
         mediaRecorder.stream.getTracks().forEach(track => track.stop());
       }
-      audioChunks = [];
       
-      resolve(new Blob([], { type: 'audio/wav' }));
-    }
+      resolve(audioBlob);
+    };
+    
+    mediaRecorder.stop();
   });
 }
 

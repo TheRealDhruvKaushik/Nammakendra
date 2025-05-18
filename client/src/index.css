@@ -26,10 +26,11 @@
   }
 
   body {
-    @apply font-sans antialiased bg-gray-50 text-gray-900;
+    @apply font-sans antialiased bg-gray-900 text-gray-50;
     font-family: 'Open Sans', sans-serif;
     font-size: var(--base-font-size);
     line-height: var(--base-line-height);
+    color: #ffffff;
   }
 
   /* Language-specific adjustments */

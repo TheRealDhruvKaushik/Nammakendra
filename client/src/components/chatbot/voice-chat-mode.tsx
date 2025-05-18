@@ -14,10 +14,9 @@ import { Phone, PhoneOff, Mic, MicOff } from 'lucide-react';
 // Define props for the voice chat component
 interface VoiceChatModeProps {
   language: Language;
-  onSendMessage: (e?: React.FormEvent, message?: string) => Promise<string>; // Returns AI response
+  onSendMessage: (message: string) => Promise<string>; // Returns AI response
   onToggleVoiceMode: () => void;
   isActive: boolean;
-  sessionId?: string; // To track the conversation session
 }
 
 /**
@@ -46,7 +45,7 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
   // Reference to maintain active state
   const isActiveRef = useRef(isActive);
   
-  // Effect to check voice API availability and initialize voice mode
+  // Effect to check voice API availability
   useEffect(() => {
     isActiveRef.current = isActive;
     if (!isActive) return;
@@ -56,22 +55,19 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
         // First check browser support
         const browserSupported = isBrowserSupported();
         if (!browserSupported) {
-          setError('Your browser doesn\'t support voice features. Please try using Chrome, Edge, or Safari.');
+          setError('Your browser doesn\'t support voice features');
           setIsAvailable(false);
           return;
         }
         
-        // Then check Google Cloud API availability
-        console.log('Checking Google Cloud voice services availability...');
+        // Then check API availability
         const apiAvailable = await checkVoiceAvailability();
         setIsAvailable(apiAvailable);
         
         if (!apiAvailable) {
-          setError('Google Cloud voice services are not configured. Please check your API keys.');
+          setError('Voice services are not configured');
         } else {
           setError(null);
-          console.log('Voice services are available!');
-          
           // Add initial greeting message when voice mode is activated
           const greeting = language === 'kannada' 
             ? 'ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ ಸಹಾಯಕ. ನಿಮಗೆ ಏನು ಬೇಕು ಎಂದು ಹೇಳಿ.'
@@ -79,29 +75,17 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
           
           setMessages([{ role: 'assistant', content: greeting }]);
           
-          // Speak the greeting using Google Cloud TTS
-          console.log('Speaking initial greeting...');
-          await speakAssistantMessage(greeting);
+          // Speak the greeting
+          speakAssistantMessage(greeting);
         }
       } catch (err) {
         console.error('Error checking voice availability:', err);
-        setError('Failed to initialize voice mode. Please try again.');
+        setError('Failed to initialize voice mode');
         setIsAvailable(false);
       }
     };
     
-    // Run voice availability check
     checkAvailability();
-    
-    // Cleanup function when component unmounts or isActive changes
-    return () => {
-      // Stop any ongoing recordings when component unmounts
-      try {
-        stopRecording().catch(err => console.error('Error stopping recording during cleanup:', err));
-      } catch (e) {
-        console.log('No active recording to stop');
-      }
-    };
   }, [isActive, language]);
   
   // Function to handle speaking the assistant's messages
@@ -112,23 +96,17 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       setIsSpeaking(true);
       setStatus('Speaking...');
       
-      // Use Google Cloud Text-to-Speech to convert response to audio
-      console.log('Converting text to speech via Google Cloud:', text.substring(0, 50) + '...');
       const audio = await textToSpeech(text, language);
-      
-      // Play the audio response
-      console.log('Playing audio response');
       await playAudio(audio);
       
       // Only continue if still in voice mode
       if (isActiveRef.current) {
         setStatus('Listening...');
-        // After speaking, automatically start listening for user response
         await startListening();
       }
     } catch (err) {
       console.error('Error in text-to-speech:', err);
-      setError('Failed to speak response. Please check your network connection.');
+      setError('Failed to speak response');
     } finally {
       setIsSpeaking(false);
     }
@@ -139,27 +117,14 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
     if (!isActiveRef.current || isRecording) return;
     
     try {
-      // First, check if we have microphone permissions
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        .catch(err => {
-          console.error('Microphone permission error:', err);
-          setError('Please allow microphone access to use voice mode');
-          throw err;
-        });
-      
-      // If we got here, we have permission, so stop the test stream
-      stream.getTracks().forEach(track => track.stop());
-      
       setIsRecording(true);
       setStatus('Listening...');
       setError(null);
       
-      // Start recording audio using MediaRecorder
-      console.log('Starting audio recording...');
       await startRecording();
     } catch (err) {
       console.error('Error starting recording:', err);
-      setError('Failed to access microphone. Please check your browser permissions.');
+      setError('Failed to access microphone');
       setIsRecording(false);
     }
   };
@@ -172,21 +137,9 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       setStatus('Processing...');
       
       // Stop recording and get audio
-      console.log('Stopping recording and getting audio blob...');
       const audioBlob = await stopRecording();
       
-      // Convert speech to text using Google Cloud Speech-to-Text
-      console.log('Converting speech to text via Google Cloud...', audioBlob.size, 'bytes');
-      
-      // Only proceed if we have actual audio data
-      if (audioBlob.size < 100) {
-        setStatus('No audio detected. Please try again.');
-        setTimeout(() => {
-          if (isActiveRef.current) startListening();
-        }, 2000);
-        return;
-      }
-      
+      // Convert speech to text
       const text = await speechToText(audioBlob, language);
       
       if (!text || text.trim() === '') {
@@ -198,33 +151,23 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
         return;
       }
       
-      console.log('Speech recognized:', text);
-      
-      // Add user message to conversation
+      // Add user message
       const userMessage = { role: 'user' as const, content: text };
       setMessages(prev => [...prev, userMessage]);
       
-      // Get response from AI through the chat interface
-      setStatus('Getting response from AI...');
-      const response = await onSendMessage(undefined, text);
+      // Get response from AI
+      setStatus('Getting response...');
+      const response = await onSendMessage(text);
       
-      // Add assistant message to conversation
+      // Add assistant message
       const assistantMessage = { role: 'assistant' as const, content: response };
       setMessages(prev => [...prev, assistantMessage]);
       
-      // Speak the response using Google Cloud Text-to-Speech
-      console.log('Speaking response...');
+      // Speak the response
       await speakAssistantMessage(response);
     } catch (err) {
       console.error('Error processing voice:', err);
-      setError('Failed to process voice input. Please try again.');
-      
-      // Try to restart listening after error
-      setTimeout(() => {
-        if (isActiveRef.current && !isRecording) {
-          startListening();
-        }
-      }, 3000);
+      setError('Failed to process voice input');
     } finally {
       setIsRecording(false);
     }
@@ -245,14 +188,9 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
       {/* Voice Chat Status */}
       <div className="flex items-center justify-between py-4 border-b border-primary/20 mb-4">
         <div className="flex items-center">
-          <div className={`w-3 h-3 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-gray-400'} mr-2`}></div>
+          <div className={`w-3 h-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-gray-400'} mr-2`}></div>
           <h3 className="text-lg font-medium">
             {language === 'kannada' ? 'ಧ್ವನಿ ಮೋಡ್' : 'Voice Mode'}
-            {isAvailable && (
-              <span className="text-xs ml-2 text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                {language === 'kannada' ? 'Google ಧ್ವನಿ ಸೇವೆಗಳು' : 'Google Voice Services'}
-              </span>
-            )}
           </h3>
         </div>
         
@@ -273,22 +211,16 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
         </div>
       )}
       
-      {/* Status indicator with more prominent visual feedback */}
+      {/* Status indicator */}
       {status && (
-        <div className="text-sm text-gray-700 mb-4 flex items-center justify-center p-2 bg-gray-50 rounded-lg">
-          <div className={`w-3 h-3 rounded-full ${
-            isRecording 
-              ? 'bg-red-500 animate-pulse'
-              : isSpeaking 
-                ? 'bg-blue-500 animate-pulse'
-                : 'bg-gray-400'
-          } mr-2`}></div>
-          <span className="font-medium">{status}</span>
+        <div className="text-sm text-gray-500 mb-4 flex items-center">
+          <div className={`w-2 h-2 rounded-full ${isRecording ? 'bg-red-500 animate-pulse' : isSpeaking ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'} mr-2`}></div>
+          {status}
         </div>
       )}
       
       {/* Conversation display */}
-      <div className="conversation-container h-[calc(100vh-350px)] overflow-y-auto mb-4 rounded border border-gray-200">
+      <div className="conversation-container h-[calc(100vh-300px)] overflow-y-auto mb-4 rounded border border-gray-200">
         <div className="p-4 space-y-4">
           {messages.map((message, index) => (
             <div
@@ -305,34 +237,25 @@ const VoiceChatMode: React.FC<VoiceChatModeProps> = ({
         </div>
       </div>
       
-      {/* Recording controls with better visual feedback */}
-      <div className="flex flex-col items-center py-4">
+      {/* Recording controls */}
+      <div className="flex justify-center py-4">
         {isAvailable ? (
-          <>
-            <button
-              onClick={toggleRecording}
-              disabled={isSpeaking}
-              className={`p-6 rounded-full shadow-lg ${
-                isRecording
-                  ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
-                  : 'bg-primary text-white hover:bg-primary/90'
-              } disabled:opacity-50 transition-colors`}
-              aria-label={isRecording ? 'Stop recording' : 'Start recording'}
-              title={isRecording ? 'Stop recording' : 'Start recording'}
-            >
-              {isRecording ? <MicOff size={28} /> : <Mic size={28} />}
-            </button>
-            <p className="mt-2 text-sm text-gray-500">
-              {isRecording 
-                ? (language === 'kannada' ? 'ನಿಲ್ಲಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ' : 'Click to stop recording')
-                : (language === 'kannada' ? 'ಪ್ರಾರಂಭಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ' : 'Click to start recording')}
-            </p>
-          </>
+          <button
+            onClick={toggleRecording}
+            disabled={isSpeaking}
+            className={`p-4 rounded-full ${
+              isRecording
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-primary text-white hover:bg-primary/90'
+            } disabled:opacity-50 transition-colors`}
+            aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+            title={isRecording ? 'Stop recording' : 'Start recording'}
+          >
+            {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
+          </button>
         ) : (
-          <div className="text-center p-4 bg-gray-50 rounded-lg text-gray-500 w-full">
-            {language === 'kannada' 
-              ? 'ಧ್ವನಿ ಸೇವೆಗಳು ಲಭ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಪ್ರಯತ್ನಿಸಿ.' 
-              : 'Voice services are not available. Please try again later.'}
+          <div className="text-center text-gray-500">
+            {language === 'kannada' ? 'ಧ್ವನಿ ಲಭ್ಯವಿಲ್ಲ' : 'Voice is not available'}
           </div>
         )}
       </div>

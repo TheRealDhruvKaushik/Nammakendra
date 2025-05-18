@@ -15,33 +15,14 @@ const RELEVANCE_THRESHOLD = 0.6;
 
 /**
  * Process a user's government service question using reference documents when available
- * @param messageInput User's message (either a string or an array of message objects)
+ * @param message User's question
  * @param language Language preference ('english' or 'kannada')
  * @returns AI response
  */
-export async function processGovernmentServiceQuestion(
-  messageInput: string | Array<{role: string, content: string}>, 
-  language: string = 'english'
-): Promise<string> {
+export async function processGovernmentServiceQuestion(message: string, language: string = 'english'): Promise<string> {
   try {
-    // Extract the user's question regardless of input format
-    let userQuestion: string;
-    let messages: Array<{role: string, content: string}> = [];
-    
-    if (typeof messageInput === 'string') {
-      // Single message mode (backward compatibility)
-      userQuestion = messageInput;
-      messages = [{ role: 'user', content: userQuestion }];
-    } else {
-      // Multi-message mode (conversation context)
-      messages = messageInput;
-      // Find the last user message for document search
-      const lastUserMessage = [...messageInput].reverse().find(m => m.role === 'user');
-      userQuestion = lastUserMessage?.content || '';
-    }
-    
     // First, try to find relevant reference documents based on the question
-    const relevantDocuments = searchReferenceDocuments(userQuestion);
+    const relevantDocuments = searchReferenceDocuments(message);
     
     console.log(`Found ${relevantDocuments.length} relevant documents for government service query`);
     
@@ -50,30 +31,10 @@ export async function processGovernmentServiceQuestion(
       const referenceContent = formatReferenceDocumentsForGroq(relevantDocuments);
       
       // Use Groq to answer with reference to the authentic information
-      if (typeof messageInput === 'string') {
-        // For backward compatibility
-        return await generateAnswerWithReferences(userQuestion, referenceContent, language);
-      } else {
-        // Add reference content to the last user message
-        const enhancedMessages = [...messages];
-        const lastUserIndex = enhancedMessages.findIndex(m => m.role === 'user');
-        if (lastUserIndex !== -1) {
-          enhancedMessages[lastUserIndex] = {
-            ...enhancedMessages[lastUserIndex],
-            content: `${enhancedMessages[lastUserIndex].content}\n\nREFERENCE INFORMATION:\n${referenceContent}`
-          };
-        }
-        // Use conversation history with Groq
-        return await chatWithGroq(enhancedMessages, language, 'sarkara');
-      }
+      return await generateAnswerWithReferences(message, referenceContent, language);
     } else {
       // No specific reference documents found, use a general approach
-      if (typeof messageInput === 'string') {
-        return await generateGeneralGovernmentServiceAnswer(userQuestion, language);
-      } else {
-        // Use conversation history with Groq
-        return await chatWithGroq(messages, language, 'sarkara');
-      }
+      return await generateGeneralGovernmentServiceAnswer(message, language);
     }
   } catch (error) {
     console.error('Error processing government service question:', error);
@@ -146,10 +107,7 @@ Be helpful and polite, but only provide information that's grounded in the authe
   // Use the AI to generate a response based on our specific prompt
   // This uses the same Groq endpoint but with our custom prompt instead
   try {
-    const messages = [
-      { role: "user", content: customPrompt }
-    ];
-    return await chatWithGroq(messages, language, 'sarkara');
+    return await chatWithGroq(customPrompt, language);
   } catch (error) {
     console.error('Error generating answer with references:', error);
     throw new Error('Failed to process reference information. Please try again.');
@@ -188,10 +146,7 @@ Keep your response conversational, simple to understand, and honest about limita
 
   // Use the AI to generate a general response
   try {
-    const messages = [
-      { role: "user", content: systemPrompt }
-    ];
-    return await chatWithGroq(messages, language, 'sarkara');
+    return await chatWithGroq(systemPrompt, language);
   } catch (error) {
     console.error('Error generating general government service answer:', error);
     throw new Error('Failed to generate information about government services. Please try again.');

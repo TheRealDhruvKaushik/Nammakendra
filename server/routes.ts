@@ -2,7 +2,6 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { chatGPT, analyzeDocument, hasHuggingFaceToken } from "./deepseek";
-import { chatWithGroq } from "./groq";
 import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingface";
 import { processGovernmentServiceQuestion } from "./sarkara";
 import voiceRouter from "./voice-routes";
@@ -95,35 +94,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // In-memory chat history storage (session ID -> messages array)
-  const chatSessions = new Map<string, Array<{role: string, content: string}>>();
-  
   // Chat with AI
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message, language, pageType, sessionId: requestSessionId } = z.object({
+      const { message, language, pageType } = z.object({
         message: z.string().min(1, "Message cannot be empty"),
         language: z.string().optional().default('english'),
-        pageType: z.enum(['sahayak', 'sarkara']).optional().default('sahayak'),
-        sessionId: z.string().optional()
+        pageType: z.enum(['sahayak', 'sarkara']).optional().default('sahayak')
       }).parse(req.body);
       
       // Generate a session ID if not provided
-      const sessionId = requestSessionId || uuidv4();
+      const sessionId = req.body.sessionId || uuidv4();
       
-      // Initialize chat history for this session if it doesn't exist
-      if (!chatSessions.has(sessionId)) {
-        chatSessions.set(sessionId, []);
-      }
-      
-      // Get current chat history
-      const chatHistory = chatSessions.get(sessionId)!;
-      
-      // Add user message to chat history
-      const userMessage = { role: "user", content: message };
-      chatHistory.push(userMessage);
-      
-      // Store user message in database
+      // Store user message
       await storage.createChatMessage({
         sessionId,
         role: "user",
@@ -138,23 +121,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("Using reference documents for NammaSarkara");
         aiResponse = await processGovernmentServiceQuestion(message, language);
       } else {
-        // For NammaSahayak, use the AI stack with conversation history (Groq -> Hugging Face fallback)
-        console.log("Using AI for NammaSahayak with conversation history");
-        
-        try {
-          // Try with Groq first, passing the full chat history
-          aiResponse = await chatWithGroq(chatHistory, language, pageType);
-        } catch (groqError) {
-          console.log("Groq API error, falling back to DeepSeek:", groqError);
-          // Fall back to DeepSeek without conversation history (current implementation)
-          aiResponse = await chatGPT(message, language);
-        }
+        // For NammaSahayak, use the AI stack (Groq -> Hugging Face fallback)
+        console.log("Using AI for NammaSahayak");
+        aiResponse = await chatGPT(message, language);
       }
       
-      // Add AI response to chat history
-      chatHistory.push({ role: "assistant", content: aiResponse });
-      
-      // Store AI response in database
+      // Store AI response
       await storage.createChatMessage({
         sessionId,
         role: "assistant",
@@ -164,25 +136,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ 
         message: aiResponse,
         sessionId 
-      });
-    } catch (err) {
-      handleError(err, res);
-    }
-  });
-  
-  // Clear chat session
-  app.post("/api/chat/clear", async (req, res) => {
-    try {
-      const { sessionId } = z.object({
-        sessionId: z.string().min(1, "Session ID cannot be empty")
-      }).parse(req.body);
-      
-      // Clear the chat history for this session
-      chatSessions.delete(sessionId);
-      
-      res.json({ 
-        success: true,
-        message: "Chat session cleared successfully"
       });
     } catch (err) {
       handleError(err, res);
@@ -221,7 +174,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             filePath,
             tesseractLang, // Use English + Kannada (if needed)
             { 
-              logger: (m: any) => {
+              logger: m => {
                 if (m.status === 'recognizing text') {
                   // Only log progress updates at 25% increments to reduce noise
                   if (m.progress === 0 || m.progress === 0.25 || m.progress === 0.5 || m.progress === 0.75 || m.progress === 1) {
