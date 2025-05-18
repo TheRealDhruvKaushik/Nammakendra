@@ -79,7 +79,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isVoiceCallMode, setIsVoiceCallMode] = useState(false); // Voice call mode toggle
+  const [isVoiceCallMode, setIsVoiceCallMode] = useState(false); // Single voice call mode toggle
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
@@ -222,8 +222,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
 
   // Function to convert text to speech and play audio
   const speakText = async (text: string) => {
-    if (!voiceModeOn) return;
-    
     try {
       // Call the TTS API endpoint
       const response = await apiRequest("POST", "/api/voice/synthesize", {
@@ -307,34 +305,24 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
     }
   };
 
-  // Toggle the voice mode
-  const toggleVoiceMode = () => {
-    setVoiceModeOn(prev => !prev);
-    
-    // Show toast notification when toggling
-    toast({
-      title: !voiceModeOn ? "Voice Mode On" : "Voice Mode Off",
-      description: !voiceModeOn 
-        ? "Responses will now be spoken aloud"
-        : "Responses will be text only",
-      variant: !voiceModeOn ? "default" : "destructive"
-    });
-    
+  // Toggle voice call mode - simplified to a single mode
+  const toggleVoiceCallMode = () => {
     // If turning off voice mode, stop any ongoing audio
-    if (voiceModeOn && audioRef.current) {
+    if (isVoiceCallMode && audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
-  };
-  
-  // Toggle full voice conversation mode 
-  const toggleFullVoiceMode = () => {
-    // If activating full voice mode, also activate regular voice mode
-    if (!isFullVoiceMode) {
-      setVoiceModeOn(true);
-    }
     
-    setIsFullVoiceMode(prev => !prev);
+    setIsVoiceCallMode(prev => !prev);
+    
+    // Show toast notification when entering voice call mode
+    if (!isVoiceCallMode) {
+      toast({
+        title: "Voice Call Mode Activated",
+        description: "Entering voice conversation mode",
+        variant: "default"
+      });
+    }
   };
 
   return (
