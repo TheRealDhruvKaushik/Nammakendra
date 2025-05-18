@@ -83,6 +83,14 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     // Cleanup when component unmounts
     return () => {
       isActiveRef.current = false;
+      // Stop any active speech recognition
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.log('Error stopping speech recognition during cleanup', e);
+        }
+      }
     };
   }, [language]);
   
@@ -109,7 +117,10 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     }
   };
   
-  // Function to start listening for user input
+  // Reference for browser's speech recognition
+  const recognitionRef = useRef<any>(null);
+  
+  // Function to start listening for user input using browser's built-in speech recognition
   const startListening = async () => {
     if (!isActiveRef.current || isRecording) return;
     
@@ -118,7 +129,69 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       setStatus('Listening...');
       setError(null);
       
-      await startRecording();
+      // Try to use browser's speech recognition first
+      if (typeof window !== 'undefined' && 
+          (window.SpeechRecognition || window.webkitSpeechRecognition)) {
+        
+        // Use the appropriate implementation
+        const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        // Create a new instance
+        recognitionRef.current = new SpeechRecognitionAPI();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = false;
+        
+        // Set language
+        recognitionRef.current.lang = language === 'kannada' ? 'kn-IN' : 'en-US';
+        
+        // Set up result handler
+        recognitionRef.current.onresult = (event: any) => {
+          try {
+            const transcript = Array.from(event.results)
+              .map((result: any) => result[0])
+              .map((result: any) => result.transcript)
+              .join('');
+            
+            console.log("Voice call transcript:", transcript);
+            
+            if (transcript && transcript.trim() !== '') {
+              // Process the recognized text
+              handleRecognizedText(transcript);
+            }
+          } catch (error) {
+            console.error("Error processing speech recognition result:", error);
+            setError('Failed to process speech');
+          }
+        };
+        
+        // Set up error handler
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('Speech recognition error in voice call:', event.error);
+          setError('Speech recognition error. Please try again.');
+          setIsRecording(false);
+        };
+        
+        // Set up end handler
+        recognitionRef.current.onend = () => {
+          console.log('Speech recognition ended');
+          // Only restart if we're still in recording mode and active
+          if (isRecording && isActiveRef.current) {
+            // Small delay before restarting
+            setTimeout(() => {
+              if (isRecording && isActiveRef.current && recognitionRef.current) {
+                recognitionRef.current.start();
+              }
+            }, 300);
+          }
+        };
+        
+        // Start recognition
+        recognitionRef.current.start();
+        console.log('Browser speech recognition started');
+      } else {
+        // Fallback to the original recording mechanism
+        await startRecording();
+      }
     } catch (err) {
       console.error('Error starting recording:', err);
       setError('Failed to access microphone');
@@ -126,38 +199,32 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     }
   };
   
-  // Function to stop listening and process user input
+  // Function to stop listening
   const stopListening = async () => {
     if (!isActiveRef.current || !isRecording) return;
     
     try {
       setStatus('Processing...');
       
-      // Stop recording and get audio
-      const audioBlob = await stopRecording();
-      
-      // Convert speech to text
-      const text = await speechToText(audioBlob, language);
-      
-      if (!text || text.trim() === '') {
-        // If no text was recognized, start listening again
-        setStatus('No speech detected. Please try again.');
-        setTimeout(() => {
-          if (isActiveRef.current) startListening();
-        }, 2000);
-        return;
+      // Stop browser speech recognition if active
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        // Don't reset recognitionRef here so we can restart it later
+      } else {
+        // Use original recording mechanism as fallback
+        const audioBlob = await stopRecording();
+        const text = await speechToText(audioBlob, language);
+        
+        if (text && text.trim() !== '') {
+          handleRecognizedText(text);
+        } else {
+          // If no text was recognized, start listening again
+          setStatus('No speech detected. Please try again.');
+          setTimeout(() => {
+            if (isActiveRef.current) startListening();
+          }, 1000);
+        }
       }
-      
-      // Set the transcript
-      setTranscript(text);
-      
-      // Get response from AI
-      setStatus('Getting response...');
-      const response = await onSendMessage(text);
-      setLastResponse(response);
-      
-      // Speak the response
-      await speakText(response);
     } catch (err) {
       console.error('Error processing voice:', err);
       setError('Failed to process. Please try again.');
@@ -166,6 +233,33 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       setIsRecording(false);
       setTimeout(() => {
         if (isActiveRef.current) startListening();
+      }, 2000);
+    }
+  };
+  
+  // Common handler for recognized text
+  const handleRecognizedText = async (text: string) => {
+    // Set the transcript
+    setTranscript(text);
+    
+    // Get response from AI
+    setStatus('Getting response...');
+    try {
+      const response = await onSendMessage(text);
+      setLastResponse(response);
+      
+      // Speak the response
+      await speakText(response);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      setError('Failed to get response from assistant');
+      
+      // Start listening again after error
+      setTimeout(() => {
+        if (isActiveRef.current) {
+          setIsRecording(false);
+          startListening();
+        }
       }, 3000);
     }
   };
