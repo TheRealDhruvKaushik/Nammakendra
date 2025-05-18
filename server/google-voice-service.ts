@@ -3,13 +3,21 @@ import textToSpeech from '@google-cloud/text-to-speech';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Get directory name equivalent in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Define Language type if importing fails
 export type Language = 'english' | 'kannada';
 
-// Configure credentials path
-process.env.GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS || 
-  path.join(__dirname, 'google-credentials.json');
+// Use the GOOGLE_APPLICATION_CREDENTIALS environment variable directly
+// The path is already set in the environment by the system
+
+// Log the credentials path for debugging
+console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
 
 // Create clients
 const speechClient = new speech.SpeechClient();

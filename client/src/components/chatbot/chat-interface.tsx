@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import VoiceChatMode from "./voice-chat-mode";
+import VoiceCallMode from "./voice-call-mode";
 import { useLanguage } from "@/context/language-context";
 
 // TypeScript definitions for Web Speech API
@@ -79,8 +79,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [voiceModeOn, setVoiceModeOn] = useState(false); // Voice Mode toggle state
-  const [isFullVoiceMode, setIsFullVoiceMode] = useState(false); // Full voice conversation mode
+  const [isVoiceCallMode, setIsVoiceCallMode] = useState(false); // Voice call mode toggle
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
