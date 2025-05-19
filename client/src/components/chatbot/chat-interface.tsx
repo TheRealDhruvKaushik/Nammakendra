@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { SendHorizontal, Loader2, Mic, MicOff, Phone } from "lucide-react";
+import { SendHorizontal, Loader2, Volume2, VolumeX, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -329,19 +329,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
             <h2 className="text-xl font-bold">{title}</h2>
             <p className="text-sm text-white/80">{subtitle}</p>
           </div>
-          <div className="flex items-center gap-2">
-            {/* Single Voice Call Mode Button */}
-            <button
-              onClick={toggleVoiceCallMode}
-              className="px-3 py-1 rounded-full text-sm flex items-center gap-1 transition-colors
-                bg-primary-700 text-white/80 border border-white/30 hover:bg-white hover:text-primary
-              "
-              title="Start voice call mode"
-            >
-              <Phone size={16} />
-              <span>Voice Call</span>
-            </button>
-          </div>
+          {/* No voice call button as requested */}
         </div>
       </div>
       
@@ -417,12 +405,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
                     : "bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={isLoading}
-                title={!isListening ? t('chat.startRecording') : t('chat.stopRecording')}
+                title={!isListening ? "Click to enable voice input" : "Click to disable voice input"}
               >
                 {!isListening ? (
-                  <MicOff className="h-5 w-5" />
+                  <VolumeX className="h-5 w-5" />
                 ) : (
-                  <Mic className="h-5 w-5" />
+                  <Volume2 className="h-5 w-5" />
                 )}
               </Button>
               <Button 
