@@ -39,9 +39,11 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>('');
   const [lastResponse, setLastResponse] = useState<string>('');
+  const [micEnabled, setMicEnabled] = useState<boolean>(false); // Track if mic is manually enabled
   
-  // Reference to track active state
+  // Reference to track active state and audio element
   const isActiveRef = useRef(true);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   
   // Initialize the voice call mode
   useEffect(() => {
@@ -99,20 +101,63 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     if (!isActiveRef.current) return;
     
     try {
+      // Stop recording while AI is speaking to prevent feedback loop
+      if (isRecording) {
+        pauseListening();
+      }
+      
       setIsSpeaking(true);
       setStatus('Speaking...');
       
       const audio = await textToSpeech(text, language);
-      await playAudio(audio);
       
-      // Only continue if still active
+      // Store audio reference for potential interruption
+      const audioElement = new Audio(`data:audio/mp3;base64,${audio}`);
+      currentAudioRef.current = audioElement;
+      
+      // Listen for user interruption via microphone button
+      const playPromise = new Promise<void>((resolve, reject) => {
+        audioElement.onended = () => {
+          currentAudioRef.current = null;
+          resolve();
+        };
+        audioElement.onerror = (e) => {
+          currentAudioRef.current = null;
+          reject(e);
+        };
+        audioElement.play().catch(reject);
+      });
+      
+      // Wait for audio to finish (unless interrupted)
+      await playPromise;
+      
+      // Only continue if still active and not manually stopped
       if (isActiveRef.current) {
+        setIsSpeaking(false);
         setStatus('Listening...');
-        await startListening();
+        
+        // If mic was manually enabled during speech, don't auto-start listening
+        if (!micEnabled) {
+          await startListening();
+        }
       }
     } catch (err) {
       console.error('Error in text-to-speech:', err);
       setError('Failed to speak. Please try again.');
+      setIsSpeaking(false);
+      
+      // Try to restart listening if there was a speech error
+      if (isActiveRef.current && !micEnabled) {
+        setTimeout(() => startListening(), 1000);
+      }
+    }
+  };
+  
+  // Function to stop AI speech for interruption
+  const stopAiSpeech = () => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current = null;
       setIsSpeaking(false);
     }
   };
@@ -125,7 +170,13 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     if (!isActiveRef.current || isRecording) return;
     
     try {
+      // If AI is speaking, stop it for immediate user input
+      if (isSpeaking) {
+        stopAiSpeech();
+      }
+      
       setIsRecording(true);
+      setMicEnabled(true);
       setStatus('Listening...');
       setError(null);
       
@@ -155,7 +206,7 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
             console.log("Voice call transcript:", transcript);
             
             if (transcript && transcript.trim() !== '') {
-              // Process the recognized text
+              // Process the recognized text - this will also stop mic
               handleRecognizedText(transcript);
             }
           } catch (error) {
@@ -169,17 +220,22 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
           console.error('Speech recognition error in voice call:', event.error);
           setError('Speech recognition error. Please try again.');
           setIsRecording(false);
+          setMicEnabled(false);
         };
         
         // Set up end handler
         recognitionRef.current.onend = () => {
           console.log('Speech recognition ended');
-          // Only restart if we're still in recording mode and active
-          if (isRecording && isActiveRef.current) {
+          // Only restart if we're still in recording mode, active, and mic is enabled
+          if (isRecording && isActiveRef.current && micEnabled) {
             // Small delay before restarting
             setTimeout(() => {
-              if (isRecording && isActiveRef.current && recognitionRef.current) {
-                recognitionRef.current.start();
+              if (isRecording && isActiveRef.current && micEnabled && recognitionRef.current) {
+                try {
+                  recognitionRef.current.start();
+                } catch (err) {
+                  console.error('Error restarting speech recognition:', err);
+                }
               }
             }, 300);
           }
@@ -196,6 +252,20 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       console.error('Error starting recording:', err);
       setError('Failed to access microphone');
       setIsRecording(false);
+      setMicEnabled(false);
+    }
+  };
+  
+  // Function to pause listening without fully stopping
+  const pauseListening = () => {
+    if (!recognitionRef.current) return;
+    
+    try {
+      recognitionRef.current.stop();
+      setIsRecording(false); 
+      // Keep micEnabled state as is - this allows us to know if user manually enabled mic
+    } catch (err) {
+      console.error('Error pausing speech recognition:', err);
     }
   };
   
@@ -209,6 +279,8 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       // Stop browser speech recognition if active
       if (recognitionRef.current) {
         recognitionRef.current.stop();
+        setIsRecording(false);
+        setMicEnabled(false);
         // Don't reset recognitionRef here so we can restart it later
       } else {
         // Use original recording mechanism as fallback
@@ -218,29 +290,32 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
         if (text && text.trim() !== '') {
           handleRecognizedText(text);
         } else {
-          // If no text was recognized, start listening again
-          setStatus('No speech detected. Please try again.');
-          setTimeout(() => {
-            if (isActiveRef.current) startListening();
-          }, 1000);
+          // If no text was recognized, prompt user to try again
+          setStatus('No speech detected. Click mic to try again.');
+          setIsRecording(false);
+          setMicEnabled(false);
         }
       }
     } catch (err) {
       console.error('Error processing voice:', err);
-      setError('Failed to process. Please try again.');
+      setError('Failed to process. Click mic to try again.');
       
-      // Try to restart listening
+      // Reset recording state
       setIsRecording(false);
-      setTimeout(() => {
-        if (isActiveRef.current) startListening();
-      }, 2000);
+      setMicEnabled(false);
     }
   };
   
   // Common handler for recognized text
   const handleRecognizedText = async (text: string) => {
+    // Stop listening while processing
+    if (recognitionRef.current) {
+      pauseListening();
+    }
+    
     // Set the transcript
     setTranscript(text);
+    setMicEnabled(false);
     
     // Get response from AI
     setStatus('Getting response...');
@@ -248,24 +323,30 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       const response = await onSendMessage(text);
       setLastResponse(response);
       
-      // Speak the response
+      // Speak the response (speech will auto-end and listen again)
       await speakText(response);
     } catch (error) {
       console.error('Error getting AI response:', error);
       setError('Failed to get response from assistant');
+      setIsSpeaking(false);
       
-      // Start listening again after error
-      setTimeout(() => {
-        if (isActiveRef.current) {
-          setIsRecording(false);
-          startListening();
-        }
-      }, 3000);
+      // Don't auto-restart listening - let user click mic instead
+      setStatus('Error occurred. Click mic to continue.');
+      setIsRecording(false);
+      setMicEnabled(false);
     }
   };
   
-  // Toggle recording on/off
+  // Toggle recording on/off - handles user manually enabling/disabling mic
   const toggleRecording = async () => {
+    // If AI is speaking, interrupt it
+    if (isSpeaking) {
+      stopAiSpeech();
+      await startListening(); // Enable mic immediately
+      return;
+    }
+    
+    // Normal toggle behavior
     if (isRecording) {
       await stopListening();
     } else {
@@ -321,17 +402,26 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       
       {/* Call Controls */}
       <div className="p-6 flex justify-center gap-4">
-        {/* Mic Toggle Button */}
+        {/* Mic Toggle Button - Color logic based on state */}
         <Button
           onClick={toggleRecording}
-          className={`rounded-full w-16 h-16 flex items-center justify-center ${
-            isRecording 
-              ? 'bg-red-500 hover:bg-red-600' 
-              : 'bg-blue-500 hover:bg-blue-600'
-          }`}
-          disabled={isSpeaking}
+          className={`rounded-full w-16 h-16 flex items-center justify-center 
+            ${isRecording 
+                ? 'bg-blue-500 hover:bg-blue-600' // Blue when actively listening
+                : isSpeaking 
+                  ? 'bg-red-300 hover:bg-red-500' // Pale red when AI is speaking
+                  : 'bg-red-500 hover:bg-red-600' // Red when idle/muted
+            }`}
+          disabled={false} // Never disabled - allows user to interrupt AI
+          title={
+            isRecording
+              ? "Stop listening"
+              : isSpeaking 
+                ? "Interrupt AI and speak" 
+                : "Start speaking"
+          }
         >
-          {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
+          {isRecording ? <Mic size={24} /> : <MicOff size={24} />}
         </Button>
         
         {/* End Call Button */}
