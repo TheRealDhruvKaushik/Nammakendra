@@ -71,9 +71,6 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
         
         // Speak the greeting
         await speakText(greeting);
-        
-        // Start listening automatically
-        await startListening();
       } catch (err) {
         console.error('Error initializing voice call:', err);
         setError('Failed to initialize voice call');
@@ -101,12 +98,15 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     if (!isActiveRef.current) return;
     
     try {
-      // Stop recording while AI is speaking to prevent feedback loop
-      if (isRecording) {
-        pauseListening();
+      // Completely stop any ongoing speech recognition and recording
+      if (isRecording && recognitionRef.current) {
+        recognitionRef.current.stop();
+        setIsRecording(false);
       }
       
+      // Block all user input while AI is speaking
       setIsSpeaking(true);
+      setMicEnabled(false);
       setStatus('Speaking...');
       
       const audio = await textToSpeech(text, language);
@@ -119,37 +119,29 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       const playPromise = new Promise<void>((resolve, reject) => {
         audioElement.onended = () => {
           currentAudioRef.current = null;
+          setIsSpeaking(false);
           resolve();
         };
         audioElement.onerror = (e) => {
           currentAudioRef.current = null;
+          setIsSpeaking(false);
           reject(e);
         };
         audioElement.play().catch(reject);
       });
       
-      // Wait for audio to finish (unless interrupted)
+      // Wait for audio to finish
       await playPromise;
       
-      // Only continue if still active and not manually stopped
+      // After AI finishes speaking, set status but don't auto-start listening
       if (isActiveRef.current) {
-        setIsSpeaking(false);
-        setStatus('Listening...');
-        
-        // If mic was manually enabled during speech, don't auto-start listening
-        if (!micEnabled) {
-          await startListening();
-        }
+        setStatus('Click microphone to speak');
       }
     } catch (err) {
       console.error('Error in text-to-speech:', err);
       setError('Failed to speak. Please try again.');
       setIsSpeaking(false);
-      
-      // Try to restart listening if there was a speech error
-      if (isActiveRef.current && !micEnabled) {
-        setTimeout(() => startListening(), 1000);
-      }
+      setStatus('Click microphone to speak');
     }
   };
   
@@ -355,10 +347,10 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
   };
   
   return (
-    <div className="voice-call-mode flex flex-col h-full bg-gradient-to-b from-primary/80 to-primary/95 text-white relative">
-      {/* Center Logo */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6">
-        <div className="w-32 h-32 rounded-full bg-white p-3 mb-6 shadow-lg flex items-center justify-center">
+    <div className="voice-call-mode flex flex-col h-[600px] max-h-[80vh] bg-gradient-to-b from-primary/80 to-primary/95 text-white relative rounded-b-lg overflow-hidden">
+      {/* Center Logo and Content */}
+      <div className="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
+        <div className="w-24 h-24 rounded-full bg-white p-3 mb-4 shadow-lg flex items-center justify-center">
           <img 
             src={logoPath} 
             alt="NammaKendra Logo" 
@@ -368,36 +360,41 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
         
         {/* Status Display */}
         <div className="text-center mb-4">
-          <h2 className="text-xl font-bold mb-2">
+          <h2 className="text-lg font-bold mb-2">
             {isSpeaking ? 'Assistant Speaking' : isRecording ? 'Listening...' : 'Voice Call'}
           </h2>
-          <p className="text-white/80 mb-6">
+          <p className="text-white/80 text-sm mb-4">
             {status || (language === 'kannada' ? 'ನಿಮ್ಮ ಮಾತನುನ ಕೇಳುತ್ತಿದ್ದೇನೆ' : 'Waiting for your voice')}
           </p>
         </div>
         
-        {/* Speech Transcription */}
-        {transcript && (
-          <div className="bg-white/10 rounded-lg p-4 mb-4 max-w-md w-full">
-            <h3 className="text-sm font-medium text-white/70 mb-1">You said:</h3>
-            <p className="text-white">{transcript}</p>
-          </div>
-        )}
-        
-        {/* AI Response */}
-        {lastResponse && (
-          <div className="bg-white/20 rounded-lg p-4 max-w-md w-full">
-            <h3 className="text-sm font-medium text-white/70 mb-1">Assistant:</h3>
-            <p className="text-white">{lastResponse}</p>
-          </div>
-        )}
-        
-        {/* Error Display */}
-        {error && (
-          <div className="mt-4 bg-red-500/20 text-white border border-red-300 px-4 py-2 rounded-md">
-            {error}
-          </div>
-        )}
+        {/* Conversation Area - Scrollable */}
+        <div className="flex-1 w-full max-w-md overflow-y-auto space-y-3">
+          {/* Speech Transcription */}
+          {transcript && (
+            <div className="bg-white/10 rounded-lg p-3">
+              <h3 className="text-xs font-medium text-white/70 mb-1">You said:</h3>
+              <p className="text-white text-sm">{transcript}</p>
+            </div>
+          )}
+          
+          {/* AI Response - Scrollable */}
+          {lastResponse && (
+            <div className="bg-white/20 rounded-lg p-3">
+              <h3 className="text-xs font-medium text-white/70 mb-1">Assistant:</h3>
+              <div className="text-white text-sm max-h-32 overflow-y-auto">
+                <p>{lastResponse}</p>
+              </div>
+            </div>
+          )}
+          
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-500/20 text-white border border-red-300 px-3 py-2 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Call Controls */}
@@ -409,15 +406,15 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
             ${isRecording 
                 ? 'bg-blue-500 hover:bg-blue-600' // Blue when actively listening
                 : isSpeaking 
-                  ? 'bg-red-300 hover:bg-red-500' // Pale red when AI is speaking
+                  ? 'bg-red-300 cursor-not-allowed opacity-60' // Pale red and disabled when AI is speaking
                   : 'bg-red-500 hover:bg-red-600' // Red when idle/muted
             }`}
-          disabled={false} // Never disabled - allows user to interrupt AI
+          disabled={isSpeaking} // Disabled when AI is speaking to block user input
           title={
             isRecording
               ? "Stop listening"
               : isSpeaking 
-                ? "Interrupt AI and speak" 
+                ? "AI is speaking - please wait" 
                 : "Start speaking"
           }
         >
