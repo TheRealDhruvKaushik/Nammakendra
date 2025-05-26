@@ -40,7 +40,7 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
   const [transcript, setTranscript] = useState<string>('');
   const [lastResponse, setLastResponse] = useState<string>('');
   const [micEnabled, setMicEnabled] = useState<boolean>(false); // Track if mic is manually enabled
-  const [isInterrupting, setIsInterrupting] = useState<boolean>(false); // Track if user wants to interrupt
+  const [isPaused, setIsPaused] = useState<boolean>(false); // Track if voice is paused
   
   // Reference to track active state and audio element
   const isActiveRef = useRef(true);
@@ -351,53 +351,32 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
     }
   };
   
-  // Handle interrupt button - gives AI a final sentence to wrap up
-  const handleInterrupt = async () => {
-    if (!isActiveRef.current) return;
+  // Handle pause/resume button - toggles voice output
+  const handlePauseResume = () => {
+    if (!currentAudioRef.current) return;
     
-    try {
-      setIsInterrupting(true);
-      
-      // Stop any ongoing audio
-      if (currentAudioRef.current) {
-        stopAiSpeech();
-      }
-      
-      // Stop any active recording
-      if (isRecording && recognitionRef.current) {
-        recognitionRef.current.stop();
-        setIsRecording(false);
-      }
-      
-      // Send a wrap-up request to AI
-      const wrapUpMessage = language === 'kannada' 
-        ? 'ದಯವಿಟ್ಟು ಮುಕ್ತಾಯದ ವಾಕ್ಯವನ್ನು ಹೇಳಿ'
-        : 'Please provide a brief closing statement';
-      
-      setStatus('Getting wrap-up message...');
-      const response = await onSendMessage(wrapUpMessage);
-      setLastResponse(response);
-      
-      // Speak the wrap-up message
-      await speakText(response);
-      
-      setIsInterrupting(false);
-    } catch (error) {
-      console.error('Error during interrupt:', error);
-      setError('Failed to interrupt properly');
-      setIsInterrupting(false);
+    if (isPaused) {
+      // Resume audio
+      currentAudioRef.current.play();
+      setIsPaused(false);
+      setStatus('Speaking...');
+    } else {
+      // Pause audio
+      currentAudioRef.current.pause();
+      setIsPaused(true);
+      setStatus('Voice paused - click to resume');
     }
   };
   
   return (
     <div className="voice-call-mode flex flex-col h-[600px] max-h-[80vh] bg-gradient-to-b from-primary/80 to-primary/95 text-white relative rounded-b-lg overflow-hidden">
-      {/* Interrupt Button - Top Right Corner */}
+      {/* Pause/Resume Button - Top Right Corner */}
       <div className="absolute top-4 right-4 z-10">
         <Button
-          onClick={handleInterrupt}
+          onClick={handlePauseResume}
           className="rounded-full w-12 h-12 bg-orange-500 hover:bg-orange-600 flex items-center justify-center"
-          disabled={isInterrupting || (!isSpeaking && !isRecording)}
-          title={isInterrupting ? "Getting wrap-up..." : "Interrupt and wrap up conversation"}
+          disabled={!isSpeaking}
+          title={isPaused ? "Resume voice" : "Pause voice"}
         >
           <Square size={16} />
         </Button>
