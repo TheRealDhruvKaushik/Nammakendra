@@ -349,6 +349,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ pageType = 'sahayak' }) =
         /* Render the voice call mode with NammaKendra logo */
         <VoiceCallMode
           language={language}
+          pageType={pageType}
           onSendMessage={async (message: string) => {
             // Use the same API endpoint as the regular chat
             try {
