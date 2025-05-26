@@ -109,10 +109,9 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       setMicEnabled(false);
       setStatus('Speaking...');
       
-      const audio = await textToSpeech(text, language);
+      const audioElement = await textToSpeech(text, language);
       
       // Store audio reference for potential interruption
-      const audioElement = new Audio(`data:audio/mp3;base64,${audio}`);
       currentAudioRef.current = audioElement;
       
       // Listen for user interruption via microphone button
