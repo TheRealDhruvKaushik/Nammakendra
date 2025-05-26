@@ -17,7 +17,7 @@ interface VoiceCallModeProps {
   language: Language;
   onSendMessage: (message: string) => Promise<string>; // Returns AI response
   onEndCall: () => void;
-  logoPath?: string;
+  pageType?: 'sahayak' | 'sarkara';
 }
 
 /**
@@ -30,7 +30,7 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
   language,
   onSendMessage,
   onEndCall,
-  logoPath = '/Nammakendra_logo_crisp.png' // Default logo path
+  pageType = 'sahayak'
 }) => {
   // State for the voice interaction flow
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -386,7 +386,7 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       <div className="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
         <div className="w-24 h-24 rounded-full bg-white p-3 mb-4 shadow-lg flex items-center justify-center">
           <img 
-            src={logoPath} 
+            src="/attached_assets/Nammakendra_logo_crisp.png"
             alt="NammaKendra Logo" 
             className="w-full h-full object-contain"
           />
