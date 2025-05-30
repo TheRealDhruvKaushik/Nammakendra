@@ -73,29 +73,10 @@ const ContactForm = () => {
     return () => subscription.unsubscribe();
   }, [form.watch]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     setIsSubmitting(true);
-    
-    try {
-      await apiRequest("POST", "/api/contact", values);
-      
-      toast({
-        title: language === 'english' ? "Message sent successfully" : t('contact.form.success'),
-        description: language === 'english' ? "We'll get back to you as soon as possible." : "",
-      });
-      
-      form.reset();
-      setFormIsValid(false);
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast({
-        title: language === 'english' ? "Failed to send message" : t('contact.form.error'),
-        description: language === 'english' ? "Please try again or contact us directly." : "",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Let the browser handle the native form submission to FormSubmit
+    // FormSubmit will redirect to the thank-you page automatically
   };
   
   // Required field marker already defined at the top of the file
@@ -106,7 +87,7 @@ const ContactForm = () => {
         <h2 className="text-2xl font-bold mb-6 text-primary">{t('contact.title')}</h2>
         
         <Form {...form}>
-          <form action="https://formsubmit.co/your-email@domain.com" method="POST" className="space-y-6">
+          <form action="https://formsubmit.co/dhruvkkaushik8@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-6">
             {/* Hidden fields for FormSubmit configuration */}
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" value={`${window.location.origin}/thank-you`} />
@@ -125,6 +106,7 @@ const ContactForm = () => {
                       {...field} 
                       className="h-12"
                       disabled={isSubmitting}
+                      required
                     />
                   </FormControl>
                   <FormMessage />
@@ -196,6 +178,7 @@ const ContactForm = () => {
                       rows={6} 
                       {...field} 
                       disabled={isSubmitting}
+                      required
                     />
                   </FormControl>
                   <FormMessage />
