@@ -31,8 +31,14 @@ const RequiredMark = () => {
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState('');
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  
+  // Set the redirect URL on component mount
+  useEffect(() => {
+    setRedirectUrl(window.location.origin + '/');
+  }, []);
   
   // Dynamic form schema with translations
   const formSchema = z.object({
@@ -90,7 +96,7 @@ const ContactForm = () => {
           <form action="https://formsubmit.co/dhruvkkaushik8@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-6">
             {/* Hidden fields for FormSubmit configuration */}
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value={`${window.location.origin}/`} />
+            <input type="hidden" name="_next" value={redirectUrl} />
             <FormField
               control={form.control}
               name="name"
