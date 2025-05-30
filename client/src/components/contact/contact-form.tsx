@@ -39,10 +39,10 @@ const ContactForm = () => {
     name: z.string().min(2, language === 'english' ? 
       "Name must be at least 2 characters" : 
       t('contact.form.nameRequired')),
-    email: z.string().email(language === 'english' ? 
-      "Please enter a valid email address" : 
-      t('contact.form.emailInvalid')),
-    phone: z.string().optional(),
+    email: z.string().optional(),
+    phone: z.string().min(10, language === 'english' ? 
+      "Please enter a valid phone number" : 
+      "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ"),
     message: z.string().min(10, language === 'english' ? 
       "Message must be at least 10 characters" : 
       t('contact.form.messageTooShort')),
@@ -64,10 +64,10 @@ const ContactForm = () => {
     const subscription = form.watch((value) => {
       // Check if required fields are filled
       const hasName = !!value.name && value.name.length >= 2;
-      const hasValidEmail = !!value.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email);
+      const hasValidPhone = !!value.phone && value.phone.length >= 10;
       const hasMessage = !!value.message && value.message.length >= 10;
       
-      setFormIsValid(hasName && hasValidEmail && hasMessage);
+      setFormIsValid(hasName && hasValidPhone && hasMessage);
     });
     
     return () => subscription.unsubscribe();
@@ -106,7 +106,10 @@ const ContactForm = () => {
         <h2 className="text-2xl font-bold mb-6 text-primary">{t('contact.title')}</h2>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form action="https://formsubmit.co/your-email@domain.com" method="POST" className="space-y-6">
+            {/* Hidden fields for FormSubmit configuration */}
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value={`${window.location.origin}/thank-you`} />
             <FormField
               control={form.control}
               name="name"
@@ -137,11 +140,11 @@ const ContactForm = () => {
                   <FormItem>
                     <FormLabel className="text-base">
                       {t('contact.form.email')}
-                      <RequiredMark />
+                      {/* No required mark for email as it's optional */}
                     </FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder={language === 'english' ? "Enter your email" : t('contact.form.email')} 
+                        placeholder={language === 'english' ? "Enter your email (optional)" : t('contact.form.email')} 
                         type="email" 
                         {...field} 
                         className="h-12"
@@ -159,15 +162,17 @@ const ContactForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base">
-                      {t('contact.form.phone')} {/* No asterisk for phone as it's optional */}
+                      {t('contact.form.phone')}
+                      <RequiredMark />
                     </FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder={language === 'english' ? "Enter your phone number (optional)" : t('contact.form.phone')} 
+                        placeholder={language === 'english' ? "Enter your phone number" : t('contact.form.phone')} 
                         type="tel" 
                         {...field} 
                         className="h-12"
                         disabled={isSubmitting}
+                        required
                       />
                     </FormControl>
                     <FormMessage />
