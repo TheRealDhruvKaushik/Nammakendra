@@ -386,10 +386,11 @@ const VoiceCallMode: React.FC<VoiceCallModeProps> = ({
       <div className="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
         <div className="w-24 h-24 rounded-full bg-white p-3 mb-4 shadow-lg flex items-center justify-center">
           <img 
-            src="/attached_assets/Nammakendra_logo_crisp-removebg-preview.png"
-            alt="NammaKendra Logo" 
+            src="/voice_logo.png"
+            alt="NammaKendra Logo"
             className="w-full h-full object-contain"
           />
+
         </div>
         
         {/* Status Display */}

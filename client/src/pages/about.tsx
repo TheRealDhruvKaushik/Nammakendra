@@ -35,26 +35,55 @@ const AboutPage = () => {
           </section>
 
           <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.problem')}</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              {t('about.problem.text')}
+            </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.solution')}</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              {t('about.solution.text')}
+            </p>
+          </section>
+
+          <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.services')}</h2>
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-6">
+              <div className="border-l-4 border-primary pl-4">
                 <h3 className="text-xl font-medium text-primary">{t('about.sahayak.title')}</h3>
                 <p className="text-gray-700 leading-relaxed">{t('about.sahayak.description')}</p>
               </div>
-              <div>
-                <h3 className="text-xl font-medium text-primary">{t('about.vidhana.title')}</h3>
+              <div className="border-l-4 border-purple-500 pl-4">
+                <h3 className="text-xl font-medium text-purple-700">{t('about.sarkara.title')}</h3>
+                <p className="text-gray-700 leading-relaxed">{t('about.sarkara.description')}</p>
+              </div>
+              <div className="border-l-4 border-amber-500 pl-4">
+                <h3 className="text-xl font-medium text-amber-700">{t('about.vidhana.title')}</h3>
                 <p className="text-gray-700 leading-relaxed">{t('about.vidhana.description')}</p>
               </div>
             </div>
           </section>
 
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.team')}</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.founder')}</h2>
             <p className="text-gray-700 mb-4 leading-relaxed">
-              {t('about.team.text1')}
+              {t('about.founder.text')}
             </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.technology')}</h2>
             <p className="text-gray-700 mb-4 leading-relaxed">
-              {t('about.team.text2')}
+              {t('about.technology.text')}
+            </p>
+          </section>
+
+          <section className="mb-10 bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-400">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('about.disclaimer')}</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              {t('about.disclaimer.text')}
             </p>
           </section>
 

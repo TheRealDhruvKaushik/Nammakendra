@@ -1,5 +1,4 @@
 import { Link, useLocation } from "wouter";
-import logoImage from "@/assets/Nammakendra_logo_crisp-removebg-preview.png";
 import { useLanguage } from "@/context/language-context";
 import LanguageSelector from "@/components/ui/language-selector";
 
@@ -23,7 +22,7 @@ const Header = () => {
           <div className="flex items-center mb-4 md:mb-0">
             <Link href="/">
               <img 
-                src={logoImage} 
+                src="/voice_logo.png"
                 alt="Nammakendra Logo" 
                 className="h-14 mr-3 transition-transform duration-300 hover:scale-105"
               />

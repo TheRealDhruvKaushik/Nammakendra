@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import logoImage from "@/assets/Nammakendra_logo_crisp-removebg-preview.png";
 import { useLanguage } from "@/context/language-context";
 
 const Footer = () => {
@@ -12,7 +11,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center mb-4">
               <img 
-                src={logoImage} 
+                src="/voice_logo.png" 
                 alt="Nammakendra Logo" 
                 className="h-12 mr-2 bg-gray-800 rounded p-1"
               />
