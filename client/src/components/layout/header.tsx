@@ -1,10 +1,17 @@
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/context/language-context";
 import LanguageSelector from "@/components/ui/language-selector";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const [location] = useLocation();
   const { t } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   // Navigation menu text constants
   const navItems = [
@@ -43,7 +50,7 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Hidden on mobile/tablet */}
             <div className="hidden lg:flex items-center space-x-6">
               <nav aria-label="Main Navigation">
                 <ul className="flex items-center space-x-6">
@@ -78,9 +85,9 @@ const Header = () => {
               <LanguageSelector />
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile/Tablet Hamburger Menu Button */}
             <button
-              className="lg:hidden flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-gray-800 transition-colors duration-200"
+              className="lg:hidden flex items-center px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open navigation menu"
               aria-expanded={isMobileMenuOpen}
@@ -93,20 +100,20 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Side Navigation */}
+      {/* Mobile/Tablet Side Navigation Overlay */}
       {isMobileMenuOpen && (
         <>
-          {/* Overlay */}
+          {/* Background Overlay */}
           <div 
             className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
           
-          {/* Side Panel */}
-          <div className="fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-50 lg:hidden transform transition-transform duration-300 ease-in-out">
+          {/* Sliding Side Panel */}
+          <div className="fixed top-0 left-0 h-full w-80 max-w-sm bg-white shadow-xl z-50 lg:hidden transform transition-transform duration-300 ease-in-out">
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Navigation</h2>
+              <h2 className="text-xl font-semibold text-gray-800">Menu</h2>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200"
