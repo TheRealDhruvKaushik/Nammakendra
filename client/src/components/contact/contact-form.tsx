@@ -31,14 +31,9 @@ const RequiredMark = () => {
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
-  const [redirectUrl, setRedirectUrl] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
-  
-  // Set the redirect URL on component mount
-  useEffect(() => {
-    setRedirectUrl(window.location.origin + '/');
-  }, []);
   
   // Dynamic form schema with translations
   const formSchema = z.object({
@@ -79,10 +74,30 @@ const ContactForm = () => {
     return () => subscription.unsubscribe();
   }, [form.watch]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
-    // Let the browser handle the native form submission to FormSubmit
-    // FormSubmit will redirect to the thank-you page automatically
+    
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    try {
+      await fetch('https://formsubmit.co/dhruvkkaushik8@gmail.com', {
+        method: 'POST',
+        body: formData
+      });
+      
+      setIsSubmitted(true);
+      form.reset();
+      setFormIsValid(false);
+    } catch (error) {
+      toast({
+        title: language === 'english' ? "Failed to send message" : "ಸಂದೇಶ ಕಳುಹಿಸಲು ವಿಫಲವಾಗಿದೆ",
+        description: language === 'english' ? "Please try again or contact us directly." : "ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ನೇರವಾಗಿ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Required field marker already defined at the top of the file
@@ -92,11 +107,31 @@ const ContactForm = () => {
       <CardContent className="p-6">
         <h2 className="text-2xl font-bold mb-6 text-primary">{t('contact.title')}</h2>
         
+        {isSubmitted ? (
+          <div className="text-center py-8">
+            <div className="mb-4">
+              <svg className="mx-auto h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              {language === 'english' ? 'Thank you for your message!' : 'ನಿಮ್ಮ ಸಂದೇಶಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು!'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {language === 'english' ? 'We will reply as soon as possible.' : 'ನಾವು ಸಾಧ್ಯವಾದಷ್ಟು ಬೇಗ ಉತ್ತರಿಸುತ್ತೇವೆ.'}
+            </p>
+            <Button 
+              onClick={() => setIsSubmitted(false)}
+              className="bg-primary text-white hover:bg-primary-dark"
+            >
+              {language === 'english' ? 'Send Another Message' : 'ಇನ್ನೊಂದು ಸಂದೇಶ ಕಳುಹಿಸಿ'}
+            </Button>
+          </div>
+        ) : (
         <Form {...form}>
-          <form action="https://formsubmit.co/dhruvkkaushik8@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Hidden fields for FormSubmit configuration */}
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value={redirectUrl} />
             <FormField
               control={form.control}
               name="name"
@@ -211,6 +246,7 @@ const ContactForm = () => {
             </Button>
           </form>
         </Form>
+        )}
       </CardContent>
     </Card>
   );
