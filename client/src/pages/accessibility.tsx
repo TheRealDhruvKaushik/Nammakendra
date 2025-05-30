@@ -34,7 +34,8 @@ const AccessibilityPage = () => {
               {t('accessibility.features.intro')}
             </p>
             <ul className="list-disc pl-6 mb-4 text-gray-700 space-y-2">
-              <li>{t('accessibility.features.fontSizeControl')}</li>
+              <li>{t('accessibility.features.voice')}</li>
+              <li>{t('accessibility.features.multilingual')}</li>
               <li>{t('accessibility.features.clearDesign')}</li>
               <li>{t('accessibility.features.highContrast')}</li>
               <li>{t('accessibility.features.textToSpeech')}</li>
@@ -58,9 +59,9 @@ const AccessibilityPage = () => {
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('accessibility.howToUse.title')}</h2>
             
             <div className="mb-4">
-              <h3 className="text-xl font-medium text-primary mb-2">{t('accessibility.howToUse.fontSizeTitle')}</h3>
+              <h3 className="text-xl font-medium text-primary mb-2">{t('accessibility.howToUse.voiceTitle')}</h3>
               <p className="text-gray-700 leading-relaxed">
-                {t('accessibility.howToUse.fontSizeText')}
+                {t('accessibility.howToUse.voiceText')}
               </p>
             </div>
             
