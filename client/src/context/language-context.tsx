@@ -47,6 +47,12 @@ const translations: Record<Language, Record<string, string>> = {
     'services.sahayak.feature2': '✔️Simple explanations of complex terms',
     'services.sahayak.feature3': '✔️Step-by-step guidance for procedures',
     'services.sahayak.button': 'Chat with Sahayak',
+    'services.sarkara.title': 'Namma Sarkara',
+    'services.sarkara.description': 'Get information about government services, eligibility requirements, and step-by-step procedures for various schemes.',
+    'services.sarkara.feature1': '✔️Government service information',
+    'services.sarkara.feature2': '✔️Eligibility and requirements',
+    'services.sarkara.feature3': '✔️Step-by-step procedures',
+    'services.sarkara.button': 'Ask Sarkara',
     'services.vidhana.title': 'Namma Vidhana',
     'services.vidhana.description': 'Upload legal documents to scan, simplify, and explain them in everyday language.',
     'services.vidhana.feature1': '✔️Scan and analyze legal documents',
@@ -79,8 +85,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // CTA Section
     'cta.title': 'Ready to Get Started?',
-    'cta.subtitle': 'Access the legal help you need in language you can understand.',
+    'cta.subtitle': 'Access legal and government services in language you can understand.',
     'cta.chatButton': 'Chat with NammaSahayak',
+    'cta.sarkaraButton': 'Ask NammaSarkara',
     'cta.uploadButton': 'Upload a Document',
     
     // Chat interface
@@ -523,8 +530,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // CTA Section
     'cta.title': 'ಪ್ರಾರಂಭಿಸಲು ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?',
-    'cta.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ಭಾಷೆಯಲ್ಲಿ ನಿಮಗೆ ಬೇಕಾದ ಕಾನೂನು ಸಹಾಯವನ್ನು ಪಡೆಯಿರಿ.',
+    'cta.subtitle': 'ನಿಮಗೆ ಅರ್ಥವಾಗುವ ಭಾಷೆಯಲ್ಲಿ ಕಾನೂನು ಮತ್ತು ಸರ್ಕಾರಿ ಸೇವೆಗಳನ್ನು ಪಡೆಯಿರಿ.',
     'cta.chatButton': 'ನಮ್ಮ ಸಹಾಯಕನೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಿ',
+    'cta.sarkaraButton': 'ನಮ್ಮ ಸರ್ಕಾರವನ್ನು ಕೇಳಿ',
     'cta.uploadButton': 'ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
     
     // Chat interface

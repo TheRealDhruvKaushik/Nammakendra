@@ -12,7 +12,7 @@ const ServicesSection = () => {
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">{t('services.subtitle')}</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {/* NammaSahayak Card */}
           <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
             <div className="p-6">
@@ -48,6 +48,47 @@ const ServicesSection = () => {
               <Link href="/namma-sahayak">
                 <span className="inline-block bg-primary text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50 w-full text-center">
                   {t('services.sahayak.button')}
+                </span>
+              </Link>
+            </div>
+          </div>
+          
+          {/* NammaSarkara Card */}
+          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+            <div className="p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-purple-600 bg-opacity-10 p-3 rounded-full mr-4">
+                  <svg className="h-6 w-6 text-purple-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 21L12 13.5L21 21V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 13.5V5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800">{t('services.sarkara.title')}</h3>
+              </div>
+              <p className="text-gray-600 mb-4">{t('services.sarkara.description')}</p>
+              <ul className="mb-6 space-y-2">
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-gray-700">{t('services.sarkara.feature1')}</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-gray-700">{t('services.sarkara.feature2')}</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-gray-700">{t('services.sarkara.feature3')}</span>
+                </li>
+              </ul>
+              <Link href="/namma-sarkara">
+                <span className="inline-block bg-purple-600 text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-purple-700 transition focus:outline-none focus:ring-4 focus:ring-purple-600 focus:ring-opacity-50 w-full text-center">
+                  {t('services.sarkara.button')}
                 </span>
               </Link>
             </div>
