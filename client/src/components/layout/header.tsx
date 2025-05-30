@@ -1,17 +1,10 @@
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/context/language-context";
 import LanguageSelector from "@/components/ui/language-selector";
-import { useState, useEffect } from "react";
 
 const Header = () => {
   const [location] = useLocation();
   const { t } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location]);
 
   // Navigation menu text constants
   const navItems = [
