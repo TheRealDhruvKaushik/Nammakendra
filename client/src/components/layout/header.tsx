@@ -26,9 +26,21 @@ const Header = () => {
     <>
       <header className="bg-white border-b border-gray-200 relative z-50">
         <div className="container mx-auto px-4 py-2">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            {/* Mobile/Tablet Hamburger Menu Button - Left Side */}
+            <button
+              className="lg:hidden flex items-center px-3 py-2 mr-3 text-gray-700 hover:text-primary transition-colors duration-200"
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+
             {/* Logo and Brand */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-1">
               <Link href="/">
                 <img 
                   src="/voice_logo.png"
@@ -84,18 +96,6 @@ const Header = () => {
               </nav>
               <LanguageSelector />
             </div>
-
-            {/* Mobile/Tablet Hamburger Menu Button */}
-            <button
-              className="lg:hidden flex items-center px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-200"
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open navigation menu"
-              aria-expanded={isMobileMenuOpen}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </div>
       </header>
