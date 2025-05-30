@@ -90,7 +90,7 @@ const ContactForm = () => {
           <form action="https://formsubmit.co/dhruvkkaushik8@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-6">
             {/* Hidden fields for FormSubmit configuration */}
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value={`${window.location.origin}/thank-you`} />
+            <input type="hidden" name="_next" value={`${window.location.origin}/`} />
             <FormField
               control={form.control}
               name="name"
