@@ -14,8 +14,8 @@ const ServicesSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {/* NammaSahayak Card */}
-          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
-            <div className="p-6">
+          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex flex-col">
+            <div className="p-6 flex-grow flex flex-col">
               <div className="flex items-center mb-4">
                 <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
                   <svg className="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +25,7 @@ const ServicesSection = () => {
                 <h3 className="text-xl font-bold text-gray-800">{t('services.sahayak.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">{t('services.sahayak.description')}</p>
-              <ul className="mb-6 space-y-2">
+              <ul className="mb-6 space-y-2 flex-grow">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -45,17 +45,19 @@ const ServicesSection = () => {
                   <span className="text-gray-700">{t('services.sahayak.feature3')}</span>
                 </li>
               </ul>
-              <Link href="/namma-sahayak">
-                <span className="inline-block bg-primary text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50 w-full text-center">
-                  {t('services.sahayak.button')}
-                </span>
-              </Link>
+              <div className="mt-auto">
+                <Link href="/namma-sahayak">
+                  <span className="inline-block bg-primary text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50 w-full text-center">
+                    {t('services.sahayak.button')}
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
           
           {/* NammaSarkara Card */}
-          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
-            <div className="p-6">
+          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex flex-col">
+            <div className="p-6 flex-grow flex flex-col">
               <div className="flex items-center mb-4">
                 <div className="p-3 rounded-full mr-4" style={{backgroundColor: '#5C6BC0', opacity: 0.1}}>
                   <svg className="h-6 w-6" style={{color: '#5C6BC0'}} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +68,7 @@ const ServicesSection = () => {
                 <h3 className="text-xl font-bold text-gray-800">{t('services.sarkara.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">{t('services.sarkara.description')}</p>
-              <ul className="mb-6 space-y-2">
+              <ul className="mb-6 space-y-2 flex-grow">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -86,17 +88,19 @@ const ServicesSection = () => {
                   <span className="text-gray-700">{t('services.sarkara.feature3')}</span>
                 </li>
               </ul>
-              <Link href="/namma-sarkara">
-                <span className="inline-block text-white text-lg font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition focus:outline-none focus:ring-4 focus:ring-opacity-50 w-full text-center" style={{backgroundColor: '#5C6BC0'}}>
-                  {t('services.sarkara.button')}
-                </span>
-              </Link>
+              <div className="mt-auto">
+                <Link href="/namma-sarkara">
+                  <span className="inline-block text-white text-lg font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition focus:outline-none focus:ring-4 focus:ring-opacity-50 w-full text-center" style={{backgroundColor: '#5C6BC0'}}>
+                    {t('services.sarkara.button')}
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
           
           {/* NammaVidhana Card */}
-          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
-            <div className="p-6">
+          <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex flex-col">
+            <div className="p-6 flex-grow flex flex-col">
               <div className="flex items-center mb-4">
                 <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
                   <svg className="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,7 +114,7 @@ const ServicesSection = () => {
                 <h3 className="text-xl font-bold text-gray-800">{t('services.vidhana.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">{t('services.vidhana.description')}</p>
-              <ul className="mb-6 space-y-2">
+              <ul className="mb-6 space-y-2 flex-grow">
                 <li className="flex items-start">
                   <svg className="h-5 w-5 text-success mt-1 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -130,11 +134,13 @@ const ServicesSection = () => {
                   <span className="text-gray-700">{t('services.vidhana.feature3')}</span>
                 </li>
               </ul>
-              <Link href="/namma-vidhana">
-                <span className="inline-block bg-primary text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50 w-full text-center">
-                  {t('services.vidhana.button')}
-                </span>
-              </Link>
+              <div className="mt-auto">
+                <Link href="/namma-vidhana">
+                  <span className="inline-block bg-primary text-white text-lg font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50 w-full text-center">
+                    {t('services.vidhana.button')}
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
