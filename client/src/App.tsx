@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import NotificationBar from "@/components/layout/notification-bar";
 import Home from "@/pages/home";
 import NammaSahayak from "@/pages/namma-sahayak";
 import NammaSarkara from "@/pages/namma-sarkara";
@@ -28,12 +29,15 @@ function Router() {
         <Route path="/namma-vidhana" component={NammaVidhana} />
         <Route path="/contact" component={Contact} />
         <Route path="/about" component={About} />
+        <Route path="/privacy" component={PrivacyPolicy} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/terms" component={TermsOfService} />
         <Route path="/terms-of-service" component={TermsOfService} />
         <Route path="/accessibility" component={Accessibility} />
         <Route component={NotFound} />
       </Switch>
       <Footer />
+      <NotificationBar />
     </div>
   );
 }

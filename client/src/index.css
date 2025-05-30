@@ -116,4 +116,17 @@
   .animate-pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite alternate;
   }
+
+  /* Layout adjustments for notification bar */
+  .app-container {
+    min-height: 100vh;
+    padding-bottom: 80px; /* Space for notification bar */
+  }
+
+  /* Responsive layout adjustments */
+  @media (max-width: 640px) {
+    .app-container {
+      padding-bottom: 120px; /* More space on mobile for stacked notification */
+    }
+  }
 }
