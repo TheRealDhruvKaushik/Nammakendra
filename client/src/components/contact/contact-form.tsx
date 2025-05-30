@@ -74,30 +74,18 @@ const ContactForm = () => {
     return () => subscription.unsubscribe();
   }, [form.watch]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    // For FormSubmit to work properly, we need to let the browser handle the submission
+    // We'll show our success message using a different approach
     setIsSubmitting(true);
     
-    const formData = new FormData(e.target as HTMLFormElement);
-    
-    try {
-      await fetch('https://formsubmit.co/dhruvkkaushik8@gmail.com', {
-        method: 'POST',
-        body: formData
-      });
-      
+    // Set a timeout to show success message after form submission
+    setTimeout(() => {
       setIsSubmitted(true);
+      setIsSubmitting(false);
       form.reset();
       setFormIsValid(false);
-    } catch (error) {
-      toast({
-        title: language === 'english' ? "Failed to send message" : "ಸಂದೇಶ ಕಳುಹಿಸಲು ವಿಫಲವಾಗಿದೆ",
-        description: language === 'english' ? "Please try again or contact us directly." : "ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ನೇರವಾಗಿ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    }, 2000); // Give time for FormSubmit to process
   };
   
   // Required field marker already defined at the top of the file
@@ -128,124 +116,75 @@ const ContactForm = () => {
             </Button>
           </div>
         ) : (
-        <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form action="https://formsubmit.co/dhruvkkaushik8@gmail.com" method="POST" className="space-y-6">
             {/* Hidden fields for FormSubmit configuration */}
             <input type="hidden" name="_captcha" value="false" />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">
-                    {t('contact.form.name')}
-                    <RequiredMark />
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder={language === 'english' ? "Enter your full name" : t('contact.form.name')} 
-                      {...field} 
-                      className="h-12"
-                      disabled={isSubmitting}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <input type="hidden" name="_subject" value="Contact Form Submission - NammaKendra" />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base">
-                      {t('contact.form.email')}
-                      {/* No required mark for email as it's optional */}
-                    </FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder={language === 'english' ? "Enter your email (optional)" : t('contact.form.email')} 
-                        type="email" 
-                        {...field} 
-                        className="h-12"
-                        disabled={isSubmitting}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base">
-                      {t('contact.form.phone')}
-                      <RequiredMark />
-                    </FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder={language === 'english' ? "Enter your phone number" : t('contact.form.phone')} 
-                        type="tel" 
-                        {...field} 
-                        className="h-12"
-                        disabled={isSubmitting}
-                        required
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div>
+              <label className="text-base font-medium">
+                {t('contact.form.name')}
+                <RequiredMark />
+              </label>
+              <input 
+                type="text"
+                name="name"
+                placeholder={language === 'english' ? "Enter your full name" : t('contact.form.name')} 
+                className="mt-1 block w-full h-12 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                required
               />
             </div>
             
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">
-                    {t('contact.form.message')}
-                    <RequiredMark />
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder={language === 'english' ? "How can we help you?" : t('contact.form.message')} 
-                      rows={6} 
-                      {...field} 
-                      disabled={isSubmitting}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-base font-medium">
+                  {t('contact.form.email')}
+                  {/* No required mark for email as it's optional */}
+                </label>
+                <input 
+                  type="email"
+                  name="email"
+                  placeholder={language === 'english' ? "Enter your email (optional)" : t('contact.form.email')} 
+                  className="mt-1 block w-full h-12 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              </div>
+              
+              <div>
+                <label className="text-base font-medium">
+                  {t('contact.form.phone')}
+                  <RequiredMark />
+                </label>
+                <input 
+                  type="tel"
+                  name="phone"
+                  placeholder={language === 'english' ? "Enter your phone number" : t('contact.form.phone')} 
+                  className="mt-1 block w-full h-12 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  required
+                />
+              </div>
+            </div>
             
-            <Button 
+            <div>
+              <label className="text-base font-medium">
+                {t('contact.form.message')}
+                <RequiredMark />
+              </label>
+              <textarea 
+                name="message"
+                placeholder={language === 'english' ? "How can we help you?" : t('contact.form.message')} 
+                rows={6} 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-vertical"
+                required
+              ></textarea>
+            </div>
+            
+            <button 
               type="submit" 
-              className={cn(
-                "w-full md:w-auto md:min-w-[200px] h-12 transition-colors duration-200",
-                formIsValid ? "opacity-100" : "opacity-70 bg-primary/70"
-              )}
-              disabled={isSubmitting}
+              className="w-full md:w-auto md:min-w-[200px] h-12 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors duration-200 px-6"
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {language === 'english' ? "Sending..." : t('document.processing')}
-                </>
-              ) : (
-                t('contact.form.submit')
-              )}
-            </Button>
+              {language === 'english' ? "Send Message" : t('contact.form.submit')}
+            </button>
           </form>
-        </Form>
         )}
       </CardContent>
     </Card>
