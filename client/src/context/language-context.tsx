@@ -62,13 +62,13 @@ const translations: Record<Language, Record<string, string>> = {
     
     // How It Works Section
     'how.title': 'How It Works',
-    'how.subtitle': 'Simple steps to get the legal help you need',
+    'how.subtitle': 'Simple steps to get the legal and government help you need',
     'how.step1.title': 'Choose a Service',
-    'how.step1.description': 'Select either NammaSahayak for questions or NammaVidhana for document assistance.',
+    'how.step1.description': 'Select NammaSahayak for legal questions, NammaSarkara for government services, or NammaVidhana for document assistance.',
     'how.step2.title': 'Provide Information',
     'how.step2.description': 'Ask your question or upload your document that needs explanation.',
     'how.step3.title': 'Get Simple Answers',
-    'how.step3.description': 'Receive easy-to-understand explanations and guidance for your legal needs.',
+    'how.step3.description': 'Receive easy-to-understand explanations and guidance for your legal and governmental needs.',
     
     // Testimonials Section
     'testimonials.title': 'What Our Users Say',
@@ -507,13 +507,13 @@ const translations: Record<Language, Record<string, string>> = {
     
     // How It Works Section
     'how.title': 'ಇದು ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ',
-    'how.subtitle': 'ನಿಮಗೆ ಅಗತ್ಯವಾದ ಕಾನೂನು ಸಹಾಯವನ್ನು ಪಡೆಯಲು ಸರಳ ಹಂತಗಳು',
+    'how.subtitle': 'ನಿಮಗೆ ಅಗತ್ಯವಾದ ಕಾನೂನು ಮತ್ತು ಸರ್ಕಾರಿ ಸಹಾಯವನ್ನು ಪಡೆಯಲು ಸರಳ ಹಂತಗಳು',
     'how.step1.title': 'ಸೇವೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ',
-    'how.step1.description': 'ಪ್ರಶ್ನೆಗಳಿಗೆ ನಮ್ಮ ಸಹಾಯಕ ಅಥವಾ ದಾಖಲೆ ಸಹಾಯಕ್ಕೆ ನಮ್ಮ ವಿಧಾನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.',
+    'how.step1.description': 'ಕಾನೂನು ಪ್ರಶ್ನೆಗಳಿಗೆ ನಮ್ಮ ಸಹಾಯಕ, ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗೆ ನಮ್ಮ ಸರ್ಕಾರ, ಅಥವಾ ದಾಖಲೆ ಸಹಾಯಕ್ಕೆ ನಮ್ಮ ವಿಧಾನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.',
     'how.step2.title': 'ಮಾಹಿತಿ ಒದಗಿಸಿ',
     'how.step2.description': 'ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ ಅಥವಾ ವಿವರಣೆಯ ಅಗತ್ಯವಿರುವ ನಿಮ್ಮ ದಾಖಲೆಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ.',
     'how.step3.title': 'ಸರಳ ಉತ್ತರಗಳನ್ನು ಪಡೆಯಿರಿ',
-    'how.step3.description': 'ನಿಮ್ಮ ಕಾನೂನು ಅಗತ್ಯತೆಗಳಿಗೆ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸುಲಭವಾದ ವಿವರಣೆಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶನವನ್ನು ಪಡೆಯಿರಿ.',
+    'how.step3.description': 'ನಿಮ್ಮ ಕಾನೂನು ಮತ್ತು ಸರ್ಕಾರಿ ಅಗತ್ಯತೆಗಳಿಗೆ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸುಲಭವಾದ ವಿವರಣೆಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶನವನ್ನು ಪಡೆಯಿರಿ.',
     
     // Testimonials Section
     'testimonials.title': 'ನಮ್ಮ ಬಳಕೆದಾರರು ಏನು ಹೇಳುತ್ತಾರೆ',

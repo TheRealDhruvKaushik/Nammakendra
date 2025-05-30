@@ -16,7 +16,7 @@ const CTASection = () => {
             </span>
           </Link>
           <Link href="/namma-sarkara">
-            <span className="inline-block bg-purple-600 text-white text-lg font-semibold px-6 py-3 rounded-lg shadow hover:bg-purple-700 transition focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 w-full md:w-auto text-center">
+            <span className="inline-block text-white text-lg font-semibold px-6 py-3 rounded-lg shadow hover:opacity-90 transition focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 w-full md:w-auto text-center" style={{backgroundColor: '#5C6BC0'}}>
               {t('cta.sarkaraButton')}
             </span>
           </Link>
