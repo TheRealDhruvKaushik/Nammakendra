@@ -13,16 +13,46 @@ const __dirname = dirname(__filename);
 // Define Language type if importing fails
 export type Language = 'english' | 'kannada';
 
-// Use environment variables for credentials
-// Note: The credentials file must be available in the root directory
-process.env.GOOGLE_APPLICATION_CREDENTIALS = './attached_assets/gcloud-credentials.json';
+// Configure Google Cloud credentials from environment variables
+let speechClient: any;
+let ttsClient: any;
 
-// Log the credentials path for debugging
-console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+function initializeClients() {
+  if (process.env.GOOGLE_CLOUD_PROJECT_ID && 
+      process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
+      process.env.GOOGLE_CLOUD_CLIENT_EMAIL) {
+    
+    const credentials = {
+      type: 'service_account',
+      project_id: process.env.GOOGLE_CLOUD_PROJECT_ID,
+      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+    };
 
-// Create clients
-const speechClient = new speech.SpeechClient();
-const ttsClient = new textToSpeech.TextToSpeechClient();
+    console.log(`Using Google Cloud credentials for project: ${process.env.GOOGLE_CLOUD_PROJECT_ID}`);
+    console.log('Google Cloud voice services are enabled');
+
+    speechClient = new speech.SpeechClient({ credentials });
+    ttsClient = new textToSpeech.TextToSpeechClient({ credentials });
+  } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    // Fallback to credentials file
+    console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = './attached_assets/gcloud-credentials.json';
+    
+    speechClient = new speech.SpeechClient();
+    ttsClient = new textToSpeech.TextToSpeechClient();
+  } else {
+    console.log('Google Cloud voice services are disabled - no credentials provided');
+    throw new Error('No Google Cloud credentials available');
+  }
+}
+
+// Initialize clients
+try {
+  initializeClients();
+} catch (error) {
+  console.log('Google Cloud voice services are disabled');
+}
 
 /**
  * Convert speech audio buffer to text
@@ -127,7 +157,16 @@ export async function textToSpeechAudio(text: string, language: Language): Promi
  * @returns Boolean indicating whether credentials are properly configured
  */
 export function isGoogleCloudConfigured(): boolean {
-  return !!process.env.GOOGLE_APPLICATION_CREDENTIALS && !!process.env.GOOGLE_CLOUD_API_KEY;
+  // Check if environment variable credentials are available
+  const hasEnvCredentials = !!(process.env.GOOGLE_CLOUD_PROJECT_ID && 
+                              process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
+                              process.env.GOOGLE_CLOUD_CLIENT_EMAIL);
+  
+  // Check if file-based credentials are available
+  const hasFileCredentials = !!(process.env.GOOGLE_APPLICATION_CREDENTIALS && 
+                               process.env.GOOGLE_CLOUD_API_KEY);
+  
+  return hasEnvCredentials || hasFileCredentials;
 }
 
 /**
@@ -164,9 +203,9 @@ export async function listAvailableVoices() {
     }
     
     // Filter for Indian voices (both English and Kannada)
-    const indianVoices = result.voices.filter(voice => 
+    const indianVoices = result.voices.filter((voice: any) => 
       voice.languageCodes && 
-      voice.languageCodes.some(code => code === 'en-IN' || code === 'kn-IN')
+      voice.languageCodes.some((code: any) => code === 'en-IN' || code === 'kn-IN')
     );
     
     return indianVoices;
