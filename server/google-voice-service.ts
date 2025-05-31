@@ -131,6 +131,27 @@ export function isGoogleCloudConfigured(): boolean {
 }
 
 /**
+ * Test Google Cloud TTS service availability
+ * 
+ * @returns Promise resolving to boolean indicating if service is working
+ */
+export async function testGoogleCloudTTS(): Promise<boolean> {
+  try {
+    const request = {
+      input: { text: 'test' },
+      voice: { languageCode: 'en-IN', ssmlGender: 'FEMALE' as const },
+      audioConfig: { audioEncoding: 'MP3' as const }
+    };
+    
+    await ttsClient.synthesizeSpeech(request);
+    return true;
+  } catch (error) {
+    console.error('Google Cloud TTS test failed:', error);
+    return false;
+  }
+}
+
+/**
  * Get a list of available voice options for each language
  * 
  * @returns List of available voices

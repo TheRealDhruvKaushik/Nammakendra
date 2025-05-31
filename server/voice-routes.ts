@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { speechToText, textToSpeechAudio, isGoogleCloudConfigured } from './google-voice-service';
+import { speechToText, textToSpeechAudio, isGoogleCloudConfigured, testGoogleCloudTTS } from './google-voice-service';
 import multer from 'multer';
 import { Language } from '../client/src/context/language-context';
 
@@ -15,9 +15,23 @@ const upload = multer({
 const voiceRouter = Router();
 
 // Check if Google APIs are configured
-voiceRouter.get('/api/voice/status', (req: Request, res: Response) => {
+voiceRouter.get('/api/voice/status', async (req: Request, res: Response) => {
+  const configured = isGoogleCloudConfigured();
+  let working = false;
+  let error = null;
+
+  if (configured) {
+    try {
+      working = await testGoogleCloudTTS();
+    } catch (e: any) {
+      error = e.message;
+    }
+  }
+
   res.json({
-    configured: isGoogleCloudConfigured()
+    configured,
+    working,
+    error
   });
 });
 
