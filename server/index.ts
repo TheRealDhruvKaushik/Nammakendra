@@ -1,10 +1,22 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import express from 'express';
+import path from 'path';
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// Serve the Google verification file
+app.get('/google4a3412dc4210b51f.html', (_req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'google4a3412dc4210b51f.html'));
+});
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 app.use((req, res, next) => {
   const start = Date.now();
