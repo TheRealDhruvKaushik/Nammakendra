@@ -20,7 +20,7 @@ let ttsClient: any;
 function initializeClients() {
   try {
     // First try to use the credentials file from attached assets
-    const credentialsPath = './attached_assets/bionic-medley-461611-d6-60f8629a44db.json';
+    const credentialsPath = './attached_assets/angelic-howl-461611-i9-864f5084956d.json';
     
     // Check if the credentials file exists
     if (fs.existsSync(credentialsPath)) {
@@ -182,7 +182,7 @@ export async function textToSpeechAudio(text: string, language: Language): Promi
  */
 export function isGoogleCloudConfigured(): boolean {
   // Check if credentials file exists
-  const credentialsPath = './attached_assets/bionic-medley-461611-d6-60f8629a44db.json';
+  const credentialsPath = './attached_assets/angelic-howl-461611-i9-864f5084956d.json';
   const hasCredentialsFile = fs.existsSync(credentialsPath);
   
   // Check if environment variable credentials are available
