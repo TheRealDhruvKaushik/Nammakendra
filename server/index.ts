@@ -1,10 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import express from 'express';
 import path from 'path';
-
-const PORT = process.env.PORT || 3000;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
