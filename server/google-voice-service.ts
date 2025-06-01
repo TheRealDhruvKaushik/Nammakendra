@@ -18,22 +18,6 @@ let speechClient: any;
 let ttsClient: any;
 
 function initializeClients() {
-  // Try using the new credentials file first
-  const newCredentialsPath = './attached_assets/nimble-sylph-461513-b1-f1f3749aa3ba.json';
-  
-  try {
-    console.log(`Using Google credentials from: ${newCredentialsPath}`);
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = newCredentialsPath;
-    
-    speechClient = new speech.SpeechClient();
-    ttsClient = new textToSpeech.TextToSpeechClient();
-    console.log('Google Cloud voice services are enabled');
-    return;
-  } catch (error) {
-    console.log('Failed to initialize with new credentials file:', error);
-  }
-
-  // Fallback to environment variables
   if (process.env.GOOGLE_CLOUD_PROJECT_ID && 
       process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
       process.env.GOOGLE_CLOUD_CLIENT_EMAIL) {
@@ -50,8 +34,15 @@ function initializeClients() {
 
     speechClient = new speech.SpeechClient({ credentials });
     ttsClient = new textToSpeech.TextToSpeechClient({ credentials });
+  } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    // Fallback to credentials file
+    console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = './attached_assets/gcloud-credentials.json';
+    
+    speechClient = new speech.SpeechClient();
+    ttsClient = new textToSpeech.TextToSpeechClient();
   } else {
-    console.log('Google Cloud voice services are disabled - no credentials available');
+    console.log('Google Cloud voice services are disabled - no credentials provided');
     throw new Error('No Google Cloud credentials available');
   }
 }
