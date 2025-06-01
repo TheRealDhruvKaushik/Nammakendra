@@ -113,4 +113,9 @@
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
   },
+  "scripts": {
+    "build:server": "tsc",
+    "start": "node dist/server/index.js"
+    "build": "cd client && npm install && npm run build"
   }
+}
