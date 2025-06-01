@@ -18,32 +18,56 @@ let speechClient: any;
 let ttsClient: any;
 
 function initializeClients() {
-  if (process.env.GOOGLE_CLOUD_PROJECT_ID && 
-      process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
-      process.env.GOOGLE_CLOUD_CLIENT_EMAIL) {
+  try {
+    // First try to use the credentials file from attached assets
+    const credentialsPath = './attached_assets/bionic-medley-461611-d6-60f8629a44db.json';
     
-    const credentials = {
-      type: 'service_account',
-      project_id: process.env.GOOGLE_CLOUD_PROJECT_ID,
-      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
-    };
+    // Check if the credentials file exists
+    if (fs.existsSync(credentialsPath)) {
+      console.log(`Using Google Cloud credentials from: ${credentialsPath}`);
+      
+      // Read and parse the credentials file
+      const credentialsData = JSON.parse(fs.readFileSync(credentialsPath, 'utf8'));
+      console.log(`Using Google Cloud credentials for project: ${credentialsData.project_id}`);
+      console.log('Google Cloud voice services are enabled');
 
-    console.log(`Using Google Cloud credentials for project: ${process.env.GOOGLE_CLOUD_PROJECT_ID}`);
-    console.log('Google Cloud voice services are enabled');
+      speechClient = new speech.SpeechClient({ 
+        projectId: credentialsData.project_id,
+        keyFilename: credentialsPath 
+      });
+      ttsClient = new textToSpeech.TextToSpeechClient({ 
+        projectId: credentialsData.project_id,
+        keyFilename: credentialsPath 
+      });
+      return;
+    }
 
-    speechClient = new speech.SpeechClient({ credentials });
-    ttsClient = new textToSpeech.TextToSpeechClient({ credentials });
-  } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    // Fallback to credentials file
-    console.log(`Using Google credentials from: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = './attached_assets/gcloud-credentials.json';
-    
-    speechClient = new speech.SpeechClient();
-    ttsClient = new textToSpeech.TextToSpeechClient();
-  } else {
+    // Fallback to environment variables
+    if (process.env.GOOGLE_CLOUD_PROJECT_ID && 
+        process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
+        process.env.GOOGLE_CLOUD_CLIENT_EMAIL) {
+      
+      const credentials = {
+        type: 'service_account',
+        project_id: process.env.GOOGLE_CLOUD_PROJECT_ID,
+        private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+      };
+
+      console.log(`Using Google Cloud credentials for project: ${process.env.GOOGLE_CLOUD_PROJECT_ID}`);
+      console.log('Google Cloud voice services are enabled');
+
+      speechClient = new speech.SpeechClient({ credentials });
+      ttsClient = new textToSpeech.TextToSpeechClient({ credentials });
+      return;
+    }
+
+    // No credentials available
     console.log('Google Cloud voice services are disabled - no credentials provided');
     throw new Error('No Google Cloud credentials available');
+  } catch (error) {
+    console.error('Error initializing Google Cloud clients:', error);
+    throw error;
   }
 }
 
@@ -157,16 +181,16 @@ export async function textToSpeechAudio(text: string, language: Language): Promi
  * @returns Boolean indicating whether credentials are properly configured
  */
 export function isGoogleCloudConfigured(): boolean {
+  // Check if credentials file exists
+  const credentialsPath = './attached_assets/bionic-medley-461611-d6-60f8629a44db.json';
+  const hasCredentialsFile = fs.existsSync(credentialsPath);
+  
   // Check if environment variable credentials are available
   const hasEnvCredentials = !!(process.env.GOOGLE_CLOUD_PROJECT_ID && 
                               process.env.GOOGLE_CLOUD_PRIVATE_KEY && 
                               process.env.GOOGLE_CLOUD_CLIENT_EMAIL);
   
-  // Check if file-based credentials are available
-  const hasFileCredentials = !!(process.env.GOOGLE_APPLICATION_CREDENTIALS && 
-                               process.env.GOOGLE_CLOUD_API_KEY);
-  
-  return hasEnvCredentials || hasFileCredentials;
+  return hasCredentialsFile || hasEnvCredentials;
 }
 
 /**

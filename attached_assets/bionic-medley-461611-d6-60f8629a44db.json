@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "bionic-medley-461611-d6",
+  "private_key_id": "60f8629a44dbc1a172f3e573f8bc128e9a019b68",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9koDMLBJpZ2nB\nB7vytIMUzcVGFFpu1lNWDLKmzgtS2dG9P4Ca7F7kcJFjgVS69Q3IvaoFvgHI+JAq\n0RrsfnPGRSjbnaXW0QFHvtr1hZBSaDK8OOP+uznLhuXJW19En5070G3+UA5QKZ3l\nhjfcXwKfBSvcA0LsoZgiWAGcF4uWg8LKy2IXwQrWsTYMvmb/aO92Qy4/qfCUE/Oi\n7SXf3hcFJLyLlBpNWY/uqwzM8vOw5DaNc6BS+OSsTSVr4xqPuF5OjjdsEAzhbdFH\nm99NBPefLC4lVxyyv/ZkY2AQJ06JsXQhn5BVDdVz4rKxZRy2eoQA3ZcMoSrNmun4\nNV73AydLAgMBAAECggEAWO/zGhaxGp9IJ6XzwMV8W9W/8AVbefV2SoARjp1LBbco\nJcO1l7k+OakwJIFIGaAfM+b7bc87MiifJl9M5NfchA/tP79hzvrmQV0ih55+W5MD\n/ncoS9lVn40tn/6MnvrNPwMln3K6jFRB/i0uZuZyKd24unMTQkX7xF0KgEsxk050\nvA7rQdQjUvnpq4Fbm1QrLfrQBjsAqa05vf7qB3NsM0q4a0IVtEOxGC9d8UfaTm5D\nUD0EvK8ezKAUBf13ie0GeqfQjWEeXi25dLJvfAufIAhgHDJdx5DbIHuq2XiLB9iI\nVN8ORVTdFkTjbwUQb4/xFEOK3XXH4xwvQT6/GWb5MQKBgQD1W9UkyRQkgkvzc/5b\nF2ix/gnYwVV6ZWbzTVf+0VSK25gwOWx9Eacrp57fgiaX5ds0LyP5eLAL1aPhDLMB\noBHbcef/FsF6QTQTbetgrq+4Ti5oHrjaXxy82aqhP6ncfpfdzjw4LL3qN1gSNP89\nQYwvdsSCeJ0lrVleQkPXl4MROwKBgQDFy0j9j2yw+6p7iBXM/xhrT+rI9t8eMKiI\n9d9J1QMnYovdFsOnp5V0kZRVWiuIuQqzm29P6dn69QCx0Hk77Gtay4L6VtmZy9/n\nzWSCNh0aSNcKAh48g/+4+IZE/Cpt+QksxZHWHt6EdAXk1Pem00zzm91uRpojO/kj\ndJVLAdjhMQKBgBnA9ONyk8GtR4mbUESBdYTRVHlC+dTqFd9N7AGcOVKF8DiHnoKW\nOsTTSFLPl3t0LgkRNaZ264uidhwmOBfglF9DWoWk/tP1SiEL9ZvlWh5vXmGhb+fD\n+gE8m7NnOk4hn5Exl5KR57FQ89adZ3kniy5kOgYz4NLWmj3RmMtlZOWHAoGBAJjw\nljDR3PaAspMwZ8MKIOShd+cK1P0wHLFChPQ/DGBA1+sNdh5F+8+V3b+dqHngswCs\nGIcPSKi/F1lm3MdUCLK9GDrgOwOr3CcN70Cr/Rbc6cHoX17lpi9to8zlux0r6kc/\nQYPyfJaobAJEFnZdfmwDwlVJrFfAQOWEeQf1lrCRAoGAdGdTJuzMZCCIrKclp6cq\n6IuquvDOTb5KoTVmeIISqMghHpfSwE/ip7ZSSwqRep3aoSbvLyABYEvgyPCZcXjb\nnZd/TusnwcC5pKzFCRz4ZwR1Rqp6LQqt7vpvS4dOBn6HFyg7xcIsqi6gJRGu/wHw\n8tE9JBu4HxhqDAfxW9CXEDI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gcloud-672@bionic-medley-461611-d6.iam.gserviceaccount.com",
+  "client_id": "102387275445078233917",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcloud-672%40bionic-medley-461611-d6.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
