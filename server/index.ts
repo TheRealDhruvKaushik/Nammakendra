@@ -11,6 +11,8 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/google4a3412dc4210b51f.html', (_req, res) => {
   res.sendFile(path.join(__dirname, '..', 'google4a3412dc4210b51f.html'));
 });
+app.get("/ping", (req, res) => {
+  res.send("pong");
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
