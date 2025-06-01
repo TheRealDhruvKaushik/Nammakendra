@@ -11,9 +11,10 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/google4a3412dc4210b51f.html', (_req, res) => {
   res.sendFile(path.join(__dirname, '..', 'google4a3412dc4210b51f.html'));
 });
-app.get("/ping", (req, res) => {
-  res.send("pong");
-  
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -67,7 +68,7 @@ app.use((req, res, next) => {
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = process.env.PORT || 5000;
+  const port = 5000;
   server.listen({
     port,
     host: "0.0.0.0",
