@@ -3,7 +3,7 @@ import { chatWithHuggingFace, analyzeDocumentWithHuggingFace } from "./huggingfa
 
 // DeepSeek's free API endpoint for the Llama-3.1-Sonar-Small model
 const DEEPSEEK_API_URL = "https://api.perplexity.ai/chat/completions";
-const DEEPSEEK_MODEL = "llama-3.1-sonar-small-128k-online";
+const DEEPSEEK_MODEL = "llama-3.1-8b-instant";
 
 // Initialize axios instance for DeepSeek API
 const deepseekClient = axios.create({
