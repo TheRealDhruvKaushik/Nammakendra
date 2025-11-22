@@ -85,8 +85,12 @@ export async function chatWithGroq(message: string, language: string = 'english'
     } else {
       return "I'm sorry, I couldn't generate a response.";
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error calling Groq API:", error);
+    if (error.response) {
+      console.error("Groq API error response:", JSON.stringify(error.response.data, null, 2));
+      console.error("Groq API status:", error.response.status);
+    }
     throw new Error("Failed to get response from AI assistant. Please try again later.");
   }
 }
