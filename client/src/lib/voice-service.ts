@@ -179,27 +179,37 @@ function useBrowserTextToSpeech(text: string, language: Language): Promise<HTMLA
         throw new Error('Web Speech API not supported');
       }
       
+      // Create a dummy audio element to serve as the interface
+      const audio = new Audio();
+      
       // Create utterance
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = language === 'kannada' ? 'kn-IN' : 'en-IN';
       utterance.rate = 0.9; // Slightly slower for clarity
       utterance.pitch = 1;
       
-      // Handle completion
+      // Wire up utterance events to audio element's events
       utterance.onend = () => {
-        // Return a dummy audio element to maintain interface compatibility
-        const audio = new Audio();
-        audio.onended?.();
-        resolve(audio);
+        // Call the audio element's onended handler if it exists
+        if (audio.onended) {
+          audio.onended();
+        }
       };
       
       utterance.onerror = (e: any) => {
-        reject(new Error('Web Speech API error: ' + e.error));
+        // Call the audio element's onerror handler if it exists
+        if (audio.onerror) {
+          audio.onerror();
+        }
       };
       
-      // Speak the text
+      // Speak the text immediately
       window.speechSynthesis.cancel(); // Cancel any previous speech
       window.speechSynthesis.speak(utterance);
+      
+      // Resolve immediately with the audio element
+      // The audio element's onended will be called when utterance finishes
+      resolve(audio);
     } catch (error) {
       reject(error);
     }
@@ -213,8 +223,24 @@ function useBrowserTextToSpeech(text: string, language: Language): Promise<HTMLA
  */
 export function playAudio(audio: HTMLAudioElement): Promise<void> {
   return new Promise((resolve, reject) => {
+    // Always set up event handlers to work with both Google TTS and browser TTS
     audio.onended = () => resolve();
-    audio.onerror = (e) => reject(e);
-    audio.play().catch(reject);
+    audio.onerror = (e) => {
+      console.error('Audio playback error:', e);
+      reject(e);
+    };
+    
+    // Check if audio has a valid src (Google Cloud TTS case)
+    if (!audio.src) {
+      // Browser TTS: speech is already playing via Web Speech API
+      // Just wait for the utterance.onend to call audio.onended()
+      return;
+    }
+    
+    // Google Cloud TTS: play the actual audio file
+    audio.play().catch((err) => {
+      console.error('Failed to play audio:', err);
+      reject(err);
+    });
   });
 }
