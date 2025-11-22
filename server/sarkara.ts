@@ -43,6 +43,19 @@ export async function processGovernmentServiceQuestion(message: string, language
 }
 
 /**
+ * Truncate text to fit within token limits
+ * @param text Text to truncate
+ * @param maxChars Maximum characters (default 2000)
+ * @returns Truncated text
+ */
+function truncateText(text: string, maxChars: number = 2000): string {
+  if (text.length <= maxChars) {
+    return text;
+  }
+  return text.substring(0, maxChars) + '\n\n[...Content truncated for length...]';
+}
+
+/**
  * Format multiple reference documents for inclusion in the prompt
  * @param documents Array of reference documents
  * @returns Formatted content for inclusion in the prompt
@@ -58,12 +71,13 @@ function formatReferenceDocumentsForGroq(documents: ReferenceDocument[]): string
     return 0;
   });
   
-  // If we have too many documents, limit to the top 2 to stay within token limits
-  const limitedDocs = sortedDocs.slice(0, 2);
+  // Limit to just the top 1 most relevant document to avoid overwhelming the API
+  const limitedDocs = sortedDocs.slice(0, 1);
   
-  // Format each document
+  // Format each document with truncation
   return limitedDocs.map(doc => {
-    return `DOCUMENT: ${doc.title}\n${doc.content}\n---\n`;
+    const truncatedContent = truncateText(doc.content, 1500);
+    return `DOCUMENT: ${doc.title}\n${truncatedContent}\n---\n`;
   }).join('\n');
 }
 
@@ -77,37 +91,16 @@ function formatReferenceDocumentsForGroq(documents: ReferenceDocument[]): string
 async function generateAnswerWithReferences(query: string, referenceContent: string, language: string): Promise<string> {
   const isKannada = language === 'kannada';
   
-  // Create a prompt that instructs the AI to base its response on the reference material
-  const customPrompt = `
-You are NammaSarkara, a government services assistant for citizens in Karnataka, India.
-${isKannada ? 'IMPORTANT: Always respond in Kannada language only. Respond to all queries in Kannada, not English.' : ''}
+  // Create a much more concise prompt to stay within token limits
+  const userMessage = `Question: ${query}
 
-QUESTION FROM USER:
-${query}
+Reference: ${referenceContent}
 
-AUTHENTIC REFERENCE INFORMATION:
-${referenceContent}
-
-Please provide an accurate, helpful response based exclusively on the reference information above. 
-If the reference information doesn't fully address the question, say so clearly and provide as much accurate information as you can from what is available.
-
-${isKannada ? 'Remember to reply only in Kannada language. Do not use English.' : ''}
-
-Focus on providing specific, practical information like:
-1. Required documents
-2. Application procedures (both online and offline options)
-3. Where to go and who to contact
-4. Fees and timelines
-5. Common problems and their solutions
-
-Structure your response for clarity with simple language, avoiding complex jargon.
-Be helpful and polite, but only provide information that's grounded in the authentic reference material above.
-`;
-
-  // Use the AI to generate a response based on our specific prompt
-  // This uses the same Groq endpoint but with our custom prompt instead
+Please answer based on the reference information above.`;
+  
+  // Use the AI to generate a response
   try {
-    return await chatWithGroq(customPrompt, language);
+    return await chatWithGroq(userMessage, language);
   } catch (error) {
     console.error('Error generating answer with references:', error);
     throw new Error('Failed to process reference information. Please try again.');
@@ -123,30 +116,17 @@ Be helpful and polite, but only provide information that's grounded in the authe
 async function generateGeneralGovernmentServiceAnswer(query: string, language: string): Promise<string> {
   const isKannada = language === 'kannada';
   
-  // Create a prompt that guides the AI to give a helpful but general response
-  const systemPrompt = `
-You are NammaSarkara, a government services assistant for Karnataka, India.
-${isKannada ? 'IMPORTANT: Always respond in Kannada language only. Respond to all queries in Kannada, not English.' : ''}
+  // Create a concise message for general government service questions
+  const userMessage = `I need information about this government service in Karnataka: ${query}
 
-USER QUESTION:
-${query}
-
-Please provide a helpful response about this government service or procedure. Since I don't have specific reference information about this particular service, I'll provide:
-
-1. General information about how such government services typically work in Karnataka
-2. Suggestions on which department or office to visit for more information
-3. Common documents that might be required
-4. General online resources like Karnataka One, Seva Sindhu, or relevant department websites
-5. Contact numbers for government helplines where available
-
-${isKannada ? 'Remember to reply only in Kannada language. Do not use English.' : ''}
-
-Keep your response conversational, simple to understand, and honest about limitations. Don't make up specific procedures, fees, or timelines when you're not certain.
-`;
-
+Please provide helpful general guidance including:
+1. Which department handles this
+2. Common documents typically required
+3. Where to get more information (Karnataka One, Seva Sindhu, etc.)`;
+  
   // Use the AI to generate a general response
   try {
-    return await chatWithGroq(systemPrompt, language);
+    return await chatWithGroq(userMessage, language);
   } catch (error) {
     console.error('Error generating general government service answer:', error);
     throw new Error('Failed to generate information about government services. Please try again.');
