@@ -9,9 +9,9 @@ const groqClient = axios.create({
   }
 });
 
-// Groq models
-const CHAT_MODEL = "llama3-8b-8192"; // Llama 3 8B model for chat
-const DOCUMENT_MODEL = "llama3-8b-8192"; // Same model for document analysis
+// Groq models - Updated to current supported models
+const CHAT_MODEL = "llama-3.3-70b-versatile"; // Llama 3.3 70B - Fast and capable
+const DOCUMENT_MODEL = "llama-3.3-70b-versatile"; // Same model for document analysis
 
 // Check if API key is a dummy value
 const isDummyKey = !process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === "dummy-key";
