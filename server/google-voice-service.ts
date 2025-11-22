@@ -31,19 +31,13 @@ function initializeClients() {
       console.log(`Using Google Cloud credentials for project: ${credentialsData.project_id}`);
       console.log('Google Cloud voice services are enabled');
 
-      // Use credentials object instead of keyFilename for better compatibility
+      // Pass credentials as environment variable which is more reliable
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
+      
       speechClient = new speech.SpeechClient({ 
-        credentials: {
-          client_email: credentialsData.client_email,
-          private_key: credentialsData.private_key,
-        },
         projectId: credentialsData.project_id
       });
       ttsClient = new textToSpeech.TextToSpeechClient({ 
-        credentials: {
-          client_email: credentialsData.client_email,
-          private_key: credentialsData.private_key,
-        },
         projectId: credentialsData.project_id
       });
       return;
