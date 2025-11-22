@@ -31,13 +31,20 @@ function initializeClients() {
       console.log(`Using Google Cloud credentials for project: ${credentialsData.project_id}`);
       console.log('Google Cloud voice services are enabled');
 
+      // Use credentials object instead of keyFilename for better compatibility
       speechClient = new speech.SpeechClient({ 
-        projectId: credentialsData.project_id,
-        keyFilename: credentialsPath 
+        credentials: {
+          client_email: credentialsData.client_email,
+          private_key: credentialsData.private_key,
+        },
+        projectId: credentialsData.project_id
       });
       ttsClient = new textToSpeech.TextToSpeechClient({ 
-        projectId: credentialsData.project_id,
-        keyFilename: credentialsPath 
+        credentials: {
+          client_email: credentialsData.client_email,
+          private_key: credentialsData.private_key,
+        },
+        projectId: credentialsData.project_id
       });
       return;
     }
