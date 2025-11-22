@@ -64,13 +64,28 @@ voiceRouter.post('/api/voice/synthesize', async (req: Request, res: Response) =>
       return res.status(400).json({ error: 'No text provided' });
     }
     
-    // Convert text to speech
-    const audioBase64 = await textToSpeechAudio(text, language as Language);
-    
-    res.json({ audio: audioBase64 });
+    try {
+      // Try Google Cloud TTS first
+      const audioBase64 = await textToSpeechAudio(text, language as Language);
+      res.json({ audio: audioBase64, useBrowserTTS: false });
+    } catch (googleError: any) {
+      console.log('Google Cloud TTS failed, using browser fallback:', googleError.message);
+      // If Google Cloud fails, use browser-based TTS as fallback
+      res.json({ 
+        useBrowserTTS: true, 
+        text: text,
+        language: language,
+        message: 'Using browser text-to-speech'
+      });
+    }
   } catch (error: any) {
     console.error('Error in text-to-speech endpoint:', error);
-    res.status(500).json({ error: error.message || 'Failed to synthesize speech' });
+    // Always try to use browser fallback on any error
+    res.json({ 
+      useBrowserTTS: true, 
+      text: req.body.text,
+      language: req.body.language || 'english'
+    });
   }
 });
 

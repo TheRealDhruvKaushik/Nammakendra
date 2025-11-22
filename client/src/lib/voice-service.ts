@@ -132,7 +132,7 @@ export async function speechToText(audioBlob: Blob, language: Language): Promise
 }
 
 /**
- * Converts text to speech using Google Cloud Text-to-Speech
+ * Converts text to speech using Google Cloud Text-to-Speech with browser fallback
  * @param text - The text to convert to speech
  * @param language - The user's selected language
  * @returns Promise resolving to an Audio element with the synthesized speech
@@ -145,6 +145,12 @@ export async function textToSpeech(text: string, language: Language): Promise<HT
       language,
     });
     
+    // Check if we should use browser TTS fallback
+    if (response.data.useBrowserTTS) {
+      console.log('Using browser-based text-to-speech as fallback');
+      return useBrowserTextToSpeech(text, language);
+    }
+    
     // Create audio element from base64 audio data
     const audio = new Audio();
     audio.src = `data:audio/mp3;base64,${response.data.audio}`;
@@ -152,8 +158,52 @@ export async function textToSpeech(text: string, language: Language): Promise<HT
     return audio;
   } catch (error) {
     console.error('Error in text-to-speech:', error);
-    throw new Error('Failed to generate speech');
+    // Fallback to browser TTS on any error
+    return useBrowserTextToSpeech(text, language);
   }
+}
+
+/**
+ * Browser-based text-to-speech using Web Speech API
+ * @param text - The text to speak
+ * @param language - The language code
+ * @returns Promise resolving to a dummy audio element (Web Speech API speaks directly)
+ */
+function useBrowserTextToSpeech(text: string, language: Language): Promise<HTMLAudioElement> {
+  return new Promise((resolve, reject) => {
+    try {
+      // Check if Web Speech API is available
+      const SpeechSynthesisUtterance = (window as any).SpeechSynthesisUtterance || (window as any).webkitSpeechSynthesisUtterance;
+      
+      if (!SpeechSynthesisUtterance || !window.speechSynthesis) {
+        throw new Error('Web Speech API not supported');
+      }
+      
+      // Create utterance
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = language === 'kannada' ? 'kn-IN' : 'en-IN';
+      utterance.rate = 0.9; // Slightly slower for clarity
+      utterance.pitch = 1;
+      
+      // Handle completion
+      utterance.onend = () => {
+        // Return a dummy audio element to maintain interface compatibility
+        const audio = new Audio();
+        audio.onended?.();
+        resolve(audio);
+      };
+      
+      utterance.onerror = (e: any) => {
+        reject(new Error('Web Speech API error: ' + e.error));
+      };
+      
+      // Speak the text
+      window.speechSynthesis.cancel(); // Cancel any previous speech
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 /**
